@@ -128,6 +128,7 @@ if (!$data) {
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
         }
 
         .calendar {
@@ -172,6 +173,20 @@ if (!$data) {
 
         .book-button:hover {
             background: #ff3333;
+        }
+
+        .section-content {
+            padding: 15px 0;
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .rotate {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
         }
 
         @media (max-width: 768px) {
@@ -227,6 +242,108 @@ if (!$data) {
             <div class="itinerary">
                 <h2>Description</h2>
                 <p><?php echo $data['deskripsi']; ?></p>
+                
+                <!-- Tour Information -->
+                <div class="tour-info" style="margin-top: 20px;">
+                    <div class="info-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="margin-right: 10px;">👥</span>
+                        <span>Ages 7-65</span>
+                    </div>
+                    
+                    <div class="info-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="margin-right: 10px;">⏱</span>
+                        <span>Duration: 12h</span>
+                    </div>
+                    
+                    <div class="info-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="margin-right: 10px;">🕒</span>
+                        <span>Start time: Check availability</span>
+                    </div>
+                    
+                    <div class="info-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="margin-right: 10px;">📱</span>
+                        <span>Mobile ticket</span>
+                    </div>
+                    
+                    <div class="info-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="margin-right: 10px;">🌐</span>
+                        <span>Live guide: English</span>
+                    </div>
+                    
+                    <div class="info-item" style="display: flex; align-items: center; margin-bottom: 15px;">
+                        <span style="margin-right: 10px; visibility: hidden;">📝</span>
+                        <span>Written guide ℹ: German, Italian, French, Spanish</span>
+                    </div>
+                </div>
+
+                <!-- Expandable Sections -->
+                <div class="expandable-sections" style="margin-top: 30px;">
+                    <div class="section" style="border-top: 1px solid #e0e0e0; padding: 20px 0;">
+                        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                            <h3>What's included</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <!-- Add content here -->
+                            <p>Content for What's included section</p>
+                        </div>
+                    </div>
+
+                    <div class="section" style="border-top: 1px solid #e0e0e0; padding: 20px 0;">
+                        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                            <h3>What to expect</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <!-- Add content here -->
+                            <p>Content for What to expect section</p>
+                        </div>
+                    </div>
+
+                    <div class="section" style="border-top: 1px solid #e0e0e0; padding: 20px 0;">
+                        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                            <h3>Departure and return</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <!-- Add content here -->
+                            <p>Content for Departure and return section</p>
+                        </div>
+                    </div>
+
+                    <div class="section" style="border-top: 1px solid #e0e0e0; padding: 20px 0;">
+                        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                            <h3>Accessibility</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <!-- Add content here -->
+                            <p>Content for Accessibility section</p>
+                        </div>
+                    </div>
+
+                    <div class="section" style="border-top: 1px solid #e0e0e0; padding: 20px 0;">
+                        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                            <h3>Additional information</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <!-- Add content here -->
+                            <p>Content for Additional information section</p>
+                        </div>
+                    </div>
+
+                    <div class="section" style="border-top: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0; padding: 20px 0;">
+                        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+                            <h3>Cancellation policy</h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <!-- Add content here -->
+                            <p>Content for Cancellation policy section</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="booking-section">
@@ -249,28 +366,67 @@ if (!$data) {
     </div>
 
     <script>
+        // Calendar functionality
         const calendar = document.getElementById('calendar');
         const months = ['Dec'];
         const days = ['Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed'];
         
-        days.forEach(day => {
-            const dayElement = document.createElement('div');
-            dayElement.className = 'calendar-day';
-            dayElement.textContent = day;
-            calendar.appendChild(dayElement);
+        if (calendar) {
+            days.forEach(day => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                calendar.appendChild(dayElement);
+            });
+
+            for(let i = 19; i <= 25; i++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = i;
+                dayElement.addEventListener('click', () => {
+                    document.querySelectorAll('.calendar-day').forEach(el => 
+                        el.classList.remove('selected'));
+                    dayElement.classList.add('selected');
+                });
+                calendar.appendChild(dayElement);
+            }
+        }
+
+        // Expandable sections functionality
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('.toggle-icon');
+                
+                // Toggle content
+                content.classList.toggle('active');
+                
+                // Toggle icon rotation
+                icon.style.transform = content.classList.contains('active') 
+                    ? 'rotate(180deg)' 
+                    : 'rotate(0deg)';
+            });
+            // Set transition for smooth animation
+            content.style.transition = 'all 0.3s ease-out';
         });
 
-        for(let i = 19; i <= 25; i++) {
-            const dayElement = document.createElement('div');
-            dayElement.className = 'calendar-day';
-            dayElement.textContent = i;
-            dayElement.addEventListener('click', () => {
-                document.querySelectorAll('.calendar-day').forEach(el => 
-                    el.classList.remove('selected'));
-                dayElement.classList.add('selected');
+        // Optional: Automatically close other sections when one is opened
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                const clickedContent = header.nextElementSibling;
+                const allContents = document.querySelectorAll('.section-content');
+                const allIcons = document.querySelectorAll('.toggle-icon');
+                
+                // Close all other sections
+                allContents.forEach(content => {
+                    if (content !== clickedContent && content.classList.contains('active')) {
+                        content.classList.remove('active');
+                        const icon = content.previousElementSibling.querySelector('.toggle-icon');
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                });
             });
-            calendar.appendChild(dayElement);
-        }
+        });
     </script>
 </body>
 </html>
