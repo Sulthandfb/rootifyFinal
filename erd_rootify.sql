@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 18, 2024 at 05:29 PM
+-- Generation Time: Dec 19, 2024 at 02:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,22 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `erd_rootify`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `accommodations`
---
-
-CREATE TABLE `accommodations` (
-  `accommodation_ID` int(11) NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
-  `type` varchar(50) DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `total_rooms` int(11) DEFAULT NULL,
-  `address` varchar(200) DEFAULT NULL,
-  `price_per_night` decimal(10,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -160,43 +144,6 @@ CREATE TABLE `booking` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `booking_tourpackage`
---
-
-CREATE TABLE `booking_tourpackage` (
-  `booking_ID` int(11) NOT NULL,
-  `package_ID` int(11) NOT NULL,
-  `package_date` date DEFAULT NULL,
-  `total_price` decimal(10,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `category`
---
-
-CREATE TABLE `category` (
-  `id_kategori` int(11) NOT NULL,
-  `nama_kategori` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `chatbot`
---
-
-CREATE TABLE `chatbot` (
-  `session_ID` int(11) NOT NULL,
-  `question` text DEFAULT NULL,
-  `user_ID` int(11) DEFAULT NULL,
-  `response` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `event`
 --
 
@@ -278,17 +225,6 @@ INSERT INTO `hotels` (`hotel_id`, `name`, `description`, `rating`, `price`, `lat
 (2, 'Mountain Retreat Villa', 'A private villa nestled in the mountains, offering a serene and peaceful environment for travelers.', 4.70, 2000000.00, 8.756000, 120.987000, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15813.059450880179!2d110.33384336435627!3d-7.7617103658309174!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59acb8a69e07%3A0xf7c5860aef8278a4!2sBaturan%20Villa%20Family%20Retreat!5e0!3m2!1sid!2sid!4v1734379605279!5m2!1sid!2sid\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', 'villa', '../akomodasi/hotel-img/villaretreat.jpg'),
 (3, 'City Center Apartments', 'Modern apartments in the heart of the city, offering comfort and convenience for business travelers.', 4.50, 1200000.00, 9.439000, 123.123000, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4701.4737128931265!2d110.3728927262677!3d-7.7417445305653!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a592cb4a9bec3%3A0x4a90a2346dd9f452!2sMataram%20City%20Yogyakarta%20(MICC)!5e0!3m2!1sid!2sid!4v1734379719840!5m2!1sid!2sid\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', 'apartment', '../akomodasi/hotel-img/apartment1.jpeg'),
 (4, 'Lakeside Hotel', 'A charming hotel located by the serene lake, perfect for family vacations and romantic getaways.', 4.80, 1800000.00, 10.324000, 122.678000, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31669.669316711803!2d107.35492324870697!3d-7.159641379775448!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e688b96c30c7869%3A0xcc3d65320d369aa7!2sGlamping%20Lakeside%20Rancabali!5e0!3m2!1sid!2sid!4v1734379801426!5m2!1sid!2sid\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', 'hotel', '../akomodasi/hotel-img/lakeside.jpg');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `hotel_facilities`
---
-
-CREATE TABLE `hotel_facilities` (
-  `hotel_id` int(11) NOT NULL,
-  `facility_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -399,6 +335,32 @@ INSERT INTO `room_images` (`image_id`, `room_id`, `image_url`, `is_primary`) VAL
 (13, 3, '../akomodasi/hotel-img/family.jpg', 0),
 (14, 3, '../akomodasi/hotel-img/family.jpg', 0),
 (15, 3, '../akomodasi/hotel-img/family.jpg', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `saved_trips`
+--
+
+CREATE TABLE `saved_trips` (
+  `id` int(11) NOT NULL,
+  `trip_name` varchar(100) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `trip_type` varchar(50) NOT NULL,
+  `budget` varchar(50) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `saved_trips`
+--
+
+INSERT INTO `saved_trips` (`id`, `trip_name`, `start_date`, `end_date`, `trip_type`, `budget`, `user_id`, `created_at`) VALUES
+(1, 'sulthan', '2024-12-19', '2024-12-20', 'solo', 'low', 8, '2024-12-18 18:03:12'),
+(2, 'Jogja dua hari bro', '2024-12-19', '2024-12-20', 'solo', 'low', 2, '2024-12-19 01:48:20'),
+(3, 'jogja', '2024-12-19', '2024-12-21', 'solo', 'low', 2, '2024-12-19 02:26:08');
 
 -- --------------------------------------------------------
 
@@ -548,18 +510,6 @@ CREATE TABLE `tourpackage` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tourpackage_tourguide`
---
-
-CREATE TABLE `tourpackage_tourguide` (
-  `package_ID` int(11) NOT NULL,
-  `Guide_ID` int(11) NOT NULL,
-  `assigned_date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `travelhistory`
 --
 
@@ -657,6 +607,51 @@ INSERT INTO `trip_categories` (`id`, `trip_type`, `budget_range`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `trip_destinations`
+--
+
+CREATE TABLE `trip_destinations` (
+  `id` int(11) NOT NULL,
+  `trip_id` int(11) NOT NULL,
+  `attraction_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `trip_destinations`
+--
+
+INSERT INTO `trip_destinations` (`id`, `trip_id`, `attraction_id`) VALUES
+(1, 1, 11),
+(2, 1, 20),
+(3, 1, 21),
+(4, 1, 3),
+(5, 1, 19),
+(6, 1, 30),
+(7, 1, 22),
+(8, 1, 9),
+(9, 1, 2),
+(10, 2, 19),
+(11, 2, 3),
+(12, 2, 11),
+(13, 2, 21),
+(14, 2, 20),
+(15, 2, 2),
+(16, 2, 22),
+(17, 2, 30),
+(18, 2, 9),
+(19, 3, 21),
+(20, 3, 11),
+(21, 3, 22),
+(22, 3, 30),
+(23, 3, 2),
+(24, 3, 19),
+(25, 3, 9),
+(26, 3, 3),
+(27, 3, 20);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -681,27 +676,9 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `created_at`) VALUES
 (7, '123', '123@gmail.com', '$2y$10$BxrFXFyk90K2xCZg3xneUuqAEV/k1GgiJuQGyhPwnxTY3tJ93g58O', '2024-12-14 06:32:48'),
 (8, 'napis', 'napis@gmail.com', '$2y$10$BsOCo30CBYKTlH1UaYDd1ua1FBoV0hnMQHS6e7clunEF9E8b.7RRW', '2024-12-14 08:02:27');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `user_visits_destination`
---
-
-CREATE TABLE `user_visits_destination` (
-  `user_ID` int(11) NOT NULL,
-  `destination_ID` int(11) NOT NULL,
-  `review` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `accommodations`
---
-ALTER TABLE `accommodations`
-  ADD PRIMARY KEY (`accommodation_ID`);
 
 --
 -- Indexes for table `attraction_categories`
@@ -715,20 +692,6 @@ ALTER TABLE `attraction_categories`
 --
 ALTER TABLE `booking`
   ADD PRIMARY KEY (`booking_id`);
-
---
--- Indexes for table `booking_tourpackage`
---
-ALTER TABLE `booking_tourpackage`
-  ADD PRIMARY KEY (`booking_ID`,`package_ID`),
-  ADD KEY `package_ID` (`package_ID`);
-
---
--- Indexes for table `chatbot`
---
-ALTER TABLE `chatbot`
-  ADD PRIMARY KEY (`session_ID`),
-  ADD KEY `user_ID` (`user_ID`);
 
 --
 -- Indexes for table `event`
@@ -750,13 +713,6 @@ ALTER TABLE `hotels`
   ADD PRIMARY KEY (`hotel_id`);
 
 --
--- Indexes for table `hotel_facilities`
---
-ALTER TABLE `hotel_facilities`
-  ADD PRIMARY KEY (`hotel_id`,`facility_id`),
-  ADD KEY `facility_id` (`facility_id`);
-
---
 -- Indexes for table `hotel_images`
 --
 ALTER TABLE `hotel_images`
@@ -776,6 +732,13 @@ ALTER TABLE `rooms`
 ALTER TABLE `room_images`
   ADD PRIMARY KEY (`image_id`),
   ADD KEY `room_id` (`room_id`);
+
+--
+-- Indexes for table `saved_trips`
+--
+ALTER TABLE `saved_trips`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `tempat_wisata`
@@ -803,13 +766,6 @@ ALTER TABLE `tourpackage`
   ADD KEY `destination` (`destination`);
 
 --
--- Indexes for table `tourpackage_tourguide`
---
-ALTER TABLE `tourpackage_tourguide`
-  ADD PRIMARY KEY (`package_ID`,`Guide_ID`),
-  ADD KEY `Guide_ID` (`Guide_ID`);
-
---
 -- Indexes for table `travelhistory`
 --
 ALTER TABLE `travelhistory`
@@ -830,19 +786,20 @@ ALTER TABLE `trip_categories`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `trip_destinations`
+--
+ALTER TABLE `trip_destinations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `trip_id` (`trip_id`),
+  ADD KEY `attraction_id` (`attraction_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`);
-
---
--- Indexes for table `user_visits_destination`
---
-ALTER TABLE `user_visits_destination`
-  ADD PRIMARY KEY (`user_ID`,`destination_ID`),
-  ADD KEY `destination_ID` (`destination_ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -885,6 +842,12 @@ ALTER TABLE `room_images`
   MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT for table `saved_trips`
+--
+ALTER TABLE `saved_trips`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `tempat_wisata`
 --
 ALTER TABLE `tempat_wisata`
@@ -909,6 +872,12 @@ ALTER TABLE `trip_categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `trip_destinations`
+--
+ALTER TABLE `trip_destinations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -926,24 +895,10 @@ ALTER TABLE `attraction_categories`
   ADD CONSTRAINT `attraction_categories_ibfk_2` FOREIGN KEY (`trip_category_id`) REFERENCES `trip_categories` (`id`);
 
 --
--- Constraints for table `booking_tourpackage`
---
-ALTER TABLE `booking_tourpackage`
-  ADD CONSTRAINT `booking_tourpackage_ibfk_1` FOREIGN KEY (`booking_ID`) REFERENCES `bookings` (`booking_ID`),
-  ADD CONSTRAINT `booking_tourpackage_ibfk_2` FOREIGN KEY (`package_ID`) REFERENCES `tourpackage` (`package_ID`);
-
---
 -- Constraints for table `facilities`
 --
 ALTER TABLE `facilities`
   ADD CONSTRAINT `facilities_ibfk_1` FOREIGN KEY (`hotel_id`) REFERENCES `hotels` (`hotel_id`);
-
---
--- Constraints for table `hotel_facilities`
---
-ALTER TABLE `hotel_facilities`
-  ADD CONSTRAINT `hotel_facilities_ibfk_1` FOREIGN KEY (`hotel_id`) REFERENCES `hotels` (`hotel_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `hotel_facilities_ibfk_2` FOREIGN KEY (`facility_id`) REFERENCES `facilities` (`facility_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `hotel_images`
@@ -962,6 +917,19 @@ ALTER TABLE `rooms`
 --
 ALTER TABLE `room_images`
   ADD CONSTRAINT `room_images_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`room_id`);
+
+--
+-- Constraints for table `saved_trips`
+--
+ALTER TABLE `saved_trips`
+  ADD CONSTRAINT `saved_trips_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `trip_destinations`
+--
+ALTER TABLE `trip_destinations`
+  ADD CONSTRAINT `trip_destinations_ibfk_1` FOREIGN KEY (`trip_id`) REFERENCES `saved_trips` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `trip_destinations_ibfk_2` FOREIGN KEY (`attraction_id`) REFERENCES `tourist_attractions` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
