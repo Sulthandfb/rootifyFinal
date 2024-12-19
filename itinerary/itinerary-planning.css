@@ -1,0 +1,235 @@
+:root {
+    --primary: #18181b;
+    --secondary: #71717a;
+    --border: #e4e4e7;
+    --background: #ffffff;
+    --card-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: var(--background);
+    color: var(--primary);
+}
+
+.header {
+    position: relative;
+    height: 300px;
+    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                url('../img/borobudur.jpg') center/cover;
+    color: white;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+}
+
+.header-content {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+}
+
+.header-title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.header-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.container {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.tabs {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+}
+
+.tab {
+    color: var(--secondary);
+    cursor: pointer;
+    padding-bottom: 0.5rem;
+}
+
+.tab.active {
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+}
+
+.card {
+    display: flex; /* Mengatur layout secara horizontal */
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 2rem;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card-image {
+    width: 40%; /* Lebar gambar 40% dari kartu */
+    height: auto;
+    object-fit: cover; /* Menjaga rasio aspek gambar */
+}
+
+.card-content {
+    flex: 1; /* Mengambil sisa ruang di sebelah kanan */
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Menyusun konten detail secara merata */
+    gap: 0.5rem;
+}
+
+.card-location {
+    font-size: 0.8rem;
+    color: var(--secondary);
+    text-transform: uppercase;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-rating span {
+    font-size: 0.8rem;
+}
+
+.rating-stars {
+    color: #fbbf24;
+}
+
+.card-description {
+    color: var(--secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.card-category {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.category-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+
+.map-container {
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+
+@media (max-width: 1024px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .map-container {
+        position: relative;
+        height: 400px;
+        top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        height: 200px;
+    }
+
+    .header-title {
+        font-size: 2rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    .card {
+        flex-direction: column;
+    }
+
+    .card-image {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.duration {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+
+.favorite-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--secondary);
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.favorite-btn:hover {
+    background-color: rgba(0,0,0,0.05);
+}

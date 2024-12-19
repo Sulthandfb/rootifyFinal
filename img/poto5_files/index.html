@@ -1,0 +1,41 @@
+
+<!-- saved from url=(0056)https://storage.tiket.com/storage/index.html?version=2.0 -->
+<html><!-- version 2.0 --><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252"><script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (!urlParams.get('version')) {
+    // Backward compatibility handle
+    document.domain = "tiket.com";
+  }
+
+  window.parent.postMessage('tiketStorageIframeReady', '*');
+
+  window.addEventListener("message", function (e) {
+    const url = new URL(e.origin)
+    const isTrusted = url.hostname.split('.').slice(-2).join('.') === 'tiket.com'
+
+    if (isTrusted && e.data.name === "SET_LOCALSTORAGE" && e.data.data && e.data.data.key) {
+      localStorage.setItem(e.data.data.key, e.data.data.value)
+
+      window.parent.postMessage({
+        name: 'SET_LOCALSTORAGE_RESPONSE_OK',
+        id: e.data.data.id
+      }, e.origin);
+
+    } else if (isTrusted && e.data.name === "GET_LOCALSTORAGE" && e.data.data && e.data.data.key) {
+      const value = localStorage.getItem(e.data.data.key)
+
+      window.parent.postMessage({
+        name: 'GET_LOCALSTORAGE_RESPONSE',
+        data: {
+          key: e.data.data.key,
+          value: value,
+        }
+      }, e.origin);
+    }
+  });
+</script>
+
+</head><body>
+
+
+</body></html>

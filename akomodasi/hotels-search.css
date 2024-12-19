@@ -1,0 +1,358 @@
+:root {
+    --primary: #0070f3;
+    --background: #ffffff;
+    --foreground: #000000;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --border: #e2e8f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    min-height: 100vh;
+}
+
+.main-container {
+    display: flex;
+    max-width: 1800px;
+    margin: 0 300px;
+    padding: 20px;
+    gap: 24px;
+}
+
+/* Left Section */
+.content-section {
+    flex: 1;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Search and Filters */
+.search-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.search-bar {
+    display: flex;
+    width: 100%;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px 0 0 8px;
+    font-size: 16px;
+}
+
+.search-button {
+    padding: 12px 24px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+}
+
+.price-range {
+    margin-top: 16px;
+}
+
+.price-range h3 {
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.price-inputs {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.price-input {
+    flex: 1;
+    position: relative;
+}
+
+.price-input span {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted-foreground);
+}
+
+.price-input input {
+    width: 100%;
+    padding: 12px 12px 12px 24px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.amenities {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+}
+
+.amenity-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Properties Grid Container */
+.properties-container {
+    flex: 1;
+    overflow-y: auto; /* Menambahkan scroll hanya untuk properties grid */
+    max-height: calc(100vh - 40px); /* Menjaga tinggi container properties grid sesuai dengan map */
+    padding-right: 20px; /* Menambahkan space untuk scrollbar */
+}
+
+.properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 0;
+    margin-top: 24px;
+}
+
+.property-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    transition: transform 0.2s;
+}
+
+.property-card:hover {
+    transform: translateY(-4px);
+}
+
+.property-image {
+    position: relative;
+    width: 100%;
+    padding-top: 66.67%; /* 3:2 aspect ratio */
+}
+
+.property-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.new-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.favorite-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.property-info {
+    padding: 16px;
+}
+
+.property-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.property-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.property-details {
+    display: flex;
+    gap: 8px;
+    color: var(--muted-foreground);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.property-price {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.price-period {
+    color: var(--muted-foreground);
+    font-size: 14px;
+    font-weight: normal;
+}
+
+/* Map Section */
+.map-section {
+    flex: 0 0 45%;
+    height: calc(100vh - 40px);
+    position: sticky;
+    top: 20px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+}
+
+/* Styling untuk Check-In dan Check-Out */
+.date-selection {
+    display: flex; /* Menjadikan tata letak horizontal */
+    justify-content: flex-start; /* Rata kiri */
+    gap: 20px; /* Jarak antar elemen */
+    margin: 20px 0; /* Jarak atas dan bawah */
+    padding: 10px 20px;
+    background: #f9f9f9; /* Background warna terang */
+    border-radius: 8px; /* Sudut melengkung */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan halus */
+}
+
+.date-selection p {
+    margin: 0; /* Menghilangkan margin default */
+    font-size: 16px;
+    color: #333; /* Warna teks */
+    font-weight: 500;
+}
+
+.date-selection strong {
+    color: #555; /* Warna teks untuk label */
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.date-selection span {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Styling untuk kategori button */
+.category-form {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.category-btn {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.category-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Styling untuk form pencarian */
+.search-filter-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-input, .price-input {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-btn:hover {
+    background-color: #218838;
+}
+
+
+
+@media (max-width: 1200px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .content-section {
+        max-width: 100%;
+    }
+
+    .map-section {
+        height: 400px;
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .properties-grid {
+        grid-template-columns: 1fr;
+    }
+}

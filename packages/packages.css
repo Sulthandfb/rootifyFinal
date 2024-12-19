@@ -1,0 +1,292 @@
+/* Import Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* Navigation Styles */
+.navbar {
+  background-color: #EC8305;
+  padding: 1rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+/* Brand Styles */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 0.5rem;
+}
+
+.brand-text {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #000;
+}
+
+/* Navigation Menu */
+.nav-menu {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+
+.nav-links li a {
+  color: #000;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #fff;
+}
+
+/* Navigation Buttons */
+.nav-buttons {
+  margin-left: 1rem;
+}
+
+.btnnav {
+  padding: 0.5rem 1rem;
+  border: 1px solid #000;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #000;
+  margin-left: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.btnnav:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Secondary Navigation */
+.secondary-navbar {
+  background-color: white;
+  padding: 0.5rem 0;
+  width: 100%;
+  margin-top: 70px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.secondary-nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.secondary-nav-link {
+  color: #666;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.secondary-nav-link:hover,
+.secondary-nav-link.active {
+  color: #000;
+}
+
+/* Main Container */
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+/* Room Card Styles */
+.room-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.room-card:hover {
+  transform: translateY(-5px);
+}
+
+.room-info {
+  padding: 1.5rem;
+}
+
+.room-info h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.room-info img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+/* Room Details */
+.room-details {
+  margin: 1rem 0;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.detail i {
+  margin-right: 0.5rem;
+  width: 20px;
+  color: #333;
+}
+
+/* Room Details Box */
+.room-details-box {
+  padding: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.detail-info {
+  margin-bottom: 1.5rem;
+}
+
+.detail-info h3 {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.detail-item i {
+  margin-right: 0.5rem;
+  width: 20px;
+  color: #333;
+}
+
+/* Buttons */
+.detail-room-btn {
+  background-color: #ffc107;
+  color: #000;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.detail-room-btn:hover {
+  background-color: #ffb300;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-menu {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: block;
+  }
+
+  .secondary-nav-links {
+    overflow-x: auto;
+    padding: 0.5rem;
+  }
+}
+
+/* Icon Styles */
+.detail-item i,
+.detail i {
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+    color: #EC8305; /* Sesuaikan dengan warna tema */
+}
+
+/* Hover effect untuk icon dalam link */
+a.detail-item:hover i {
+    color: #ff9800;
+}
+
+/* Ukuran icon */
+.fas {
+    font-size: 16px; /* Ukuran default */
+}
+
+.fas.fa-large {
+    font-size: 24px; /* Untuk icon yang lebih besar */
+}
+
+/* Icon dalam tombol */
+.btn i {
+    margin-right: 8px;
+}
+
+/* Responsive icon sizes */
+@media (max-width: 768px) {
+    .fas {
+        font-size: 14px; /* Ukuran lebih kecil untuk mobile */
+    }
+    
+    .detail-item i,
+    .detail i {
+        margin-right: 8px;
+    }
+}

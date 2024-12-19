@@ -1,0 +1,1157 @@
+:root {
+    --primary: #0070f3;
+    --background: #ffffff;
+    --foreground: #000000;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.breadcrumbs {
+    display: flex;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumbs .current {
+    font-weight: 600;
+}
+
+.breadcrumbs span {
+    margin: 0 0.5rem;
+}
+
+.photo-gallery {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3fr 1fr; /* Adjust ratio to match tiket.com */
+    gap: 0.5rem;
+    padding: 1rem;
+    max-width: 1200px; /* Add max-width to contain the gallery */
+    margin: 0 auto;
+}
+
+.main-image {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    height: 600px; /* Match tiket.com height */
+}
+
+.gallery-grid {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 150px); /* Fixed height for thumbnails */
+    gap: 0.5rem;
+}
+
+.gallery-grid > * {
+    height: 150px;
+}
+
+.main-image img,
+.gallery-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.view-all {
+    position: relative;
+    cursor: pointer;
+    height: 150px; /* Match thumbnail height */
+}
+
+.view-all::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+}
+
+.view-all span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 600;
+}
+
+.favorite-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-banner {
+    background-color: #fdf2f8;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.gift-icon {
+    color: #ec4899;
+    margin-right: 0.5rem;
+}
+
+.login-button {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--muted);
+    margin-bottom: 1rem;
+}
+
+.tab-button {
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.tab-button.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.property-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stars {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.star {
+    width: 20px;
+    height: 20px;
+    filter: grayscale(100%);
+}
+
+.star.filled {
+    filter: none;
+}
+
+.rating-text {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.property-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.property-meta,
+.property-features {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.pricing {
+    text-align: right;
+}
+
+.price-label {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ef4444;
+}
+
+.price-period {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.view-rooms-button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* lokasi dan deskripsi */
+/* Add these styles to your existing CSS */
+
+.separator {
+    height: 1px;
+    background-color: #e5e7eb;
+    margin: 2rem 0;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.about-section {
+    margin-bottom: 2rem;
+}
+
+.description {
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+.description p {
+    margin-bottom: 1rem;
+}
+
+.show-more {
+    color: #2563eb;
+    font-weight: 500;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.location-section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.view-map {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.location-content {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 2rem;
+}
+
+.map-container {
+    width: 100%;
+    height: 400px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.facilities {
+    padding: 1rem;
+}
+
+.facilities h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.facilities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.facility-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.facility-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.facility-item span {
+    color: #4b5563;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .location-content {
+        grid-template-columns: 1fr;
+    }
+
+    .map-container {
+        height: 300px;
+    }
+
+    .facilities-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .photo-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .main-image {
+        height: 300px;
+        grid-row: auto;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 100px);
+    }
+
+    .view-all {
+        height: 100px;
+    }
+    .gallery-grid > * {
+        height: 100px;
+    }
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.breadcrumbs {
+    display: flex;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.breadcrumbs a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumbs .current {
+    font-weight: 600;
+}
+
+.breadcrumbs span {
+    margin: 0 0.5rem;
+}
+
+.photo-gallery {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 0.5rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.main-image {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    height: 600px;
+}
+
+.gallery-grid {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 150px);
+    gap: 0.5rem;
+}
+
+.gallery-grid > * {
+    height: 150px;
+}
+
+.main-image img,
+.gallery-grid img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.view-all {
+    position: relative;
+    cursor: pointer;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.view-all img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.view-all::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.view-all span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.favorite-button {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login-banner {
+    background-color: #fdf2f8;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.gift-icon {
+    color: #ec4899;
+    margin-right: 0.5rem;
+}
+
+.login-button {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--muted);
+    margin-bottom: 1rem;
+}
+
+.tab-button {
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.tab-button.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.property-details {
+    display: flex; /* Aktifkan flexbox */
+    flex-direction: row; /* Pastikan elemen dalam satu baris */
+    justify-content: space-between; /* Beri jarak maksimum antar elemen */
+    align-items: flex-start; /* Sejajarkan bagian atas */
+}
+
+.details-left {
+    flex: 1; /* Isi 50% lebar */
+    max-width: 50%; /* Batasi hingga setengah */
+    text-align: left; /* Rata kiri konten */
+    margin-top: 1rem; /* Tambahkan jarak atas */
+}
+
+.details-left h1{
+    margin-bottom: 0.5rem; /* Tambahkan jarak atas */
+}
+
+.details-left > * {
+    margin-bottom: 1rem; /* Menambahkan jarak antar elemen */
+}
+
+.details-left > *:last-child {
+    margin-bottom: 0; /* Menghapus margin bawah pada elemen terakhir untuk keseragaman */
+}
+
+
+.details-right {
+    flex: 1; /* Isi 50% lebar */
+    max-width: 50%; /* Batasi hingga setengah */
+    text-align: right; /* Rata kanan konten */
+    margin-top: 1rem;
+}
+
+/* cateogry */
+.hotel-category {
+    display: inline-block;
+    padding: 4px 12px;
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: white;
+    border-radius: 6px;
+  }
+  
+  .hotel-category.hotel {
+    background-color: #0071f3ad; /* Warna untuk hotel */
+  }
+  
+  .hotel-category.apartment {
+    background-color: #28a746b6; /* Warna untuk apartemen */
+  }
+  
+  .hotel-category.villa {
+    background-color: #8c00ffa1; /* Warna untuk villa */
+  }
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stars {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.star {
+    color: #d1d5db;
+}
+
+.star.filled {
+    color: #fbbf24;
+}
+
+.rating-text {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.property-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.property-meta,
+.property-features {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.pricing {
+    text-align: right;
+    margin-top: 2rem;
+}
+
+.price-label {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ef4444;
+}
+
+.price-period {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.view-rooms-button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Room Details Styles */
+.room-details {
+    margin-top: 2rem;
+}
+
+.room-card {
+    display: flex;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    min-height: 300px; /* Change height to min-height */
+}
+
+.room-image {
+    flex: 0 0 400px; /* Fixed width for images */
+    position: relative;
+    overflow: hidden;
+}
+
+.main-room-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.room-thumbnails {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.room-thumbnails img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.more-photos {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+.room-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem;
+    overflow: visible; /* Change from auto to visible */
+}
+
+.room-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.room-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    justify-content: space-between; /* This will help distribute content evenly */
+}
+
+.room-subtitle {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin-bottom: 1rem;
+}
+
+.room-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.room-availability {
+    color: #ef4444;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.room-price {
+    margin-bottom: 1rem;
+}
+
+.price-tag {
+    display: inline-block;
+    background-color: #fee2e2;
+    color: #ef4444;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.price-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ef4444;
+}
+
+.price-info {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.points-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin-top: 0.5rem;
+}
+
+.points-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #3b82f6;
+    border-radius: 50%;
+}
+
+.book-button {
+    width: 100%;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.book-button:hover {
+    background-color: #0056b3;
+}
+
+/* Popup Styles */
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 1000px;
+    border-radius: 0.5rem;
+    position: relative;
+}
+
+.close-popup {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-popup:hover,
+.close-popup:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.popup-images {
+    margin-bottom: 1rem;
+}
+
+.popup-main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.popup-thumbnails {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.popup-thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.popup-thumbnail:hover {
+    opacity: 0.8;
+}
+
+.popup-details {
+    padding: 1rem 0;
+}
+
+.popup-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.popup-subtitle {
+    font-size: 1rem;
+    color: var(--muted-foreground);
+    margin-bottom: 1rem;
+}
+
+.popup-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.popup-price {
+    margin-bottom: 1rem;
+}
+
+.policy-section {
+    padding: 2rem 0;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.policy-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.policy-row {
+    display: flex;
+    gap: 2rem;
+}
+
+.policy-left {
+    flex: 0 0 200px;
+}
+
+.policy-right {
+    flex: 1;
+}
+
+.policy-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.policy-header i {
+    width: 20px;
+    height: 20px;
+}
+
+.policy-header h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.policy-item {
+    margin-bottom: 1rem;
+}
+
+.check-times {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.check-time {
+    display: flex;
+    flex-direction: column;
+}
+
+.check-time .label {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+.check-time .time {
+    font-weight: 600;
+}
+
+.read-more {
+    color: #0070f3;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.875rem;
+    cursor: pointer;
+    margin: 0.5rem 0;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.note {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin-top: 0.5rem;
+}
+
+.other-policies {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.policy-detail h4 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.policy-detail p {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    margin-bottom: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .photo-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .main-image {
+        height: 300px;
+        grid-row: auto;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 100px);
+    }
+
+    .view-all,
+    .gallery-grid > * {
+        height: 100px;
+    }
+
+    .property-details {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .details-right {
+        text-align: left;
+        margin-top: 1rem;
+    }
+
+    /* Pricing sticky di bawah */
+    .pricing {
+        position: fixed; /* Sticky di bawah */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--background);
+        padding: 0.75rem 1rem;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        display: flex; /* Aktifkan Flexbox */
+        justify-content: space-between; /* Pisahkan kiri dan kanan */
+        align-items: center; /* Rata vertikal tengah */
+        z-index: 1000;
+    }
+
+    /* Detail harga (kiri) */
+    .pricing .price-details {
+        text-align: left; /* Konten rata kiri */
+        flex: 1; /* Isi ruang yang tersedia */
+    }
+
+    /* Tombol lihat kamar (kanan) */
+    .pricing .view-rooms-button {
+        width: auto; /* Ukuran tombol sesuai konten */
+        margin-top: 0; /* Hilangkan margin jika ada */
+        white-space: nowrap; /* Hindari tombol terpotong */
+    }
+
+    .details-left {
+        max-width: 100%;
+    }
+
+    .room-card {
+        flex-direction: column;
+        height: auto; /* Remove fixed height on mobile */
+        max-height: none; /* Allow content to expand */
+    }
+
+    .room-image {
+        flex: 0 0 200px; /* Smaller fixed height for image on mobile */
+        width: 100%; /* Full width */
+    }
+
+    .room-info {
+        padding: 1rem;
+    }
+
+    .room-features {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+        gap: 0.75rem;
+    }
+
+    .feature {
+        font-size: 0.875rem; /* Slightly smaller text */
+    }
+
+    .room-price {
+        margin: 1rem 0;
+    }
+
+    .book-button {
+        width: 100%;
+    }
+
+    .main-room-image {
+        height: 200px;
+    }
+
+    .room-thumbnails {
+        justify-content: center;
+    }
+
+    .room-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .policy-container {
+        flex-direction: column;
+    }
+
+    .check-times {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .policy-row {
+        flex-direction: column;
+    }
+
+    .policy-left {
+        flex: 0 0 auto;
+    }
+
+    .check-times {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
