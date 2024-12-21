@@ -268,6 +268,133 @@ if (!$data) {
                 grid-template-rows: 1fr;
             }
         }
+
+    .review-section {
+        max-width: 100%;
+        margin: 40px 0;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .review-title {
+        font-size: 24px;
+        color: #333;
+    }
+
+    .review-summary {
+        display: flex;
+        align-items: center;
+    }
+
+    .review-average {
+        font-size: 48px;
+        font-weight: bold;
+        color: #1e90ff;
+        margin-right: 10px;
+    }
+
+    .review-stars {
+        color: #ffd700;
+        font-size: 24px;
+    }
+
+    .review-count {
+        color: #666;
+        margin-left: 10px;
+    }
+
+    .review-list {
+        display: grid;
+        gap: 20px;
+    }
+
+    .review-item {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        transition: transform 0.3s ease;
+    }
+
+    .review-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .review-item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .reviewer-name {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .review-date {
+        color: #999;
+        font-size: 0.9em;
+    }
+
+    .review-rating {
+        color: #ffd700;
+    }
+
+    .review-text {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .review-photos {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .review-photo {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .show-more-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #1e90ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .show-more-btn:hover {
+        background-color: #1a7ae8;
+    }
+
+    @media (max-width: 768px) {
+        .review-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .review-summary {
+            margin-top: 10px;
+        }
+    }
     </style>
 </head>
 <body>
@@ -435,6 +562,24 @@ if (!$data) {
             </div>
         </div>
     </div>
+
+    
+
+<!-- Add this section where you want the reviews to appear, for example, after the roadmap section -->
+<div class="review-section">
+    <div class="review-header">
+        <h2 class="review-title">Customer Reviews</h2>
+        <div class="review-summary">
+            <span class="review-average">4.7</span>
+            <div class="review-stars">★★★★★</div>
+            <span class="review-count">(1,234 reviews)</span>
+        </div>
+    </div>
+    <div class="review-list" id="reviewList">
+        <!-- Review items will be dynamically added here -->
+    </div>
+    <button class="show-more-btn" id="showMoreBtn">Show More Reviews</button>
+</div>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
@@ -611,6 +756,78 @@ if (!$data) {
                 });
             });
         });
+
+        const reviews = [
+        {
+            name: "John D.",
+            date: "August 2023",
+            rating: 5,
+            text: "Amazing experience! The tour was well-organized and our guide was knowledgeable. Borobudur at sunrise was breathtaking.",
+            photos: ["../img/prambanan.jpg", "../img/borobudur.jpg"]
+        },
+        {
+            name: "Sarah M.",
+            date: "July 2023",
+            rating: 4,
+            text: "Great tour overall. Loved the Prambanan temples. Wish we had a bit more time at each stop.",
+            photos: ["/placeholder.svg?height=80&width=80"]
+        },
+        {
+            name: "Akira T.",
+            date: "June 2023",
+            rating: 5,
+            text: "Unforgettable journey through Java's cultural heritage. The sunrise at Borobudur was magical!",
+            photos: []
+        },
+        {
+            name: "Emma L.",
+            date: "May 2023",
+            rating: 4,
+            text: "Excellent tour with a good mix of history and natural beauty. The Merapi volcano tour was a highlight.",
+            photos: ["/placeholder.svg?height=80&width=80", "/placeholder.svg?height=80&width=80", "/placeholder.svg?height=80&width=80"]
+        }
+    ];
+
+    function createReviewItem(review) {
+        const reviewItem = document.createElement('div');
+        reviewItem.className = 'review-item';
+        reviewItem.innerHTML = `
+            <div class="review-item-header">
+                <span class="reviewer-name">${review.name}</span>
+                <span class="review-date">${review.date}</span>
+            </div>
+            <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+            <p class="review-text">${review.text}</p>
+            ${review.photos.length > 0 ? `
+                <div class="review-photos">
+                    ${review.photos.map(photo => `<img src="${photo}" alt="Review photo" class="review-photo">`).join('')}
+                </div>
+            ` : ''}
+        `;
+        return reviewItem;
+    }
+
+    function loadReviews(start = 0, count = 2) {
+        const reviewList = document.getElementById('reviewList');
+        for (let i = start; i < start + count && i < reviews.length; i++) {
+            reviewList.appendChild(createReviewItem(reviews[i]));
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadReviews();
+
+        const showMoreBtn = document.getElementById('showMoreBtn');
+        let currentCount = 2;
+
+        showMoreBtn.addEventListener('click', () => {
+            loadReviews(currentCount, 2);
+            currentCount += 2;
+            if (currentCount >= reviews.length) {
+                showMoreBtn.style.display = 'none';
+            }
+        });
+    });
     </script>
 </body>
 </html>
