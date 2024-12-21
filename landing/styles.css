@@ -435,6 +435,7 @@ body {
     margin-bottom: 12px;
     color: #222;
     line-height: 1.4;
+    align-items: left;
 }
 
 .listing-meta {
