@@ -6,41 +6,67 @@ function getAttractions($trip_type = null, $budget = null, $interests = [], $sea
     global $db;
     $attractions = array();
 
-    $query = "SELECT ta.id, ta.name, ta.description, ta.image_url, ta.rating, ta.category, 
+    $query = "SELECT DISTINCT ta.id, ta.name, ta.description, ta.image_url, ta.rating, ta.category, 
               ta.latitude, ta.longitude, ta.address, ta.opening_time, ta.closing_time
               FROM tourist_attractions ta
               LEFT JOIN attraction_categories ac ON ta.id = ac.attraction_id
               LEFT JOIN trip_categories tc ON ac.trip_category_id = tc.id
               WHERE 1=1";
 
-    // Filter berdasarkan pencarian
+    $params = array();
+    $types = "";
+
+    // Filter based on search
     if ($search) {
-        $search = mysqli_real_escape_string($db, $search);
-        $query .= " AND (ta.name LIKE '%$search%' OR ta.description LIKE '%$search%')";
+        $query .= " AND (ta.name LIKE ? OR ta.description LIKE ?)";
+        $searchParam = "%$search%";
+        $params[] = $searchParam;
+        $params[] = $searchParam;
+        $types .= "ss";
     }
 
-    // Filter berdasarkan kategori
+    // Filter based on category
     if ($category && $category !== 'all') {
-        $category = mysqli_real_escape_string($db, $category);
-        $query .= " AND ta.category = '$category'";
+        $query .= " AND ta.category = ?";
+        $params[] = $category;
+        $types .= "s";
     }
 
     // Filter existing
     if ($trip_type) {
-        $query .= " AND tc.trip_type = '$trip_type'";
+        $query .= " AND tc.trip_type = ?";
+        $params[] = $trip_type;
+        $types .= "s";
     }
     if ($budget) {
-        $query .= " AND tc.budget_range = '$budget'";
+        $query .= " AND tc.budget_range = ?";
+        $params[] = $budget;
+        $types .= "s";
     }
     if (!empty($interests)) {
-        $interests_str = implode("','", array_map('mysqli_real_escape_string', array_fill(0, count($interests), $db), $interests));
-        $query .= " AND ta.category IN ('$interests_str')";        
+        $placeholders = implode(',', array_fill(0, count($interests), '?'));
+        $query .= " AND ta.category IN ($placeholders)";
+        $params = array_merge($params, $interests);
+        $types .= str_repeat("s", count($interests));
     }
 
-    // Tambahkan GROUP BY untuk menghindari duplikasi
-    $query .= " GROUP BY ta.id";
+    $stmt = mysqli_prepare($db, $query);
+    if ($stmt === false) {
+        error_log("Prepare failed: " . mysqli_error($db));
+        return false;
+    }
 
-    $result = mysqli_query($db, $query);
+    if (!empty($params)) {
+        mysqli_stmt_bind_param($stmt, $types, ...$params);
+    }
+
+    if (!mysqli_stmt_execute($stmt)) {
+        error_log("Execute failed: " . mysqli_stmt_error($stmt));
+        mysqli_stmt_close($stmt);
+        return false;
+    }
+
+    $result = mysqli_stmt_get_result($stmt);
 
     if ($result) {
         while ($row = mysqli_fetch_assoc($result)) {
@@ -60,26 +86,26 @@ function getAttractions($trip_type = null, $budget = null, $interests = [], $sea
         }
         mysqli_free_result($result);
     } else {
-        // Log error ke file atau sistem log
-        error_log("MySQL Error: " . mysqli_error($db));
+        error_log("Result error: " . mysqli_stmt_error($stmt));
+        mysqli_stmt_close($stmt);
         return false;
     }
 
+    mysqli_stmt_close($stmt);
     return $attractions;
 }
 
-// Handle AJAX request untuk sidebar
-if(isset($_GET['ajax'])) {
+// Handle AJAX request for sidebar
+if (isset($_GET['ajax'])) {
     header('Content-Type: application/json');
     $search = isset($_GET['search']) ? $_GET['search'] : null;
     $category = isset($_GET['category']) ? $_GET['category'] : null;
     $attractions = getAttractions(null, null, [], $search, $category);
     
     if ($attractions === false) {
-        // Jika terjadi error, kirim respons error
-        echo json_encode(['error' => 'Terjadi kesalahan saat mengambil data.']);
+        http_response_code(500);
+        echo json_encode(['error' => 'An error occurred while fetching data.']);
     } else {
-        // Jika berhasil, kirim data atraksi
         echo json_encode($attractions);
     }
     exit;

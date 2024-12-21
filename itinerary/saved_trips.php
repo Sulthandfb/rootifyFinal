@@ -1,22 +1,43 @@
 <?php
 session_start();
-include 'get_saved_trips.php';
+include "../filter_wisata/db_connect.php";
 
-// Redirect jika pengguna belum login
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
+    header("Location: ../login/login.php");
+    exit();
 }
 
-$trips = getSavedTrips();
-
-// Fungsi untuk menghitung durasi perjalanan
-function calculateDuration($start_date, $end_date) {
-    $start = new DateTime($start_date);
-    $end = new DateTime($end_date);
-    $interval = $start->diff($end);
-    return $interval->days + 1;
+// Handle trip name update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_trip_name'])) {
+    $trip_id = $_POST['trip_id'];
+    $new_name = $_POST['new_trip_name'];
+    
+    $update_query = "UPDATE itineraries SET trip_name = ? WHERE id = ? AND user_id = ?";
+    $update_stmt = mysqli_prepare($db, $update_query);
+    mysqli_stmt_bind_param($update_stmt, "sii", $new_name, $trip_id, $_SESSION['user_id']);
+    
+    if (mysqli_stmt_execute($update_stmt)) {
+        header("Location: saved_trips.php");
+        exit();
+    }
 }
+
+// Fetch user's saved itineraries
+$user_id = $_SESSION['user_id'];
+$query = "SELECT i.*, 
+          COUNT(DISTINCT ia.day) as total_days,
+          COUNT(DISTINCT ia.attraction_id) as total_attractions
+          FROM itineraries i
+          LEFT JOIN itinerary_attractions ia ON i.id = ia.itinerary_id
+          WHERE i.user_id = ?
+          GROUP BY i.id
+          ORDER BY i.created_at DESC";
+
+$stmt = mysqli_prepare($db, $query);
+mysqli_stmt_bind_param($stmt, "i", $user_id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 ?>
 
 <!DOCTYPE html>
@@ -24,72 +45,50 @@ function calculateDuration($start_date, $end_date) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Saved Trips</title>
+    <title>My Saved Trips - Rootify</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
     <style>
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
 
-.container {
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 2rem;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
         }
 
-        .button-container {
-            display: flex;
-            gap: 20px;
-        }
-
-        .create-trip-btn {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            text-decoration: none;
-            color: black;
-        }
-
-        .ai-trip-btn {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-            text-decoration: none;
-            color: black;
-        }
-
-        .sort-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
+        .header h1 {
+            font-size: 2rem;
+            color: #333;
         }
 
         .trips-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 2rem;
         }
 
         .trip-card {
-            border: 1px solid #ddd;
-            border-radius: 12px;
+            background: white;
+            border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
 
         .trip-card:hover {
@@ -103,31 +102,182 @@ function calculateDuration($start_date, $end_date) {
         }
 
         .trip-content {
-            padding: 15px;
+            padding: 1.5rem;
         }
 
         .trip-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
         }
 
         .trip-details {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .trip-stats {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            gap: 1rem;
+            margin-bottom: 1rem;
             color: #666;
             font-size: 0.9rem;
         }
 
-        .current-trip-badge {
+        .trip-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .trip-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-btn {
+            padding: 0.5rem 1rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .view-btn:hover {
+            background-color: #555;
+        }
+
+        .create-btn {
+            padding: 0.75rem 1.5rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .create-btn:hover {
+            background-color: #555;
+        }
+
+        .no-trips {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: white;
-            padding: 5px 10px;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .dropdown-content button {
+            width: 100%;
+            padding: 12px 16px;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #f5f5f5;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
             border-radius: 15px;
-            font-size: 0.8rem;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .modal-form input {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .modal-form button {
+            padding: 0.75rem;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .modal-form button:hover {
+            background-color: #555;
         }
     </style>
 </head>
@@ -135,66 +285,121 @@ function calculateDuration($start_date, $end_date) {
     <div class="container">
         <div class="header">
             <h1>My Trips</h1>
-            <div class="button-container">
-                <a href="create-trip.php" class="create-trip-btn">
-                    <span>+</span>
-                    <span>Create a new trip</span>
-                </a>
-                <a href="ai-trip.php" class="ai-trip-btn">
-                    <span>🤖</span>
-                    <span>Build a trip with AI</span>
-                </a>
-            </div>
-        </div>
-
-        <div class="sort-container">
-            <select id="sortTrips" onchange="sortTrips(this.value)">
-                <option value="date">Sort by: Trip start date</option>
-                <option value="name">Sort by: Trip name</option>
-                <option value="duration">Sort by: Duration</option>
-            </select>
+            <a href="itinerary.php" class="create-btn">
+                <i class="ri-add-line"></i>
+                Create New Trip
+            </a>
         </div>
 
         <div class="trips-grid">
-            <?php foreach ($trips as $trip): ?>
-                <a href="view-trip.php?id=<?php echo $trip['id']; ?>" class="trip-card">
-                    <div style="position: relative;">
-                        <img 
-                            src="<?php echo $trip['attraction_images'][0] ?? 'default-trip-image.jpg'; ?>" 
-                            alt="<?php echo htmlspecialchars($trip['trip_name']); ?>"
-                            class="trip-image"
-                        >
-                        <?php if (strtotime($trip['start_date']) <= time() && strtotime($trip['end_date']) >= time()): ?>
-                            <div class="current-trip-badge">Current Trip</div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="trip-content">
-                        <div class="trip-title">
-                            <?php 
-                            $duration = calculateDuration($trip['start_date'], $trip['end_date']);
-                            echo htmlspecialchars($trip['trip_name']) . " for " . $duration . " days";
-                            ?>
+            <?php if (mysqli_num_rows($result) > 0): ?>
+                <?php while ($trip = mysqli_fetch_assoc($result)): ?>
+                    <div class="trip-card">
+                        <img src="../img/yogyakarta.jpg" alt="Trip thumbnail" class="trip-image">
+                        <div class="trip-content">
+                            <h2 class="trip-title"><?php echo htmlspecialchars($trip['trip_name']); ?></h2>
+                            <div class="trip-details">
+                                <p><?php echo date('M d', strtotime($trip['start_date'])) . ' - ' . date('M d, Y', strtotime($trip['end_date'])); ?></p>
+                                <p><?php echo ucfirst($trip['trip_type']); ?> Trip • <?php echo ucfirst($trip['budget']); ?> Budget</p>
+                            </div>
+                            <div class="trip-stats">
+                                <div class="trip-stat">
+                                    <i class="ri-calendar-line"></i>
+                                    <span><?php echo $trip['total_days']; ?> Days</span>
+                                </div>
+                                <div class="trip-stat">
+                                    <i class="ri-map-pin-line"></i>
+                                    <span><?php echo $trip['total_attractions']; ?> Places</span>
+                                </div>
+                            </div>
+                            <div class="trip-actions">
+                                <a href="view_itinerary.php?id=<?php echo $trip['id']; ?>" class="view-btn">View Trip</a>
+                                <div class="dropdown">
+                                    <i class="ri-more-2-fill" style="color: #666; cursor: pointer;" onclick="toggleDropdown(<?php echo $trip['id']; ?>)"></i>
+                                    <div class="dropdown-content" id="dropdown-<?php echo $trip['id']; ?>">
+                                        <button onclick="openEditModal(<?php echo $trip['id']; ?>, '<?php echo htmlspecialchars($trip['trip_name']); ?>')">
+                                            <i class="ri-edit-line"></i>
+                                            Edit Trip Name
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="trip-details">
-                            <span>
-                                <?php 
-                                echo date('M d', strtotime($trip['start_date'])) . ' → ' . 
-                                     date('M d, Y', strtotime($trip['end_date']));
-                                ?>
-                            </span>
-                        </div>
                     </div>
-                </a>
-            <?php endforeach; ?>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <div class="no-trips">
+                    <h2>No trips found</h2>
+                    <p>Start planning your first adventure!</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Edit Trip Name Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Trip Name</h3>
+                <button class="close-modal" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form class="modal-form" method="POST">
+                <input type="hidden" name="trip_id" id="editTripId">
+                <input type="hidden" name="update_trip_name" value="1">
+                <input type="text" name="new_trip_name" id="editTripName" placeholder="Enter new trip name" required>
+                <button type="submit">Save Changes</button>
+            </form>
         </div>
     </div>
 
     <script>
-        function sortTrips(criteria) {
-            // Implementasi pengurutan sisi klien atau muat ulang halaman dengan parameter pengurutan baru
-            const currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.set('sort', criteria);
-            window.location.href = currentUrl.toString();
+        // Toggle dropdown menu
+        function toggleDropdown(tripId) {
+            const dropdown = document.getElementById(`dropdown-${tripId}`);
+            const allDropdowns = document.querySelectorAll('.dropdown-content');
+            
+            // Close all other dropdowns
+            allDropdowns.forEach(d => {
+                if (d.id !== `dropdown-${tripId}`) {
+                    d.style.display = 'none';
+                }
+            });
+
+            // Toggle current dropdown
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.matches('.ri-more-2-fill')) {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                dropdowns.forEach(d => d.style.display = 'none');
+            }
+        });
+
+        // Modal functions
+        function openEditModal(tripId, currentName) {
+            const modal = document.getElementById('editModal');
+            const tripIdInput = document.getElementById('editTripId');
+            const tripNameInput = document.getElementById('editTripName');
+            
+            tripIdInput.value = tripId;
+            tripNameInput.value = currentName;
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
         }
     </script>
 </body>

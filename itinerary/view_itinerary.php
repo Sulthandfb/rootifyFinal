@@ -2,56 +2,21 @@
 session_start();
 include "../filter_wisata/db_connect.php";
 
-// Process form data
-$start_date = isset($_POST['startDate']) ? $_POST['startDate'] : '';
-$end_date = isset($_POST['endDate']) ? $_POST['endDate'] : '';
-$trip_type = isset($_POST['tripType']) ? $_POST['tripType'] : '';
-$budget = isset($_POST['budget']) ? $_POST['budget'] : '';
-$interests = isset($_POST['interests']) ? $_POST['interests'] : [];
-
-// Ensure user is logged in
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    die("User not logged in");
+    header("Location: ../login/login.php");
+    exit();
 }
 
-$user_id = $_SESSION['user_id'];
+// Get itinerary ID from URL
+$itinerary_id = isset($_GET['id']) ? $_GET['id'] : null;
 
-// Create new itinerary
-$trip_name = "Trip to Yogyakarta"; // You might want to allow users to set this
-$query = "INSERT INTO itineraries (user_id, trip_name, start_date, end_date, trip_type, budget) 
-          VALUES (?, ?, ?, ?, ?, ?)";
-$stmt = mysqli_prepare($db, $query);
-mysqli_stmt_bind_param($stmt, "isssss", $user_id, $trip_name, $start_date, $end_date, $trip_type, $budget);
-mysqli_stmt_execute($stmt);
-
-$itinerary_id = mysqli_insert_id($db);
-
-// Calculate total days
-$total_days = round((strtotime($end_date) - strtotime($start_date)) / (60 * 60 * 24)) + 1;
-
-// Add initial attractions
-for ($day = 1; $day <= $total_days; $day++) {
-    $query = "SELECT id FROM tourist_attractions 
-              WHERE category IN (" . implode(',', array_fill(0, count($interests), '?')) . ")
-              ORDER BY RAND() LIMIT 4";
-    $stmt = mysqli_prepare($db, $query);
-    mysqli_stmt_bind_param($stmt, str_repeat('s', count($interests)), ...$interests);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    $order = 0;
-    while ($row = mysqli_fetch_assoc($result)) {
-        $attraction_id = $row['id'];
-        $insert_query = "INSERT INTO itinerary_attractions (itinerary_id, attraction_id, day, display_order) 
-                         VALUES (?, ?, ?, ?)";
-        $insert_stmt = mysqli_prepare($db, $insert_query);
-        mysqli_stmt_bind_param($insert_stmt, "iiii", $itinerary_id, $attraction_id, $day, $order);
-        mysqli_stmt_execute($insert_stmt);
-        $order++;
-    }
+if (!$itinerary_id) {
+    header("Location: saved_trips.php");
+    exit();
 }
 
-// Fetch itinerary details
+// Fetch itinerary details and attractions
 $query = "SELECT i.*, 
           ia.day,
           ia.display_order,
@@ -69,11 +34,11 @@ $query = "SELECT i.*,
           FROM itineraries i
           LEFT JOIN itinerary_attractions ia ON i.id = ia.itinerary_id
           LEFT JOIN tourist_attractions ta ON ia.attraction_id = ta.id
-          WHERE i.id = ?
+          WHERE i.id = ? AND i.user_id = ?
           ORDER BY ia.day, ia.display_order";
 
 $stmt = mysqli_prepare($db, $query);
-mysqli_stmt_bind_param($stmt, "i", $itinerary_id);
+mysqli_stmt_bind_param($stmt, "ii", $itinerary_id, $_SESSION['user_id']);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
@@ -108,10 +73,13 @@ while ($row = mysqli_fetch_assoc($result)) {
     }
 }
 
+// Calculate total days
+$total_days = round((strtotime($trip_details['end_date']) - strtotime($trip_details['start_date'])) / (60 * 60 * 24)) + 1;
+
 // Generate dates for each day
 $day_dates = array();
 for ($i = 0; $i < $total_days; $i++) {
-    $day_dates[] = date('F j', strtotime($start_date . " + $i days"));
+    $day_dates[] = date('F j', strtotime($trip_details['start_date'] . " + $i days"));
 }
 
 // Helper function for category icons
@@ -128,7 +96,6 @@ function getCategoryIcon($category) {
     ];
     return isset($icons[strtolower($category)]) ? $icons[strtolower($category)] : '../icons/leaves.svg';
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -136,11 +103,12 @@ function getCategoryIcon($category) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trip Recommendations</title>
+    <title><?php echo htmlspecialchars($trip_details['trip_name']); ?> - Rootify</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
     <link rel="stylesheet" href="itinerary-planning.css">
     <style>
-        .day-section {
+         .day-section {
             margin-bottom: 1rem;
             border: 1px solid var(--border);
             border-radius: 0.5rem;
@@ -438,10 +406,13 @@ function getCategoryIcon($category) {
                     <div class="header-details">
                         <span><?php echo date('M d', strtotime($trip_details['start_date'])) . ' - ' . date('M d, Y', strtotime($trip_details['end_date'])); ?></span>
                         <span>•</span>
-                        <span>Yogyakarta</span>
+                        <span><?php echo ucfirst($trip_details['trip_type']); ?> Trip</span>
+                        <span>•</span>
+                        <span><?php echo ucfirst($trip_details['budget']); ?> Budget</span>
                     </div>
                 </div>
             </header>
+
             <div class="content">
                 <?php for ($day = 1; $day <= $total_days; $day++): ?>
                     <div class="day-section">
@@ -495,25 +466,18 @@ function getCategoryIcon($category) {
                 <?php endfor; ?>
             </div>
         </div>
+        
         <div class="map-container">
             <div id="map"></div>
         </div>
     </div>
-    
+
     <div id="attractionSidebar" class="sidebar">
         <!-- Sidebar content will be dynamically populated -->
     </div>
 
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Toggle day content
-        function toggleDay(dayIndex) {
-            const content = document.getElementById(`day-${dayIndex}`);
-            const arrow = document.getElementById(`arrow-${dayIndex}`);
-            content.classList.toggle('open');
-            arrow.classList.toggle('open');
-        }
-
         // Initialize map
         const map = L.map('map').setView([-7.7956, 110.3695], 12);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -521,7 +485,7 @@ function getCategoryIcon($category) {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Add markers for each attraction
+        // Add markers for existing attractions
         <?php foreach ($daily_attractions as $day => $attractions): ?>
             <?php foreach ($attractions as $attraction): ?>
                 L.marker([
@@ -532,7 +496,15 @@ function getCategoryIcon($category) {
             <?php endforeach; ?>
         <?php endforeach; ?>
 
-        // Function to open category selector with proper event listeners
+        // Your existing JavaScript functions (toggleDay, openCategorySelector, etc.)
+        function toggleDay(dayIndex) {
+            const content = document.getElementById(`day-${dayIndex}`);
+            const arrow = document.getElementById(`arrow-${dayIndex}`);
+            content.classList.toggle('open');
+            arrow.classList.toggle('open');
+        }
+
+        // Include the rest of your JavaScript functions here
         function openCategorySelector(day) {
             const sidebar = document.getElementById('attractionSidebar');
             sidebar.innerHTML = `
@@ -555,26 +527,8 @@ function getCategoryIcon($category) {
                 <div id="attractionsList" class="attractions-list"></div>
             `;
             
-            // Add event listeners for category buttons
-            const categoryButtons = sidebar.querySelectorAll('.category-btn');
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Remove active class from all buttons
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    // Add active class to clicked button
-                    this.classList.add('active');
-                    
-                    // Get search term and selected category
-                    const searchTerm = document.getElementById('searchAttraction').value;
-                    const selectedCategory = this.dataset.category;
-                    
-                    // Fetch attractions with updated filters
-                    fetchAttractions(day, searchTerm, selectedCategory);
-                });
-            });
-            
             sidebar.classList.add('open');
-            // Initial fetch of all attractions
+            window.currentDay = day;
             fetchAttractions(day);
         }
 
