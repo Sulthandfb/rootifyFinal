@@ -45,7 +45,7 @@ include "db_connect.php"; // Pastikan file db_connect.php berada di direktori ya
         <div class="nav-container">
             <ul class="secondary-nav-links">
                 <li><a href="/homepage/yusuf.html" class="secondary-nav-link">Home</a></li>
-                <li><a href="/akomodasi/akomodasi.html" class="secondary-nav-link active">Akomodasi</a></li>
+                <li><a href="/akomodasi/hotels-search.php" class="secondary-nav-link active">Akomodasi</a></li>
                 <li><a href="#" class="secondary-nav-link">Filter</a></li>
                 <li><a href="#" class="secondary-nav-link">Makan</a></li>
                 <li><a href="#" class="secondary-nav-link">Harga</a></li>
