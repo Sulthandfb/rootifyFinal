@@ -16,6 +16,10 @@ $year = date('Y', strtotime($end_date));
 // Get attractions based on user preferences
 $attractions = getAttractions($trip_type, $budget, $interests);
 
+// Get restaurants separately
+$restaurants = getRestaurants();
+shuffle($restaurants);
+
 // Calculate total days
 $total_days = round((strtotime($end_date) - strtotime($start_date)) / (60 * 60 * 24)) + 1;
 
