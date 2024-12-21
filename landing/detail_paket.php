@@ -29,6 +29,7 @@ if (!$data) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $data['nama']; ?> Tour Package</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
         * {
             margin: 0;
@@ -38,11 +39,11 @@ if (!$data) {
         }
 
         body {
-            background-color: #f0f0f0;
+            background-color:rgb(255, 255, 255);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1350px;
             margin: 0 auto;
             padding: 20px;
             background-color: white;
@@ -187,6 +188,65 @@ if (!$data) {
         .rotate {
             transform: rotate(180deg);
             transition: transform 0.3s ease;
+        }
+
+        /* Styles for the map-based itinerary */
+        #map {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #ccc;
+        }
+
+        .location-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .location-card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .location-card::before {
+            content: attr(data-id);
+            position: absolute;
+            left: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .roadmap .trip-road {
+            display: grid;
+            justify-content: flex
         }
 
         @media (max-width: 768px) {
@@ -346,7 +406,7 @@ if (!$data) {
                 </div>
             </div>
 
-            <div class="booking-section">
+            <div class="booking-section"><div class="booking-section">
                 <h3>Booking Information</h3>
                 <p>Address: <?php echo $data['alamat']; ?></p>
                 <p>Opening Hours: <?php echo $data['jam_buka']; ?> - <?php echo $data['jam_tutup']; ?></p>
@@ -365,7 +425,133 @@ if (!$data) {
         </div>
     </div>
 
+    <div class="roadmap">
+        <!-- Map-based Itinerary -->
+        <h2 style="margin-top: 30px;">Tour Itinerary</h2>
+        <div class="trip-road">
+            <div id="map"></div>
+            <div class="timeline" id="timeline">
+            <!-- Timeline items will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
+        const locations = [
+            {
+                id: 1,
+                name: "Punthuk Setumbu",
+                coordinates: [-7.6082, 110.2032],
+                duration: "2 hours",
+                admission: "Included",
+                description: "Witness the breathtaking Borobudur sunrise views. When the air is fresh and as the mist begins to lift the sun will surround the volcanoes and terraced fields.",
+                image: "/placeholder.svg?height=200&width=400"
+            },
+            {
+                id: 2,
+                name: "Borobudur Temple",
+                coordinates: [-7.6079, 110.2038],
+                duration: "2 hours",
+                admission: "Included",
+                description: "Visit the magnificent Borobudur Temple, the world's largest Buddhist temple."
+            },
+            {
+                id: 3,
+                name: "Merapi Volcano",
+                coordinates: [-7.5407, 110.4457],
+                duration: "60 minutes",
+                admission: "Included",
+                description: "Explore the mighty Merapi Volcano and learn about its geological significance."
+            },
+            {
+                id: 4,
+                name: "Prambanan Temples",
+                coordinates: [-7.7520, 110.4915],
+                duration: "2 hours",
+                admission: "Included",
+                description: "Discover the ancient Hindu temples of Prambanan, a UNESCO World Heritage site."
+            }
+        ];
+
+        function createLocationCard(location) {
+            const card = document.createElement('div');
+            card.className = 'location-card';
+            card.setAttribute('data-id', location.id);
+
+            card.innerHTML = `
+                <h2>${location.name}</h2>
+                <p>Stop: ${location.duration} - Admission ${location.admission}</p>
+                ${location.image ? `<img src="${location.image}" alt="${location.name}">` : ''}
+                <p>${location.description}</p>
+                <button class="details-button">See details & photo</button>
+            `;
+
+            return card;
+        }
+
+        function initializeTimeline() {
+            const timeline = document.getElementById('timeline');
+            locations.forEach(location => {
+                const card = createLocationCard(location);
+                timeline.appendChild(card);
+            });
+        }
+
+        function initializeMap() {
+            const map = L.map('map').setView([-7.6079, 110.2038], 11);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            locations.forEach(location => {
+                L.marker(location.coordinates)
+                    .addTo(map)
+                    .bindPopup(`<b>${location.name}</b><br>${location.duration}`);
+            });
+
+            return map;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeTimeline();
+            const map = initializeMap();
+
+            // Add hover effect to highlight corresponding map marker
+            const timeline = document.getElementById('timeline');
+            timeline.addEventListener('mouseover', (e) => {
+                const card = e.target.closest('.location-card');
+                if (card) {
+                    const locationId = parseInt(card.getAttribute('data-id'));
+                    const location = locations.find(loc => loc.id === locationId);
+                    if (location) {
+                        const latLng = L.latLng(location.coordinates);
+                        const marker = findMarkerByLatLng(map, latLng);
+                        if (marker) {
+                            marker.openPopup();
+                        }
+                    }
+                }
+            });
+
+            timeline.addEventListener('mouseout', () => {
+                map.closePopup();
+            });
+        });
+
+        function findMarkerByLatLng(map, latLng) {
+            let foundMarker = null;
+            map.eachLayer((layer) => {
+                if (layer instanceof L.Marker) {
+                    if (layer.getLatLng().equals(latLng)) {
+                        foundMarker = layer;
+                    }
+                }
+            });
+            return foundMarker;
+        }
+
         // Calendar functionality
         const calendar = document.getElementById('calendar');
         const months = ['Dec'];
@@ -406,8 +592,6 @@ if (!$data) {
                     ? 'rotate(180deg)' 
                     : 'rotate(0deg)';
             });
-            // Set transition for smooth animation
-            content.style.transition = 'all 0.3s ease-out';
         });
 
         // Optional: Automatically close other sections when one is opened
@@ -430,3 +614,4 @@ if (!$data) {
     </script>
 </body>
 </html>
+

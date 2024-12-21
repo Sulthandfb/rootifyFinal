@@ -148,7 +148,7 @@
     <div class="listings">
         <div class="listing-card">
             <div class="image-container">
-                <img src="/api/placeholder/400/320" alt="Westrift Kretya home" class="listing-image">
+                <img src="../img/klotok.jpg" alt="Westrift Kretya home" class="listing-image">
                 <button class="favorite-btn">♡</button>
                 <div class="carousel-dots">
                     <div class="dot active"></div>
@@ -157,14 +157,14 @@
                 </div>
             </div>
             <div class="listing-content">
-                <h2 class="listing-title">Westrift Kretya home living manhattan, Autography Collection</h2>
+                <h2 class="listing-title">Paket Hemat</h2>
                 <div class="listing-meta">
                     <span>⭐ 4.5 Rating</span>
                     <span>Bekasi</span>
                     <span>Jul 2-7</span>
                 </div>
                 <div class="price-container">
-                    <div class="price">$140 <span class="price-period">/ Night</span></div>
+                    <div class="price">Rp. 350.000,-<span class="price-period"></span></div>
                     <div class="price-details">Including taxes and fees</div>
                     <div class="button-container">
                         <a href="#" class="view-rooms-btn">View Rooms</a>
@@ -176,7 +176,7 @@
     
         <div class="listing-card">
             <div class="image-container">
-                <img src="/api/placeholder/400/320" alt="Awokewok Suites" class="listing-image">
+                <img src="../img/klotok.jpg" alt="Awokewok Suites" class="listing-image">
                 <button class="favorite-btn">♡</button>
                 <div class="carousel-dots">
                     <div class="dot active"></div>
@@ -185,14 +185,14 @@
                 </div>
             </div>
             <div class="listing-content">
-                <h2 class="listing-title">Awokewok Suites La Maison Jakarta dan Sekitarnya</h2>
+                <h2 class="listing-title">Paket Menuju Indonesia Emas</h2>
                 <div class="listing-meta">
                     <span>⭐ 5.0 Rating</span>
                     <span>Jakarta</span>
                     <span>Jul 2-7</span>
                 </div>
                 <div class="price-container">
-                    <div class="price">$85 <span class="price-period">/ Night</span></div>
+                    <div class="price">Rp. 300.000,- <span class="price-period"></span></div>
                     <div class="price-details">Including taxes and fees</div>
                     <div class="button-container">
                         <a href="#" class="view-rooms-btn">View Rooms</a>
@@ -204,7 +204,7 @@
     
         <div class="listing-card">
             <div class="image-container">
-                <img src="/api/placeholder/400/320" alt="The night of course Residence" class="listing-image">
+                <img src="../img/klotok.jpg" alt="The night of course Residence" class="listing-image">
                 <button class="favorite-btn">♡</button>
                 <div class="carousel-dots">
                     <div class="dot active"></div>
@@ -213,14 +213,14 @@
                 </div>
             </div>
             <div class="listing-content">
-                <h2 class="listing-title">The night of course Residence Lembang</h2>
+                <h2 class="listing-title">Paket Selalu Bahagia</h2>
                 <div class="listing-meta">
                     <span>⭐ 4.5 Rating</span>
                     <span>Lembang</span>
                     <span>Jul 2-7</span>
                 </div>
                 <div class="price-container">
-                    <div class="price">$110 <span class="price-period">/ Night</span></div>
+                    <div class="price">Rp. 450.00,-<span class="price-period"></span></div>
                     <div class="price-details">Including taxes and fees</div>
                     <div class="button-container">
                         <a href="detail_paket.php" class="view-rooms-btn">View Rooms</a>
