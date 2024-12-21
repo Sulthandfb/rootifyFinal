@@ -25,9 +25,6 @@ function getAttractions($trip_type = null, $budget = null, $interests = []) {
         $query .= " AND ta.category IN ('$interests_str')";        
     }
 
-    // Exclude restaurants from the main attractions query
-    $query .= " AND ta.category != 'Restaurant'";
-
     $query .= " GROUP BY ta.id ORDER BY ta.rating DESC";
 
     $result = mysqli_query($db, $query);
@@ -65,48 +62,10 @@ function getRestaurants() {
     $query = "SELECT * FROM tourist_attractions WHERE category = 'Restaurant'";
     $result = mysqli_query($db, $query);
 
-    if ($result) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $restaurants[] = array(
-                'id' => $row['id'],
-                'name' => $row['name'],
-                'description' => $row['description'],
-                'image_url' => $row['image_url'],
-                'rating' => $row['rating'],
-                'category' => $row['category'],
-                'latitude' => $row['latitude'],
-                'longitude' => $row['longitude'],
-                'trip_types' => [],
-                'budget_ranges' => []
-            );
-        }
-        mysqli_free_result($result);
-    } else {
-        echo "Error: " . mysqli_error($db);
+    while ($row = mysqli_fetch_assoc($result)) {
+        $restaurants[] = $row;
     }
 
     shuffle($restaurants);
     return $restaurants;
 }
-
-function getAllAttractions($trip_type = null, $budget = null, $interests = [], $days = 1) {
-    $attractions = getAttractions($trip_type, $budget, $interests);
-    $restaurants = getRestaurants();
-
-    $all_attractions = [];
-    $restaurant_index = 0;
-
-    for ($i = 0; $i < $days; $i++) {
-        $daily_attractions = array_slice($attractions, $i * 4, 4);
-        
-        if ($restaurant_index < count($restaurants)) {
-            $daily_attractions[] = $restaurants[$restaurant_index];
-            $restaurant_index++;
-        }
-
-        $all_attractions = array_merge($all_attractions, $daily_attractions);
-    }
-
-    return $all_attractions;
-}
-
