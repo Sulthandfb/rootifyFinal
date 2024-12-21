@@ -1,170 +1,111 @@
-// Global variables
-let currentDayIndex = 0;
+// itinerary-functions.js
 
-// Show category selection modal
-function showCategoryModal(dayIndex) {
-    console.log('Opening category modal for day:', dayIndex);
-    currentDayIndex = dayIndex;
-    const modal = document.getElementById('categoryModal');
-    if (modal) {
-        modal.style.display = 'flex';
-    } else {
-        console.error('Category modal element not found');
+let currentDayIndex = null;
+let selectedAttractions = [];
+
+// Modal functions
+document.getElementById('saveTripBtn').addEventListener('click', function() {
+    document.getElementById('saveTripModal').style.display = 'flex';
+});
+
+window.addEventListener('click', function(event) {
+    if (event.target === document.getElementById('saveTripModal')) {
+        document.getElementById('saveTripModal').style.display = 'none';
     }
+});
+
+// Day toggle function
+function toggleDay(dayIndex) {
+    const content = document.getElementById(`day-${dayIndex}`);
+    const arrow = document.getElementById(`arrow-${dayIndex}`);
+    content.classList.toggle('open');
+    arrow.classList.toggle('open');
 }
 
-// Close category selection modal
-function closeCategoryModal() {
-    const modal = document.getElementById('categoryModal');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+// Category selector functions
+function openCategorySelector(dayIndex) {
+    currentDayIndex = dayIndex - 1;
+    document.getElementById('categorySelector').classList.add('open');
 }
 
-// Show attraction sidebar for selected category
-function showAttractionSidebar(category) {
-    console.log('Showing attractions for category:', category);
-    closeCategoryModal();
-    
-    const sidebar = document.getElementById('attractionSidebar');
-    if (sidebar) {
-        sidebar.classList.add('open');
-        loadAttractionsByCategory(category);
-    } else {
-        console.error('Attraction sidebar element not found');
-    }
+function closeCategorySelector() {
+    document.getElementById('categorySelector').classList.remove('open');
 }
 
-// Close attraction sidebar
-function closeAttractionSidebar() {
-    const sidebar = document.getElementById('attractionSidebar');
-    if (sidebar) {
-        sidebar.classList.remove('open');
-    }
-}
-
-// Fetch attractions by category
-function loadAttractionsByCategory(category) {
-    console.log('Fetching attractions for category:', category);
-    
-    fetch(`get_attractions_by_category.php?category=${encodeURIComponent(category)}`)
+function showAttractions(category) {
+    fetch(`get_attractions_by_category.php?category=${category}`)
         .then(response => response.json())
-        .then(data => {
-            console.log('Received data:', data);
-            displayAttractions(data);
-        })
-        .catch(error => {
-            console.error('Error fetching attractions:', error);
+        .then(attractions => {
+            const attractionsList = document.getElementById('attractionsList');
+            attractionsList.innerHTML = attractions.map(attraction => `
+                <div class="attraction-item" onclick="toggleAttractionSelection(this, ${JSON.stringify(attraction)})">
+                    <h3>${attraction.name}</h3>
+                    <div class="rating">Rating: ${attraction.rating}</div>
+                    <p>${attraction.description}</p>
+                </div>
+            `).join('');
+            
+            document.getElementById('categorySelector').classList.remove('open');
+            document.getElementById('attractionSidebar').classList.add('open');
         });
 }
 
-// Display attractions in sidebar
-function displayAttractions(attractions) {
-    const sidebarContent = document.querySelector('.sidebar-content');
-    if (!sidebarContent) {
-        console.error('Sidebar content element not found');
-        return;
-    }
-
-    console.log('Displaying attractions:', attractions);
-
-    if (Array.isArray(attractions)) {
-        sidebarContent.innerHTML = attractions.map(attraction => `
-            <div class="attraction-card" onclick="addAttractionToDay(${currentDayIndex}, ${attraction.id})">
-                <img src="${attraction.image_url}" alt="${attraction.name}" onerror="this.src='../img/default.jpg'">
-                <div class="attraction-card-content">
-                    <h3>${attraction.name}</h3>
-                    <div class="card-rating">
-                        ${generateRatingStars(attraction.rating)}
-                        <span>${attraction.rating}</span>
-                    </div>
-                    <div class="card-category">
-                        <img src="${getCategoryIcon(attraction.category)}" alt="${attraction.category}" class="category-icon">
-                        <span>${attraction.category}</span>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+// Attraction selection functions
+function toggleAttractionSelection(element, attraction) {
+    element.classList.toggle('selected');
+    const index = selectedAttractions.findIndex(a => a.id === attraction.id);
+    
+    if (index === -1) {
+        selectedAttractions.push(attraction);
     } else {
-        console.error('Received invalid attractions data:', attractions);
-        sidebarContent.innerHTML = '<p>Error loading attractions</p>';
+        selectedAttractions.splice(index, 1);
     }
 }
 
-// Add attraction to selected day
-async function addAttractionToDay(dayIndex, attractionId) {
-    try {
-        console.log('Adding attraction:', attractionId, 'to day:', dayIndex);
-        
-        const response = await fetch(`get_attraction_details.php?id=${attractionId}`);
-        const attraction = await response.json();
-        
-        const dayContent = document.getElementById(`day-${dayIndex}`);
-        if (!dayContent) {
-            console.error('Day content element not found');
-            return;
-        }
+function addSelectedAttractions() {
+    const dayContent = document.getElementById(`day-${currentDayIndex}`);
+    const attractionsContainer = dayContent.querySelector('.attractions-container');
+    
+    selectedAttractions.forEach(attraction => {
+        const attractionCard = createAttractionCard(attraction);
+        attractionsContainer.appendChild(attractionCard);
+    });
 
-        const newCard = document.createElement('div');
-        newCard.className = 'card';
-        newCard.dataset.attractionId = attraction.id;
-        
-        newCard.innerHTML = `
-            <img src="${attraction.image_url}" alt="${attraction.name}" class="card-image" onerror="this.src='../img/default.jpg'">
-            <div class="card-content">
-                <h3 class="card-title">${attraction.name}</h3>
-                <div class="card-rating">
-                    <div class="rating-stars">
-                        ${generateRatingStars(attraction.rating)}
-                    </div>
-                    <span>${attraction.rating}</span>
-                </div>
-                <div class="card-category">
-                    <img src="${getCategoryIcon(attraction.category)}" alt="Category Icon" class="category-icon">
-                    ${attraction.category}
-                </div>
-                <p class="card-description">${attraction.description}</p>
+    selectedAttractions = [];
+    closeAttractionSidebar();
+}
+
+function createAttractionCard(attraction) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+        <img src="${attraction.image_url}" alt="${attraction.name}" class="card-image">
+        <div class="card-content">
+            <h3 class="card-title">${attraction.name}</h3>
+            <div class="card-rating">
+                <div class="rating-stars">${generateStars(attraction.rating)}</div>
+                <span>${attraction.rating}</span>
             </div>
-        `;
-        
-        const addButton = dayContent.querySelector('.add-location-btn');
-        if (addButton) {
-            dayContent.insertBefore(newCard, addButton);
-        } else {
-            dayContent.appendChild(newCard);
-        }
-        
-        closeAttractionSidebar();
-        
-        // Add marker to map
-        if (typeof map !== 'undefined' && attraction.latitude && attraction.longitude) {
-            addMarkerToMap(attraction);
-        }
-        
-    } catch (error) {
-        console.error('Error adding attraction:', error);
-    }
+            <div class="card-category">
+                <img src="${getCategoryIcon(attraction.category)}" alt="Icon" class="category-icon">
+                ${attraction.category}
+            </div>
+            <p class="card-description">${attraction.description}</p>
+        </div>
+    `;
+    return card;
 }
 
-// Helper function to generate rating stars
-function generateRatingStars(rating) {
-    let stars = '';
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-
-    for (let i = 1; i <= 5; i++) {
-        if (i <= fullStars) {
-            stars += '★';
-        } else if (i === fullStars + 1 && hasHalfStar) {
-            stars += '⯨';
-        } else {
-            stars += '☆';
-        }
-    }
-    return stars;
+function generateStars(rating) {
+    return '★'.repeat(Math.floor(rating)) + '☆'.repeat(5 - Math.floor(rating));
 }
 
-// Get category icon
+function closeAttractionSidebar() {
+    document.getElementById('attractionSidebar').classList.remove('open');
+    selectedAttractions = [];
+}
+
+// Helper function to get category icon path
 function getCategoryIcon(category) {
     const icons = {
         'nature': '../icons/leaves.svg',
@@ -174,39 +115,7 @@ function getCategoryIcon(category) {
         'beach': '../icons/vacations.svg',
         'recreation': '../icons/park.svg',
         'history': '../icons/history.svg',
-        'restaurant': '../icons/restaurant.svg',
-        'hotel': '../icons/hotel.svg'
+        'restaurant': '../icons/restaurant.svg'
     };
-    
-    const normalizedCategory = category.toLowerCase();
-    return icons[normalizedCategory] || '../icons/default.svg';
+    return icons[category.toLowerCase()] || '../icons/leaves.svg';
 }
-
-// Add marker to map
-function addMarkerToMap(attraction) {
-    if (typeof L !== 'undefined' && map) {
-        L.marker([attraction.latitude, attraction.longitude])
-            .addTo(map)
-            .bindPopup(attraction.name);
-    }
-}
-
-// Document ready event listener
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize event listeners for modals
-    window.addEventListener('click', function(event) {
-        const categoryModal = document.getElementById('categoryModal');
-        if (event.target === categoryModal) {
-            closeCategoryModal();
-        }
-    });
-
-    // Initialize map if Leaflet is available
-    if (typeof L !== 'undefined') {
-        const map = L.map('map').setView([-7.7956, 110.3695], 12);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-    }
-});

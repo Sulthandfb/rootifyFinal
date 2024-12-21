@@ -1,71 +1,201 @@
 <?php
 session_start();
-include "../filter_wisata/db_connect.php";
+include 'get_saved_trips.php';
 
-function getAttractions($trip_type = null, $budget = null, $interests = []) {
-    global $db;
-    $attractions = array();
+// Redirect jika pengguna belum login
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
 
-    $query = "SELECT ta.id, ta.name, ta.description, ta.image_url, ta.rating, ta.category, ta.latitude, ta.longitude,
-                     GROUP_CONCAT(DISTINCT tc.trip_type) as trip_types,
-                     GROUP_CONCAT(DISTINCT tc.budget_range) as budget_ranges
-              FROM tourist_attractions ta
-              LEFT JOIN attraction_categories ac ON ta.id = ac.attraction_id
-              LEFT JOIN trip_categories tc ON ac.trip_category_id = tc.id
-              WHERE 1=1";
+$trips = getSavedTrips();
 
-    if ($trip_type) {
-        $query .= " AND tc.trip_type = '$trip_type'";
-    }
-    if ($budget) {
-        $query .= " AND tc.budget_range = '$budget'";
-    }
-    if (!empty($interests)) {
-        $interests_str = implode("','", array_map('mysqli_real_escape_string', array_fill(0, count($interests), $db), $interests));
-        $query .= " AND ta.category IN ('$interests_str')";        
-    }
+// Fungsi untuk menghitung durasi perjalanan
+function calculateDuration($start_date, $end_date) {
+    $start = new DateTime($start_date);
+    $end = new DateTime($end_date);
+    $interval = $start->diff($end);
+    return $interval->days + 1;
+}
+?>
 
-    $query .= " GROUP BY ta.id ORDER BY ta.rating DESC";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Saved Trips</title>
+    <style>
+        
 
-    $result = mysqli_query($db, $query);
-
-    if ($result) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $attractions[] = array(
-                'id' => $row['id'],
-                'name' => $row['name'],
-                'description' => $row['description'],
-                'image_url' => $row['image_url'],
-                'rating' => $row['rating'],
-                'category' => $row['category'],
-                'latitude' => $row['latitude'],
-                'longitude' => $row['longitude'],
-                'trip_types' => explode(',', $row['trip_types']),
-                'budget_ranges' => explode(',', $row['budget_ranges'])
-            );
+.container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        mysqli_free_result($result);
-    } else {
-        echo "Error: " . mysqli_error($db);
-    }
 
-    // Acak destinasi wisata
-    shuffle($attractions);
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
 
-    return $attractions;
-}
+        .button-container {
+            display: flex;
+            gap: 20px;
+        }
 
-function getRestaurants() {
-    global $db;
-    $restaurants = [];
+        .create-trip-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
 
-    $query = "SELECT * FROM tourist_attractions WHERE category = 'Restaurant'";
-    $result = mysqli_query($db, $query);
+        .ai-trip-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
 
-    while ($row = mysqli_fetch_assoc($result)) {
-        $restaurants[] = $row;
-    }
+        .sort-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
 
-    shuffle($restaurants);
-    return $restaurants;
-}
+        .trips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .trip-card {
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .trip-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .trip-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .trip-content {
+            padding: 15px;
+        }
+
+        .trip-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .trip-details {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .current-trip-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My Trips</h1>
+            <div class="button-container">
+                <a href="create-trip.php" class="create-trip-btn">
+                    <span>+</span>
+                    <span>Create a new trip</span>
+                </a>
+                <a href="ai-trip.php" class="ai-trip-btn">
+                    <span>🤖</span>
+                    <span>Build a trip with AI</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="sort-container">
+            <select id="sortTrips" onchange="sortTrips(this.value)">
+                <option value="date">Sort by: Trip start date</option>
+                <option value="name">Sort by: Trip name</option>
+                <option value="duration">Sort by: Duration</option>
+            </select>
+        </div>
+
+        <div class="trips-grid">
+            <?php foreach ($trips as $trip): ?>
+                <a href="view-trip.php?id=<?php echo $trip['id']; ?>" class="trip-card">
+                    <div style="position: relative;">
+                        <img 
+                            src="<?php echo $trip['attraction_images'][0] ?? 'default-trip-image.jpg'; ?>" 
+                            alt="<?php echo htmlspecialchars($trip['trip_name']); ?>"
+                            class="trip-image"
+                        >
+                        <?php if (strtotime($trip['start_date']) <= time() && strtotime($trip['end_date']) >= time()): ?>
+                            <div class="current-trip-badge">Current Trip</div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="trip-content">
+                        <div class="trip-title">
+                            <?php 
+                            $duration = calculateDuration($trip['start_date'], $trip['end_date']);
+                            echo htmlspecialchars($trip['trip_name']) . " for " . $duration . " days";
+                            ?>
+                        </div>
+                        <div class="trip-details">
+                            <span>
+                                <?php 
+                                echo date('M d', strtotime($trip['start_date'])) . ' → ' . 
+                                     date('M d, Y', strtotime($trip['end_date']));
+                                ?>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <script>
+        function sortTrips(criteria) {
+            // Implementasi pengurutan sisi klien atau muat ulang halaman dengan parameter pengurutan baru
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('sort', criteria);
+            window.location.href = currentUrl.toString();
+        }
+    </script>
+</body>
+</html>
