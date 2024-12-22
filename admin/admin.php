@@ -1,5 +1,5 @@
+<!-- admin.php -->
 <?php
-// Include the database connection file
 include '../filter_wisata/db_connect.php';
 
 // Fetch users from database
@@ -15,122 +15,11 @@ $total_users = $count_result->fetch_assoc()['total_users'];
 if (!$result) {
     die("Error executing query: " . $db->error);
 }
+
+include 'admin-header.php';
+include 'admin-navbar.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Responsive Admin Dashboard Page</title>
-    <link rel="stylesheet" href="./style.css" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
-  </head>
-  <body>
-    <div class="d-flex flex-column flex-lg-row h-lg-full bg-surface-secondary">
-      <nav
-        class="navbar show navbar-vertical h-lg-screen navbar-expand-lg px-0 py-3 navbar-light bg-white border-bottom border-bottom-lg-0 border-end-lg"
-        id="navbarVertical"
-      >
-        <div class="container-fluid">
-          <button
-            class="navbar-toggler ms-n2"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#sidebarCollapse"
-            aria-controls="sidebarCollapse"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="#">
-            <h3 class="text-success">
-              <img src="https://bytewebster.com/img/logo.png" width="40" /><span
-                class="text-info"
-                >Root</span
-              >ify
-            </h3>
-          </a>
-          <div class="navbar-user d-lg-none">
-            <div class="dropdown">
-              <a
-                href="#"
-                id="sidebarAvatar"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <div class="avatar-parent-child">
-                  <img
-                    alt="Image Placeholder"
-                    src="https://images.unsplash.com/photo-1548142813-c348350df52b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
-                    class="avatar avatar- rounded-circle"
-                  />
-                  <span class="avatar-child avatar-badge bg-success"></span>
-                </div>
-              </a>
-              <div
-                class="dropdown-menu dropdown-menu-end"
-                aria-labelledby="sidebarAvatar"
-              >
-                <hr class="dropdown-divider" />
-                <a href="#" class="dropdown-item">Logout</a>
-              </div>
-            </div>
-          </div>
-          <div class="collapse navbar-collapse" id="sidebarCollapse">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="bi bi-house"></i> Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="bi bi-building"></i> Hotels
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="bi bi-balloon-fill"></i> Attractions
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <i class="bi bi-file-text"></i> Posts
-                </a>
-              </li>
-            </ul>
-            <hr class="navbar-divider my-5 opacity-20" />
-            <ul class="navbar-nav mb-md-4">
-              <li>
-                <div
-                  class="nav-link text-xs font-semibold text-uppercase text-muted ls-wide"
-                  href="#">
-                </div>
-              </li>
-            </ul>
-            <div class="mt-auto"></div>
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  href="#"
-                  onclick="return confirm('Are you sure you want to logout?')"
-                >
-                  <i class="bi bi-box-arrow-left"></i> Logout
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
       <div class="h-screen flex-grow-1 overflow-y-lg-auto">
         <header class="bg-surface-primary border-bottom pt-6">
           <div class="container-fluid">

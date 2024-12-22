@@ -1,38 +1,30 @@
 <?php
-include '../filter_wisata/db_connect.php'; // Koneksi ke database
+session_start();
+// Koneksi database
+include '../filter_wisata/db_connect.php';
 
-// Mengambil data dari form di hotels.php
-$startDate = $_POST['startDate'] ?? null;
-$endDate = $_POST['endDate'] ?? null;
-
-// Pencarian tambahan
-$searchName = $_POST['searchName'] ?? null; // Nama akomodasi
-$minPrice = $_POST['minPrice'] ?? null;     // Harga minimum
-$maxPrice = $_POST['maxPrice'] ?? null;     // Harga maksimum
-$category = $_POST['category'] ?? null;     // Kategori akomodasi
-
-// Query dasar untuk mengambil semua hotel
-$sql = "SELECT * FROM hotels WHERE 1=1";
-
-// Tambahkan filter berdasarkan nama akomodasi
-if ($searchName) {
-    $sql .= " AND name LIKE '%$searchName%'";
+// Fungsi untuk membersihkan input
+function clean_input($data) {
+    global $db;
+    return mysqli_real_escape_string($db, trim($data));
 }
 
-// Tambahkan filter berdasarkan harga
-if ($minPrice) {
-    $sql .= " AND price >= $minPrice";
-}
-if ($maxPrice) {
-    $sql .= " AND price <= $maxPrice";
+// Inisialisasi variabel pencarian
+$search = isset($_REQUEST['search']) ? clean_input($_REQUEST['search']) : '';
+$category = isset($_REQUEST['category']) ? clean_input($_REQUEST['category']) : '';
+
+// Query pencarian
+$sql = "SELECT * FROM tourist_attractions WHERE 1=1";
+
+if (!empty($search)) {
+    $sql .= " AND (name LIKE '%$search%')";
 }
 
-// Tambahkan filter kategori
-if ($category) {
+if (!empty($category)) {
     $sql .= " AND category = '$category'";
 }
 
-$result = $db->query($sql);
+$result = mysqli_query($db, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -42,43 +34,31 @@ $result = $db->query($sql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Results | Rootify</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="hotels-search.css">
+    <link rel="stylesheet" href="attractions-search.css">
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
     <div class="main-container">
         <div class="content-section">
-            <h2>Available Properties</h2>
-
-            <!-- Menampilkan tanggal Check-In dan Check-Out -->
-            <div class="date-selection">
-                <p>
-                    <strong>Check-In:</strong> 
-                    <span><?php echo htmlspecialchars($startDate ?? 'Not specified'); ?></span>
-                </p>
-                <p>
-                    <strong>Check-Out:</strong> 
-                    <span><?php echo htmlspecialchars($endDate ?? 'Not specified'); ?></span>
-                </p>
-            </div>
+            <h2>Yogyakarta Attractions</h2>
 
             <!-- Filter Kategori -->
-            <form method="POST" action="hotels-search.php" class="category-form">
-                <input type="hidden" name="startDate" value="<?php echo htmlspecialchars($startDate); ?>">
-                <input type="hidden" name="endDate" value="<?php echo htmlspecialchars($endDate); ?>">
-                <button type="submit" name="category" value="Villa" class="category-btn">Villa</button>
-                <button type="submit" name="category" value="Hotel" class="category-btn">Hotel</button>
-                <button type="submit" name="category" value="Apartment" class="category-btn">Apartment</button>
+            <form method="GET" action="attractions-search.php" class="category-form">
+                <button type="submit" name="category" value="History" class="category-btn <?php echo $category == 'History' ? 'active' : ''; ?>">History</button>
+                <button type="submit" name="category" value="Nature" class="category-btn <?php echo $category == 'Nature' ? 'active' : ''; ?>">Nature</button>
+                <button type="submit" name="category" value="Culture" class="category-btn <?php echo $category == 'Culture' ? 'active' : ''; ?>">Culture</button>
+                <button type="submit" name="category" value="Beach" class="category-btn <?php echo $category == 'Beach' ? 'active' : ''; ?>">Beach</button>
+                <button type="submit" name="category" value="Shopping" class="category-btn <?php echo $category == 'Shopping' ? 'active' : ''; ?>">Shopping</button>
+                <button type="submit" name="category" value="Recreation" class="category-btn <?php echo $category == 'Recreation' ? 'active' : ''; ?>">Recreation</button>
+                <button type="submit" name="category" value="Education" class="category-btn <?php echo $category == 'Education' ? 'active' : ''; ?>">Education</button>
+                <button type="submit" name="category" value="Restaurant" class="category-btn <?php echo $category == 'Restaurant' ? 'active' : ''; ?>">Restaurant</button>
             </form>
 
             <!-- Form Pencarian dan Filter Harga -->
-            <form method="POST" action="hotels-search.php" class="search-filter-form">
-                <input type="hidden" name="startDate" value="<?php echo htmlspecialchars($startDate); ?>">
-                <input type="hidden" name="endDate" value="<?php echo htmlspecialchars($endDate); ?>">
+            <form method="GET" action="attractions-search.php" class="search-filter-form">
                 <div class="search-filter-container">
-                    <input type="text" name="searchName" placeholder="Search by name..." class="search-input">
-                    <input type="number" name="minPrice" placeholder="Min price (IDR)" class="price-input">
-                    <input type="number" name="maxPrice" placeholder="Max price (IDR)" class="price-input">
+                    <input type="text" name="search" placeholder="Search by name..." class="search-input" value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="hidden" name="category" value="<?php echo htmlspecialchars($category); ?>">
                     <button type="submit" class="btn search-btn">Search</button>
                 </div>
             </form>
@@ -91,7 +71,7 @@ $result = $db->query($sql);
                     if ($result && $result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo '
-                            <a href="detail_hotel.php?hotel_id='.$row['hotel_id'].'" class="property-card-link">
+                            <a href="attractions-details.php?id='.$row['id'].'" class="property-card-link">
                                 <div class="property-card">
                                     <div class="property-image">
                                         <img src="'.htmlspecialchars($row['image_url']).'" alt="'.htmlspecialchars($row['name']).'">
@@ -103,14 +83,7 @@ $result = $db->query($sql);
                                             ★ '.htmlspecialchars($row['rating'] ?? '0').' (0 reviews)
                                         </div>
                                         <div class="property-details">
-                                            <span>3 guests</span>
-                                            <span>•</span>
-                                            <span>1 rooms</span>
-                                            <span>•</span>
-                                            <span>1 bath</span>
-                                        </div>
-                                        <div class="property-price">
-                                            IDR '.number_format($row['price']).' <span class="price-period">/ night</span>
+                                            <span>Category: '.htmlspecialchars($row['category']).'</span>
                                         </div>
                                     </div>
                                 </div>
@@ -132,7 +105,7 @@ $result = $db->query($sql);
 
     <script>
         // Initialize map
-        const map = L.map('map').setView([-6.2088, 106.8456], 12); // Default location
+        const map = L.map('map').setView([-7.7956, 110.3695], 12); // Default location (Yogyakarta)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
@@ -144,7 +117,7 @@ $result = $db->query($sql);
             echo "
             L.marker([{$row['latitude']}, {$row['longitude']}])
                 .addTo(map)
-                .bindPopup('<strong>".htmlspecialchars($row['name'])."</strong><br> IDR ".number_format($row['price'])." per night');
+                .bindPopup('<strong>".htmlspecialchars($row['name'])."</strong><br>Category: ".htmlspecialchars($row['category'])."');
             ";
         }
         ?>
