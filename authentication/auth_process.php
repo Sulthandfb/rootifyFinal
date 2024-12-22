@@ -23,7 +23,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
             // Login berhasil
             $_SESSION["user_id"] = $user["id"];
             $_SESSION["username"] = $user["username"];
-            header("Location: ../landing/dashboard.php");
+            $_SESSION["user_email"] = $user["email"];
+            $_SESSION["user_avatar"] = $user["avatar"] ?? 'default-avatar.png';
+            header("Location: ../landing/landingpage.php");
             exit();
         } else {
             $loginMessage = "Password salah.";
