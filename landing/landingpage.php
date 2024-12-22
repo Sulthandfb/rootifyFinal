@@ -156,9 +156,9 @@
                             <img src="uploads/<?php echo $_SESSION['user_avatar']; ?>" alt="User Avatar" class="user-avatar">
                             <span class="user-name"><?php echo $_SESSION['username']; ?></span>
                             <div class="user-dropdown">
-                                <a href="profile.php">My Profile</a>
-                                <a href="bookings.php">My Bookings</a>
-                                <a href="logout.php">Logout</a>
+                                <a href="../profile/profile.php">My Profile</a>
+                                <a href="../profile/bookings.php">My Bookings</a>
+                                <a href="../profile/logout.php">Logout</a>
                             </div>
                         </div>
                     <?php else: ?>
