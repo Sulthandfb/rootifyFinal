@@ -1,4 +1,8 @@
 <?php
+// Define admin credentials
+define('ADMIN_EMAIL', 'admin@vortex.com');
+define('ADMIN_PASSWORD', 'admin123');
+
 session_start();
 include '../filter_wisata/db_connect.php';
 
@@ -10,7 +14,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
-    // Query untuk mengambil data pengguna berdasarkan email
+    // Check for admin credentials
+    if ($email === ADMIN_EMAIL && $password === ADMIN_PASSWORD) {
+        // Admin login successful
+        $_SESSION["user_id"] = 0; // Use 0 or any specific ID for admin
+        $_SESSION["username"] = "Admin";
+        $_SESSION["user_email"] = ADMIN_EMAIL;
+        $_SESSION["is_admin"] = true;
+        header("Location: ../admin/admin.php"); // Redirect to admin dashboard
+        exit();
+    }
+
+    // If not admin, proceed with regular user login
     $stmt = $db->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -20,11 +35,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
         $user = $result->fetch_assoc();
 
         if (password_verify($password, $user["password"])) {
-            // Login berhasil
+            // Regular user login successful
             $_SESSION["user_id"] = $user["id"];
             $_SESSION["username"] = $user["username"];
             $_SESSION["user_email"] = $user["email"];
             $_SESSION["user_avatar"] = $user["avatar"] ?? 'default-avatar.png';
+            $_SESSION["is_admin"] = false;
             header("Location: ../landing/landingpage.php");
             exit();
         } else {

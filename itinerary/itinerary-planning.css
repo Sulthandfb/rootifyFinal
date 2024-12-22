@@ -110,6 +110,35 @@ body {
     gap: 0.5rem;
 }
 
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-link:hover {
+    text-decoration: none;
+}
+
+/* Add a subtle indicator that the card is clickable */
+.card-content {
+    position: relative;
+}
+
+.card-content::after {
+    content: '\2192';  /* Right arrow */
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover .card-content::after {
+    opacity: 1;
+    transform: translateX(5px);
+}
+
 .card-location {
     font-size: 0.8rem;
     color: var(--secondary);

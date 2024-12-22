@@ -23,6 +23,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_trip_name'])) 
     }
 }
 
+// Handle trip deletion
+if (isset($_GET['delete_trip'])) {
+    $trip_id = $_GET['delete_trip'];
+    
+    // Begin transaction
+    mysqli_begin_transaction($db);
+    
+    try {
+        // Delete from itinerary_attractions first (child table)
+        $delete_attractions = "DELETE FROM itinerary_attractions WHERE itinerary_id = ? AND 
+                             EXISTS (SELECT 1 FROM itineraries WHERE id = ? AND user_id = ?)";
+        $stmt = mysqli_prepare($db, $delete_attractions);
+        mysqli_stmt_bind_param($stmt, "iii", $trip_id, $trip_id, $_SESSION['user_id']);
+        mysqli_stmt_execute($stmt);
+
+        // Then delete from itineraries (parent table)
+        $delete_itinerary = "DELETE FROM itineraries WHERE id = ? AND user_id = ?";
+        $stmt = mysqli_prepare($db, $delete_itinerary);
+        mysqli_stmt_bind_param($stmt, "ii", $trip_id, $_SESSION['user_id']);
+        mysqli_stmt_execute($stmt);
+
+        // If we get here, commit the transaction
+        mysqli_commit($db);
+        
+        // Redirect back to the page
+        header("Location: saved_trips.php");
+        exit();
+        
+    } catch (Exception $e) {
+        // If there's an error, rollback the transaction
+        mysqli_rollback($db);
+        echo "Error deleting trip: " . $e->getMessage();
+    }
+}
+
 // Fetch user's saved itineraries
 $user_id = $_SESSION['user_id'];
 $query = "SELECT i.*, 
@@ -86,7 +121,6 @@ $result = mysqli_stmt_get_result($stmt);
         .trip-card {
             background: white;
             border-radius: 15px;
-            overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
@@ -211,6 +245,14 @@ $result = mysqli_stmt_get_result($stmt);
             background-color: #f5f5f5;
         }
 
+        .dropdown-content button.delete-btn {
+            color: #dc3545;
+        }
+
+        .dropdown-content button.delete-btn:hover {
+            background-color: #ffebee;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -321,6 +363,10 @@ $result = mysqli_stmt_get_result($stmt);
                                             <i class="ri-edit-line"></i>
                                             Edit Trip Name
                                         </button>
+                                        <button onclick="confirmDelete(<?php echo $trip['id']; ?>)" style="color: #dc3545;">
+                                            <i class="ri-delete-bin-line"></i>
+                                            Delete Trip
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -387,6 +433,12 @@ $result = mysqli_stmt_get_result($stmt);
             tripNameInput.value = currentName;
             
             modal.style.display = 'flex';
+        }
+
+        function confirmDelete(tripId) {
+            if (confirm('Are you sure you want to delete this trip? This action cannot be undone.')) {
+                window.location.href = `saved_trips.php?delete_trip=${tripId}`;
+            }
         }
 
         function closeEditModal() {

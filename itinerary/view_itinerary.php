@@ -426,6 +426,7 @@ function getCategoryIcon($category) {
                                 if (isset($daily_attractions[$day])) {
                                     foreach ($daily_attractions[$day] as $attraction): 
                                 ?>
+                                <a href="../attractions/attractions-details.php?id=<?php echo $attraction['id']; ?>" class="card-link">
                                     <div class="card" data-attraction-id="<?php echo $attraction['id']; ?>">
                                         <img src="<?php echo htmlspecialchars($attraction['image_url']); ?>" 
                                             alt="<?php echo htmlspecialchars($attraction['name']); ?>" 
@@ -453,6 +454,7 @@ function getCategoryIcon($category) {
                                             </p>
                                         </div>
                                     </div>
+                                </a>
                                 <?php 
                                     endforeach;
                                 }
