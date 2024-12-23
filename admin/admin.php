@@ -1,23 +1,33 @@
 <!-- admin.php -->
 <?php
-include '../filter_wisata/db_connect.php';
+  include '../filter_wisata/db_connect.php';
 
-// Fetch users from database
-$sql = "SELECT id, username, email, created_at FROM users";
-$result = $db->query($sql);
+  // Fetch users from database
+  $sql = "SELECT id, username, email, created_at FROM users";
+  $result = $db->query($sql);
 
-// Get total number of users
-$count_sql = "SELECT COUNT(*) as total_users FROM users";
-$count_result = $db->query($count_sql);
-$total_users = $count_result->fetch_assoc()['total_users'];
+  // Get total number of users
+  $count_sql = "SELECT COUNT(*) as total_users FROM users";
+  $count_result = $db->query($count_sql);
+  $total_users = $count_result->fetch_assoc()['total_users'];
 
-// Check for query execution errors
-if (!$result) {
-    die("Error executing query: " . $db->error);
-}
+  // Get total number of hotels
+  $hotel_count_sql = "SELECT COUNT(*) as total_hotels FROM hotels";
+  $hotel_count_result = $db->query($hotel_count_sql);
+  $total_hotels = $hotel_count_result->fetch_assoc()['total_hotels'];
 
-include 'admin-header.php';
-include 'admin-navbar.php';
+  // Get total number of attractions
+  $attraction_count_sql = "SELECT COUNT(*) as total_attractions FROM tourist_attractions";
+  $attraction_count_result = $db->query($attraction_count_sql);
+  $total_attractions = $attraction_count_result->fetch_assoc()['total_attractions'];
+
+  // Check for query execution errors
+  if (!$result || !$hotel_count_result || !$attraction_count_result) {
+      die("Error executing query: " . $db->error);
+  }
+
+  include 'admin-header.php';
+  include 'admin-navbar.php';
 ?>
 
       <div class="h-screen flex-grow-1 overflow-y-lg-auto">
@@ -95,7 +105,7 @@ include 'admin-navbar.php';
                           class="h6 font-semibold text-muted text-sm d-block mb-2"
                           >Hotels</span
                         >
-                        <span class="h3 font-bold mb-0">--</span>
+                        <span class="h3 font-bold mb-0"><?php echo $total_hotels; ?></span>
                       </div>
                       <div class="col-auto">
                         <div
@@ -117,7 +127,7 @@ include 'admin-navbar.php';
                           class="h6 font-semibold text-muted text-sm d-block mb-2"
                           >Attractions</span
                         >
-                        <span class="h3 font-bold mb-0">--</span>
+                        <span class="h3 font-bold mb-0"><?php echo $total_attractions; ?></span>
                       </div>
                       <div class="col-auto">
                         <div

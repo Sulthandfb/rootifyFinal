@@ -34,8 +34,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="bi bi-file-text"></i> Posts
+          <a class="nav-link" href="admin-view-hotels.php">
+            <i class="bi bi-file-text"></i> View Hotels
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="admin-view-attractions.php">
+            <i class="bi bi-file-text"></i> View Attractions
           </a>
         </li>
       </ul>
@@ -54,7 +59,7 @@
         <li class="nav-item">
           <a
             class="nav-link"
-            href="#"
+            href="../authentication/index.php"
             onclick="return confirm('Are you sure you want to logout?')"
           >
             <i class="bi bi-box-arrow-left"></i> Logout

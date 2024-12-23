@@ -129,7 +129,7 @@ include '../filter_wisata/db_connect.php';
 
     <section class="section__container about__container" id="about">
       <div class="about__image">
-        <img src="assets/about.jpg" alt="about" />
+        <img src="../img/maskot.jpg" alt="about" />
       </div>
       <div class="about__content">
         <p class="section__subheader">ABOUT US</p>
@@ -142,70 +142,6 @@ include '../filter_wisata/db_connect.php';
         </p>
         <div class="about__btn">
           <button class="btn">Read More</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="section__container room__container">
-      <p class="section__subheader">OUR LIVING ROOM</p>
-      <h2 class="section__header">The Most Memorable Rest Time Starts Here.</h2>
-      <div class="room__grid">
-        <div class="room__card">
-          <div class="room__card__image">
-            <img src="assets/room-1.jpg" alt="room" />
-            <div class="room__card__icons">
-              <span><i class="ri-heart-fill"></i></span>
-              <span><i class="ri-paint-fill"></i></span>
-              <span><i class="ri-shield-star-line"></i></span>
-            </div>
-          </div>
-          <div class="room__card__details">
-            <h4>Deluxe Ocean View</h4>
-            <p>
-              Bask in luxury with breathtaking ocean views from your private
-              suite.
-            </p>
-            <h5>Starting from <span>$299/night</span></h5>
-            <button class="btn">Book Now</button>
-          </div>
-        </div>
-        <div class="room__card">
-          <div class="room__card__image">
-            <img src="assets/room-2.jpg" alt="room" />
-            <div class="room__card__icons">
-              <span><i class="ri-heart-fill"></i></span>
-              <span><i class="ri-paint-fill"></i></span>
-              <span><i class="ri-shield-star-line"></i></span>
-            </div>
-          </div>
-          <div class="room__card__details">
-            <h4>Executive Cityscape Room</h4>
-            <p>
-              Experience urban elegance and modern comfort in the heart of the
-              city.
-            </p>
-            <h5>Starting from <span>$199/night</span></h5>
-            <button class="btn">Book Now</button>
-          </div>
-        </div>
-        <div class="room__card">
-          <div class="room__card__image">
-            <img src="assets/room-3.jpg" alt="room" />
-            <div class="room__card__icons">
-              <span><i class="ri-heart-fill"></i></span>
-              <span><i class="ri-paint-fill"></i></span>
-              <span><i class="ri-shield-star-line"></i></span>
-            </div>
-          </div>
-          <div class="room__card__details">
-            <h4>Family Garden Retreat</h4>
-            <p>
-              Spacious and inviting, perfect for creating cherished memories
-              with loved ones.
-            </p>
-            <h5>Starting from <span>$249/night</span></h5>
-            <button class="btn">Book Now</button>
-          </div>
         </div>
       </div>
     </section>
@@ -262,6 +198,6 @@ include '../filter_wisata/db_connect.php';
 
     <?php include '../chatbot/chatbot.php'; ?>
     <script src="https://unpkg.com/scrollreveal"></script> 
-    <script src="/js/filter.js"></script>
+    <script src="filter.js"></script>
   </body>
 </html>

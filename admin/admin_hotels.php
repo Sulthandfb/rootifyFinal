@@ -118,6 +118,7 @@ include 'admin-navbar.php';
                     <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                         <h1 class="h2 mb-0 ls-tight">Add New Hotel</h1>
                     </div>
+                    <pre></pre>
                 </div>
             </div>
         </div>

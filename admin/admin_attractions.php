@@ -92,6 +92,7 @@ include 'admin-navbar.php';
                     <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                         <h1 class="h2 mb-0 ls-tight">Add New Attraction</h1>
                     </div>
+                    <pre></pre>
                 </div>
             </div>
         </div>
@@ -122,24 +123,39 @@ include 'admin-navbar.php';
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Category</label>
-                            <pre></pre>
-                            <div class="btn-group w-100" role="group">
-                                <input type="radio" class="btn-check" name="category" id="history" value="History" required>
-                                <label class="btn btn-outline-primary" for="history">History</label>
-                                <input type="radio" class="btn-check" name="category" id="nature" value="Nature">
-                                <label class="btn btn-outline-primary" for="nature">Nature</label>
-                                <input type="radio" class="btn-check" name="category" id="culture" value="Culture">
-                                <label class="btn btn-outline-primary" for="culture">Culture</label>
-                                <input type="radio" class="btn-check" name="category" id="beach" value="Beach">
-                                <label class="btn btn-outline-primary" for="beach">Beach</label>
-                                <input type="radio" class="btn-check" name="category" id="shopping" value="Shopping">
-                                <label class="btn btn-outline-primary" for="shopping">Shopping</label>
-                                <input type="radio" class="btn-check" name="category" id="recreation" value="Recreation">
-                                <label class="btn btn-outline-primary" for="recreation">Recreation</label>
-                                <input type="radio" class="btn-check" name="category" id="education" value="Education">
-                                <label class="btn btn-outline-primary" for="education">Education</label>
-                                <input type="radio" class="btn-check" name="category" id="restaurant" value="Restaurant">
-                                <label class="btn btn-outline-primary" for="restaurant">Restaurant</label>
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2">
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="category" id="history" value="History" required>
+                                    <label class="btn btn-outline-primary w-100" for="history">History</label>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="category" id="nature" value="Nature">
+                                    <label class="btn btn-outline-primary w-100" for="nature">Nature</label>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="category" id="culture" value="Culture">
+                                    <label class="btn btn-outline-primary w-100" for="culture">Culture</label>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="category" id="beach" value="Beach">
+                                    <label class="btn btn-outline-primary w-100" for="beach">Beach</label>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="category" id="shopping" value="Shopping">
+                                    <label class="btn btn-outline-primary w-100" for="shopping">Shopping</label>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="category" id="recreation" value="Recreation">
+                                    <label class="btn btn-outline-primary w-100" for="recreation">Recreation</label>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="category" id="education" value="Education">
+                                    <label class="btn btn-outline-primary w-100" for="education">Education</label>
+                                </div>
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="category" id="restaurant" value="Restaurant">
+                                    <label class="btn btn-outline-primary w-100" for="restaurant">Restaurant</label>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3">
