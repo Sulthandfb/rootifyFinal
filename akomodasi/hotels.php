@@ -19,10 +19,9 @@ include '../filter_wisata/db_connect.php';
     <link rel="stylesheet" href="hotels.css" />
     <title>Web Design Mastery | Rayal Park</title>
   </head>
-  
   <body>
     <header class="header">
-      <nav>
+      <!-- <nav>
         <div class="nav__bar">
           <div class="logo">
             <a href="#"><img src="../img/logo1.png" alt="logo" /></a>
@@ -39,7 +38,7 @@ include '../filter_wisata/db_connect.php';
           <li><a href="#contact">Contact</a></li>
         </ul>
         <button class="btn nav__btn">Login</button>
-      </nav>
+      </nav> -->
       <div class="section__container header__container" id="home">
         <p>Simple - Unique - Friendly</p>
         <h1>Create a Story of Your <br />Journey with <span>Rootify</span>.</h1>

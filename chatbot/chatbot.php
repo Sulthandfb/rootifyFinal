@@ -3,7 +3,7 @@ if (!isset($_SESSION['user_id'])) {
     $_SESSION['user_id'] = uniqid(); // Generate a unique user ID if not set
 }
 
-$db = new mysqli('localhost', 'root', '', 'erd_rootify');
+$db = new mysqli('dbserver', 'root', 'rootpassword', 'erd_rootify');
 if ($db->connect_error) {
     die("Connection failed: " . $db->connect_error);
 }
