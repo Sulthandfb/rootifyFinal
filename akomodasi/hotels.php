@@ -3,6 +3,8 @@ session_start();
 include '../filter_wisata/db_connect.php';
 ?>
 
+<?php include '../navfot/navbar.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,7 +20,6 @@ include '../filter_wisata/db_connect.php';
     <title>Web Design Mastery | Rayal Park</title>
   </head>
   <body>
-    <?php include '../navfot/navbar.php'; ?>
     <header class="header">
       <!-- <nav>
         <div class="nav__bar">
