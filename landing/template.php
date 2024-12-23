@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+// Periksa apakah pengguna sudah login, jika belum, arahkan ke halaman login
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../authentication/index.php"); // Redirect ke halaman login jika belum login
+    exit();
+}
+
+// Sekarang Anda dapat mengakses data pengguna dari session
+$user_id = $_SESSION['user_id'];
+$username = $_SESSION['username'];
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -259,10 +274,10 @@
     <nav>
         <div class="logo">Rootify</div>
         <ul class="nav-links">
-            <li><a href="#service">Service</a></li>
-            <li><a href="#destination">Destination</a></li>
-            <li><a href="#booking">Booking</a></li>
-            <li><a href="#testimonial">Testimonial</a></li>
+            <li><a href="#service">Home</a></li>
+            <li><a href="#destination">My Trips</a></li>
+            <li><a href="#booking">Hotels</a></li>
+            <li><a href="#testimonial">Itinerary</a></li>
         </ul>
         <div class="nav-buttons">
             <a href="#login" class="login-btn">Login</a>
@@ -278,7 +293,7 @@
 
     <section class="hero">
         <div class="hero-content">
-            <p class="category-label">Best Destinations around the world</p>
+            <p class="category-label">Best Destinations in Yogyakarta</p>
             <h1 class="hero-title">Travel, <span>enjoy</span> and live a new and full life</h1>
             <p class="hero-description">Built Wicket longer admire do barton vanity itself do in it. Preferred to sportsmen it engrossed listening. Park gate sell they west hard for the.</p>
             <div class="cta-buttons">
@@ -294,7 +309,7 @@
             </div>
         </div>
         <div class="hero-image">
-            <img src="Maskot.png" alt="Traveler with backpack">
+            <img src="../img/Maskot.png" alt="Traveler with backpack">
         </div>
     </section>
     <!-- Previous code remains unchanged, add this section after the hero section -->

@@ -24,7 +24,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="admin_hotels.php">
             <i class="bi bi-building"></i> Hotels
           </a>
         </li>
