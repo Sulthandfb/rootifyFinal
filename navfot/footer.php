@@ -3,8 +3,8 @@
     <div class="container">
         <div class="footer-content">
             <div class="footer-column">
-                <h3>About <span>Ecoland</span></h3>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                <h3>About <span>Rootify</span></h3>
+                <p>Rootify: Tanamkan mimpi petualanganmu, saksikan kisahmu tumbuh bersama setiap langkah. Setiap perjalanan adalah bab baru dalam buku hidupmu yang unik</p>
                 <div class="social-links">
                     <a href="#" class="social-link">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -29,12 +29,8 @@
             <div class="footer-column">
                 <h3>Information</h3>
                 <ul class="footer-links">
-                    <li><a href="#">Online Enquiry</a></li>
-                    <li><a href="#">General Enquiry</a></li>
                     <li><a href="#">Booking</a></li>
                     <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Refund Policy</a></li>
-                    <li><a href="#">Call Us</a></li>
                 </ul>
             </div>
 
@@ -45,8 +41,6 @@
                     <li><a href="#">Hotel and Restaurant</a></li>
                     <li><a href="#">Beach</a></li>
                     <li><a href="#">Nature</a></li>
-                    <li><a href="#">Camping</a></li>
-                    <li><a href="#">Party</a></li>
                 </ul>
             </div>
 
@@ -58,26 +52,26 @@
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                             <circle cx="12" cy="10" r="3"/>
                         </svg>
-                        <span>203 Fake St. Mountain View, San Francisco, California, USA</span>
+                        <span>Jl. Kaliurang No.Km. 14,5, Krawitan, Umbulmartani, Kec. Ngemplak, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55584</span>
                     </li>
                     <li>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                         </svg>
-                        <span>+2 392 3929 210</span>
+                        <span>+62 896 2678 1545</span>
                     </li>
                     <li>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                             <polyline points="22,6 12,13 2,6"/>
                         </svg>
-                        <span>info@yourdomain.com</span>
+                        <span>23523209.students.uii.ac.id</span>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Copyright ©2024 All rights reserved | This template is made with ♥ by Colorlib</p>
+            <p>Copyright ©2024 Vortex</p>
         </div>
     </div>
 </footer>

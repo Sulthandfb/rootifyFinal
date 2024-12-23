@@ -61,7 +61,7 @@ if (isset($_GET['delete_trip'])) {
 // Fetch user's saved itineraries
 $user_id = $_SESSION['user_id'];
 $query = "SELECT i.*, 
-          COUNT(DISTINCT ia.day) as total_days,
+        COUNT(DISTINCT ia.day) as total_days,
           COUNT(DISTINCT ia.attraction_id) as total_attractions
           FROM itineraries i
           LEFT JOIN itinerary_attractions ia ON i.id = ia.itinerary_id

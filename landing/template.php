@@ -242,22 +242,22 @@
                 <div class="service-icon">
                     <img src="jalan.jpg" alt="Weather Icon" width="80" height="80">
                 </div>
-                <h3>Calculated Weather</h3>
-                <p>Built Wicket longer admire do barton vanity itself do in it.</p>
+                <h3>Hotel</h3>
+                <ng>Sebuah tempat tinggal dengan suasana yang nyaman, segar, dan mewah</p>
             </div>
             <div class="service-card">
                 <div class="service-icon">
-                    <img src="jomblang.jpg" alt="Flight Icon" width="80" height="80">
+                    <img src="../img/paket.jpg" alt="Flight Icon" width="80" height="80">
                 </div>
-                <h3>Best Flights</h3>
-                <p>Engrossed listening. Park gate sell they west hard for the.</p>
+                <h3>Paket Wisata</h3>
+                <p>Menyediakan berwisata ke beberapa tempat wisata dengan kuliner beserta pemandu yang ramah</p>
             </div>
             <div class="service-card">
                 <div class="service-icon">
-                    <img src="indrayanti.jpg" alt="Events Icon" width="80" height="80">
+                    <img src="../img/indrayanti.jpg" alt="Events Icon" width="80" height="80">
                 </div>
-                <h3>Local Events</h3>
-                <p>Barton vanity itself do in it. Preferd to men it engrossed listening.</p>
+                <h3>Kuliner</h3>
+                <p>Makan dan minum dengan rasa yang lezat dan memuaskan</p>
             </div>
         </div>
     </div>
@@ -407,7 +407,7 @@
     position: relative; /* Ubah dari fixed ke relative */
     width: 100%; /* Tambahkan width 100% */
     height: 300px;
-    background-image: url('indrayanti.jpg');
+    background-image: url('../img/indrayanti.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -1013,88 +1013,288 @@ flex-direction: row-reverse;
 }
 </style>
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>About <span>Ecoland</span></h3>
-                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-link">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-link">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                        </svg>
-                    </a>
+<!-- 
+<style>
+        .review-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .review-container h2 {
+            margin: 0;
+            margin-bottom: 20px;
+            color: #333333;
+            text-align: center;
+        }
+
+        .review-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555555;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .review-list {
+            margin-top: 30px;
+        }
+
+        .review-item {
+            background-color: #f4f4f4;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .review-item strong {
+            color: #333333;
+            font-size: 16px;
+        }
+
+        .review-item .rating {
+            color: #f4c542;
+            font-size: 14px;
+        }
+
+        .review-item p {
+            margin: 5px 0 0 0;
+            color: #555555;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:active {
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="review-container">
+        <h2>Leave a Review</h2>
+        <form class="review-form" id="reviewForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating</label>
+                <select id="rating" required>
+                    <option value="">Select Rating</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="5">5 Stars</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea id="comment" rows="4" required></textarea>
+            </div>
+            <button type="submit">Submit Review</button>
+        </form>
+
+        <div class="review-list" id="reviewList">
+            Reviews will be appended here
+        <!-- </div>
+    </div>
+
+    <script>
+        const reviewForm = document.getElementById('reviewForm');
+        const reviewList = document.getElementById('reviewList');
+
+        reviewForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const rating = document.getElementById('rating').value;
+            const comment = document.getElementById('comment').value;
+
+            if (username && rating && comment) {
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+                reviewItem.innerHTML = `
+                    <strong>${username}</strong> <span class="rating">${'⭐'.repeat(rating)}</span>
+                    <p>${comment}</p>
+                `;
+                reviewList.appendChild(reviewItem);
+
+                reviewForm.reset();
+            } else {
+                alert('Please fill out all fields!');
+            }
+        });
+    </script>   -->
+    <style>
+        .comments-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .comment {
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #2563eb;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+        }
+
+        .username {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .rating {
+            display: flex;
+            gap: 2px;
+            margin: 8px 0;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 18px;
+        }
+
+        .comment-text {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .date {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="comments-container">
+        <h2 class="title">Ulasan Pelanggan</h2>
+        
+        <div class="comment">
+            <div class="user-info">
+                <div class="avatar">S</div>
+                <div>
+                    <div class="username">Sarah</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
                 </div>
             </div>
-
-            <div class="footer-column">
-                <h3>Information</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Online Enquiry</a></li>
-                    <li><a href="#">General Enquiry</a></li>
-                    <li><a href="#">Booking</a></li>
-                    <li><a href="#">Privacy</a></li>
-                    <li><a href="#">Refund Policy</a></li>
-                    <li><a href="#">Call Us</a></li>
-                </ul>
+            <div class="comment-text">
+                Sangat puas dengan produk ini! Kualitasnya luar biasa dan pengirimannya cepat.
             </div>
-
-            <div class="footer-column">
-                <h3>Experience</h3>
-                <ul class="footer-links">
-                    <li><a href="#">Adventure</a></li>
-                    <li><a href="#">Hotel and Restaurant</a></li>
-                    <li><a href="#">Beach</a></li>
-                    <li><a href="#">Nature</a></li>
-                    <li><a href="#">Camping</a></li>
-                    <li><a href="#">Party</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h3>Have a Questions?</h3>
-                <ul class="contact-info">
-                    <li>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                            <circle cx="12" cy="10" r="3"/>
-                        </svg>
-                        <span>203 Fake St. Mountain View, San Francisco, California, USA</span>
-                    </li>
-                    <li>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                        </svg>
-                        <span>+2 392 3929 210</span>
-                    </li>
-                    <li>
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
-                        </svg>
-                        <span>info@yourdomain.com</span>
-                    </li>
-                </ul>
-            </div>
+            <div class="date">23 Dec 2024</div>
         </div>
-        <div class="footer-bottom">
-            <p>Copyright ©2024 All rights reserved | This template is made with ♥ by Colorlib</p>
+
+        <div class="comment">
+            <div class="user-info">
+                <div class="avatar" style="background: #0891b2;">B</div>
+                <div>
+                    <div class="username">Budi</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star" style="color: #ddd;">★</span>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-text">
+                Produknya bagus, sesuai dengan deskripsi. Pelayanan ramah dan responsif.
+            </div>
+            <div class="date">22 Dec 2024</div>
+        </div>
+
+        <div class="comment">
+            <div class="user-info">
+                <div class="avatar" style="background: #059669;">R</div>
+                <div>
+                    <div class="username">Rina</div>
+                    <div class="rating">
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                        <span class="star">★</span>
+                    </div>
+                </div>
+            </div>
+            <div class="comment-text">
+                Rekomendasi banget! Harganya worth it dengan kualitas yang didapat.
+            </div>
+            <div class="date">21 Dec 2024</div>
         </div>
     </div>
-</footer>
+
+<?php include '../navfot/footer.php'; ?>
 
 <style>
 /* Footer styles */
