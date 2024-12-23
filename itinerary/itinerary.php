@@ -129,7 +129,7 @@ include '../filter_wisata/db_connect.php';
 
     <section class="section__container about__container" id="about">
       <div class="about__image">
-        <img src="../img/maskot.jpg" alt="about" />
+        <img src="../img/Maskot.png" alt="about" width="100px" height="700px"/>
       </div>
       <div class="about__content">
         <p class="section__subheader">ABOUT US</p>
