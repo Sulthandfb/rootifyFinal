@@ -1,7 +1,7 @@
 <?php
 session_start();
 session_destroy();
-header("Location: landingpage.php");
+header("Location: ../landing/landingpage.php");
 exit();
 ?>
 

@@ -1,18 +1,13 @@
-<?php
-session_start();
-
-// Periksa apakah pengguna sudah login, jika belum, arahkan ke halaman login
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../authentication/index.php"); // Redirect ke halaman login jika belum login
-    exit();
-}
-
-// Sekarang Anda dapat mengakses data pengguna dari session
-$user_id = $_SESSION['user_id'];
-$username = $_SESSION['username'];
-?>
+<?php include '../navfot/navbar.php'; ?>
+<pre>
 
 
+
+
+
+
+
+</pre>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,62 +25,6 @@ $username = $_SESSION['username'];
 
         body {
             overflow-x: hidden;
-        }
-
-        /* Navigation styles */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 7%;
-            position: relative;
-            z-index: 2;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #181E4B;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #181E4B;
-            font-weight: 500;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .login-btn {
-            color: #181E4B;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .signup-btn {
-            padding: 0.5rem 1.5rem;
-            border: 1px solid #181E4B;
-            border-radius: 5px;
-            text-decoration: none;
-            color: #181E4B;
-            font-weight: 500;
-        }
-
-        .language-select {
-            margin-left: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         /* Hero section styles */
@@ -271,25 +210,6 @@ $username = $_SESSION['username'];
     </style>
 </head>
 <body>
-    <nav>
-        <div class="logo">Rootify</div>
-        <ul class="nav-links">
-            <li><a href="#service">Home</a></li>
-            <li><a href="#destination">My Trips</a></li>
-            <li><a href="#booking">Hotels</a></li>
-            <li><a href="#testimonial">Itinerary</a></li>
-        </ul>
-        <div class="nav-buttons">
-            <a href="#login" class="login-btn">Login</a>
-            <a href="#signup" class="signup-btn">Sign up</a>
-            <div class="language-select">
-                <span>EN</span>
-                <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-                    <path d="M1 1L5 5L9 1" stroke="#181E4B" stroke-width="2"/>
-                </svg>
-            </div>
-        </div>
-    </nav>
 
     <section class="hero">
         <div class="hero-content">

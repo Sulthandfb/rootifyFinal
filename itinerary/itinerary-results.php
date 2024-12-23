@@ -757,5 +757,6 @@ function getCategoryIcon($category) {
             return icons[category.toLowerCase()] || '../icons/leaves.svg';
         }
     </script>
+    <?php include '../navfot/footer.php'; ?>
 </body>
 </html>

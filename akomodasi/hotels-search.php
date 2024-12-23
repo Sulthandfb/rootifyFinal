@@ -406,6 +406,11 @@ $result = $db->query($sql);
     </style>
 </head>
 <body>
+<?php include '../navfot/navbar.php'; ?>
+    <pre>
+
+    
+    </pre>
     <div class="main-container">
         <div class="content-section">
             <h2>Available Properties</h2>
@@ -509,6 +514,10 @@ $result = $db->query($sql);
         }
         ?>
     </script>
+    <pre>
+
+    </pre>
+    <?php include '../navfot/footer.php';?>
 </body>
 </html>
 

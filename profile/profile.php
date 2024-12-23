@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="sidebar">
             <span class="logo">Rootify</span>
             <ul class="sidebar-menu">
-                <li><a href="landingpage.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="../landing/landingpage.php"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
                 <li><a href="bookings.php"><i class="fas fa-calendar-check"></i> My Bookings</a></li>
                 <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
