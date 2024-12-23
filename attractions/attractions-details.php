@@ -260,23 +260,6 @@ if (!$attraction) {
             <img src="<?php echo htmlspecialchars($attraction['image_url']); ?>" 
                  alt="Main view of <?php echo htmlspecialchars($attraction['name']); ?>" 
                  class="main-image">
-            <?php if (!empty($attraction['photo_gallery'])): ?>
-                <div class="thumbnails">
-                    <?php 
-                    $photos = json_decode($attraction['photo_gallery'], true);
-                    if (is_array($photos)):
-                        foreach ($photos as $photo): 
-                    ?>
-                        <img src="<?php echo htmlspecialchars($photo); ?>" 
-                             alt="Gallery image" 
-                             class="thumbnail" 
-                             onclick="updateMainImage(this.src)">
-                    <?php 
-                        endforeach;
-                    endif; 
-                    ?>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
 

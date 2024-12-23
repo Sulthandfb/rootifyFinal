@@ -205,7 +205,7 @@
             <ul class="secondary-nav-links">
                 <li><a href="#" class="secondary-nav-link active">Home</a></li>
                 <li><a href="../akomodasi/hotels.php" class="secondary-nav-link">Akomodasi</a></li>
-                <li><a href="#" class="secondary-nav-link">Filter</a></li>
+                <li><a href="../itinerary/itinerary.php" class="secondary-nav-link">Itinerary</a></li>
                 <li><a href="#" class="secondary-nav-link">Tempat Populer</a></li>
             </ul>
         </div>

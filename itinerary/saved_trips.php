@@ -337,7 +337,7 @@ $result = mysqli_stmt_get_result($stmt);
             <?php if (mysqli_num_rows($result) > 0): ?>
                 <?php while ($trip = mysqli_fetch_assoc($result)): ?>
                     <div class="trip-card">
-                        <img src="../img/yogyakarta.jpg" alt="Trip thumbnail" class="trip-image">
+                        <img src="../img/borobudur.jpg" alt="Trip thumbnail" class="trip-image">
                         <div class="trip-content">
                             <h2 class="trip-title"><?php echo htmlspecialchars($trip['trip_name']); ?></h2>
                             <div class="trip-details">
