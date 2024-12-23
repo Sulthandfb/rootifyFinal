@@ -19,15 +19,14 @@ include '../filter_wisata/db_connect.php';
     <link rel="stylesheet" href="hotels.css" />
     <title>Web Design Mastery | Rayal Park</title>
   </head>
-  
   <body>
     <header class="header">
-      <nav>
+      <!-- <nav>
         <div class="nav__bar">
           <div class="logo">
             <a href="#"><img src="../img/logo1.png" alt="logo" /></a>
           </div>
-          <div class="nav__menu__btn" id="menu-btn">
+          <div class="nav_menu_btn" id="menu-btn">
             <i class="ri-menu-line"></i>
           </div>
         </div>
@@ -39,14 +38,14 @@ include '../filter_wisata/db_connect.php';
           <li><a href="#contact">Contact</a></li>
         </ul>
         <button class="btn nav__btn">Login</button>
-      </nav>
-      <div class="section__container header__container" id="home">
+      </nav> -->
+      <div class="section_container header_container" id="home">
         <p>Simple - Unique - Friendly</p>
         <h1>Create a Story of Your <br />Journey with <span>Rootify</span>.</h1>
       </div>
     </header>
 
-    <section class="section__container booking__container">
+    <section class="section_container booking_container">
       <form action="../akomodasi/hotels-search.php" method="POST" class="booking__form">
         <div class="input__group">
             <span><i class="ri-calendar-2-fill"></i></span>
@@ -62,13 +61,13 @@ include '../filter_wisata/db_connect.php';
                 <input type="date" id="endDate" name="endDate" required>
             </div>
         </div>
-        <div class="input__group input__btn">
+        <div class="input_group input_btn">
             <button class="btn" type="submit" name="submit">PLANNING</button>
         </div>
       </form>
     </section>    
 
-    <section class="section__container about__container" id="about">
+    <section class="section_container about_container" id="about">
       <div class="about__image">
         <img src="../img/recept.jpg" alt="about" />
       </div>
@@ -87,7 +86,7 @@ include '../filter_wisata/db_connect.php';
       </div>
     </section>
 
-    <section class="section__container room__container">
+    <section class="section_container room_container">
       <p class="section__subheader">OUR LIVING ROOM</p>
       <h2 class="section__header">The Most Memorable Rest Time Starts Here.</h2>
       <div class="room__grid">
@@ -103,13 +102,13 @@ include '../filter_wisata/db_connect.php';
             while($row = $result->fetch_assoc()) {
                 echo '
                 <div class="room__card">
-                  <div class="room__card__image">
+                  <div class="room_card_image">
                     <img src="'.htmlspecialchars($row['image_url']).'" alt="room" />
-                    <div class="room__card__icons">
+                    <div class="room_card_icons">
                       <span class="rating"><i class="ri-star-fill"></i> '.htmlspecialchars($row['rating']).'</span>
                     </div>
                   </div>
-                  <div class="room__card__details">
+                  <div class="room_card_details">
                     <h4>'.htmlspecialchars($row['name']).'</h4>
                     <span class="room-category '.htmlspecialchars($row['category']).'">
                       '.htmlspecialchars($row['category']).'
@@ -129,7 +128,7 @@ include '../filter_wisata/db_connect.php';
     </section>
 
     <section class="service" id="service">
-      <div class="section__container service__container">
+      <div class="section_container service_container">
         <div class="service__content">
           <p class="section__subheader">SERVICES</p>
           <h2 class="section__header">Strive Only For The Best.</h2>
@@ -155,7 +154,7 @@ include '../filter_wisata/db_connect.php';
       </div>
     </section>
 
-    <section class="section__container banner__container">
+    <section class="section_container banner_container">
       <div class="banner__content">
         <div class="banner__card">
           <h4>25+</h4>

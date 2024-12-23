@@ -144,7 +144,7 @@ nav.scrolled .nav__links a {
   background-color: var(--primary-color);
 }
 
-.nav__menu__btn {
+.nav_menu_btn {
   font-size: 1.5rem;
   color: var(--white);
   cursor: pointer;
@@ -355,12 +355,12 @@ form button.btn {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
-.room__card__image {
+.room_card_image {
   position: relative;
   isolation: isolate;
 }
 
-.room__card__image img {
+.room_card_image img {
   width: 100%; /* Mengisi lebar card */
   height: 200px; /* Tetapkan tinggi seragam */
   object-fit: cover; /* Memastikan gambar dipotong sesuai ukuran */
@@ -369,7 +369,7 @@ form button.btn {
 }
 
 
-.room__card__icons {
+.room_card_icons {
   position: absolute;
   right: 1rem;
   bottom: 1rem;
@@ -382,7 +382,7 @@ form button.btn {
   z-index: 1;
 }
 
-.room__card__icons span {
+.room_card_icons span {
   padding: 6px 10px;
   border-radius: 15px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
@@ -390,7 +390,7 @@ form button.btn {
   color: #ffcc00;
 }
 
-.room__card__details {
+.room_card_details {
   padding: 1rem;
 }
 
@@ -597,7 +597,7 @@ form button.btn {
   color: var(--text-light);
 }
 
-.explore :is(.section__subheader, .section__header) {
+.explore :is(.section_subheader, .section_header) {
   text-align: center;
   margin-inline: auto;
 }
@@ -657,7 +657,7 @@ form button.btn {
   gap: 4rem 2rem;
 }
 
-.footer__col .section__description {
+.footer_col .section_description {
   margin-block: 2rem;
 }
 
@@ -772,7 +772,7 @@ form button.btn {
     background-color: transparent;
   }
 
-  .nav__menu__btn {
+  .nav_menu_btn {
     display: none;
   }
 
