@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../filter_wisata/db_connect.php';
 ?>
 
@@ -21,7 +22,24 @@ include '../filter_wisata/db_connect.php';
   
   <body>
     <header class="header">
-
+      <nav>
+        <div class="nav__bar">
+          <div class="logo">
+            <a href="#"><img src="../img/logo1.png" alt="logo" /></a>
+          </div>
+          <div class="nav__menu__btn" id="menu-btn">
+            <i class="ri-menu-line"></i>
+          </div>
+        </div>
+        <ul class="nav__links" id="nav-links">
+          <li><a href="../landing/dashboard.php">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#service">Services</a></li>
+          <li><a href="#explore">Explore</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="btn nav__btn">Login</button>
+      </nav>
       <div class="section__container header__container" id="home">
         <p>Simple - Unique - Friendly</p>
         <h1>Create a Story of Your <br />Journey with <span>Rootify</span>.</h1>
