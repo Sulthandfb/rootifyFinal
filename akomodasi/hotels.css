@@ -100,7 +100,7 @@ body {
   background-repeat: no-repeat;
 }
 
-nav {
+/* nav {
   position: fixed;
   isolation: isolate;
   top: 0;
@@ -179,7 +179,7 @@ nav.scrolled .nav__links a {
 
 .nav__btn {
   display: none;
-}
+} */
 
 .header__container {
   padding-block: 10rem 15rem;
@@ -732,7 +732,7 @@ form button.btn {
 }
 
 @media (width > 768px) {
-  nav {
+  /* nav {
     padding: 1rem 15rem;
     display: flex;
     width: 100%;
@@ -803,7 +803,7 @@ form button.btn {
 
   .nav__links a:hover::after {
     width: 100%;
-  }
+  } */
 
   .about__container {
     grid-template-columns: repeat(2, 1fr);

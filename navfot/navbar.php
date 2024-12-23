@@ -155,10 +155,10 @@ session_start();
                 <span class="brand-text">Rootify</span>
             </a>
             <ul class="nav-links">
-                <li><a href="#">Trip</a></li>
-                <li><a href="#">Destinasi</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Bantuan</a></li>
+                <li><a href="../landing/template.php">Home</a></li>
+                <li><a href="../akomodasi/hotels.php">Akomodasi</a></li>
+                <li><a href="../itinerary/saved_trips.php">MyTrips</a></li>
+                <li><a href="../itinerary/itinerary.php">Itinerary</a></li>
             </ul>
             <div class="nav-buttons">
                 <?php if(isset($_SESSION['user_id'])): ?>
