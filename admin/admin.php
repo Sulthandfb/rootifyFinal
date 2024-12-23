@@ -38,7 +38,7 @@
                 <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                   <h1 class="h2 mb-0 ls-tight">
                     <img
-                      src="https://bytewebster.com/img/logo.png"
+                      src="../img/logo.png"
                       width="40"
                     />
                     Rootify Aplication

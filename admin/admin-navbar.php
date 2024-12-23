@@ -7,7 +7,7 @@
     <!-- Navbar content -->
     <a class="navbar-brand py-lg-2 mb-lg-5 px-lg-6 me-0" href="#">
       <h3 class="text-success">
-        <img src="https://bytewebster.com/img/logo.png" width="40" /><span
+        <img src="../img/logo.png" width="40" /><span
           class="text-info"
           >Root</span
         >ify
@@ -41,6 +41,11 @@
         <li class="nav-item">
           <a class="nav-link" href="admin-view-attractions.php">
             <i class="bi bi-file-text"></i> View Attractions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="admin-package.php">
+            <i class="bi bi-file-text"></i> Tour Packages
           </a>
         </li>
       </ul>

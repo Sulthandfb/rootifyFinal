@@ -91,7 +91,7 @@ $result = mysqli_stmt_get_result($stmt);
         }
 
         body {
-            background-color: #f5f5f5;
+            background-color:rgb(255, 255, 255);
         }
 
         .container {

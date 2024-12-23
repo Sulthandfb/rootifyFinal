@@ -550,6 +550,7 @@
             </div>
         </div>
     </footer>
+    <?php include '../chatbot/chatbot.php'; ?>
 
     <script src="script.js"></script>
     <script>
