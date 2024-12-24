@@ -1,13 +1,12 @@
-<?php include '../navfot/navbar.php'; ?>
-<pre>
+<?php 
+include '../navfot/navbar.php'; 
+include '../filter_wisata/db_connect.php'; 
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-
-
-
-
-
-</pre>
+?>
+<pre></pre>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,6 +32,9 @@
             padding: 2rem 7%;
             position: relative;
             min-height: calc(100vh - 90px);
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
         }
 
         .hero::after {
@@ -49,6 +51,7 @@
 
         .hero-content {
             flex: 1;
+            max-width: 600px;
             padding-right: 2rem;
             padding-top: 4rem;
         }
@@ -56,6 +59,9 @@
         .hero-image {
             flex: 1;
             position: relative;
+            max-width: 500px;
+            display: flex;
+            justify-content: center;
         }
 
         .category-label {
@@ -170,17 +176,20 @@
             }
 
             .hero {
-                flex-direction: column;
+                flex-direction: column-reverse;
                 padding: 1rem 5%;
+                text-align: center;
+                gap: 1rem;
             }
 
             .hero-content {
                 padding-right: 0;
-                text-align: center;
+                padding-top: 2rem;
             }
 
-            .hero-title {
-                font-size: 2.5rem;
+            .hero-image {
+                max-width: 300px;
+                margin: 0 auto;
             }
 
             .cta-buttons {
@@ -210,7 +219,6 @@
     </style>
 </head>
 <body>
-
     <section class="hero">
         <div class="hero-content">
             <p class="category-label">Best Destinations in Yogyakarta</p>
@@ -404,14 +412,14 @@
 <style>
 /* New choose destination section styles */
 .choose-destination {
-    position: relative; /* Ubah dari fixed ke relative */
-    width: 100%; /* Tambahkan width 100% */
+    position: relative; 
+    width: 100%; 
     height: 300px;
     background-image: url('../img/indrayanti.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    z-index: 1; /* Tambahkan z-index */
+    z-index: 1; 
 }
 
 .overlay {
@@ -493,63 +501,63 @@
 <!-- Add this section after the services section -->
 <section class="destinations">
     <div class="container">
-        <p class="subtitle">Top Selling</p>
-        <h2 class="section-title" style="text-align: center;">Top Destinations</h2>
+        <p class="subtitle">Favorite Destinations</p>
+        <h2 class="section-title" style="text-align: center;">Top Destinations in Yogyakarta</h2>
         
         <div class="destinations-grid">
             <a href="#" class="destination-card">
                 <div class="destination-image">
-                    <img src="jalan.jpg" alt="Rome Colosseum">
+                    <img src="../img/borobudur.jpg" alt="Borobudur Temple">
                 </div>
                 <div class="destination-info">
                     <div class="destination-header">
-                        <h3>Rome, Italy</h3>
-                        <span class="price">$5.42k</span>
+                        <h3>Candi Borobudur</h3>
+                        <span class="price">Rp 750k</span>
                     </div>
                     <div class="trip-duration">
                         <svg class="plane-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <path d="M16.5 2.25L8.25 10.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M16.5 2.25L11.25 16.5L8.25 10.5L2.25 7.5L16.5 2.25Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span>10 Days Trip</span>
+                        <span>1 Day Trip</span>
                     </div>
                 </div>
             </a>
 
             <a href="#" class="destination-card">
                 <div class="destination-image">
-                    <img src="indrayanti.jpg" alt="London Big Ben">
+                    <img src="../img/malioboro.jpg" alt="Malioboro Street">
                 </div>
                 <div class="destination-info">
                     <div class="destination-header">
-                        <h3>London, UK</h3>
-                        <span class="price">$4.2k</span>
+                        <h3>Jalan Malioboro</h3>
+                        <span class="price">Rp 500k</span>
                     </div>
                     <div class="trip-duration">
                         <svg class="plane-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <path d="M16.5 2.25L8.25 10.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M16.5 2.25L11.25 16.5L8.25 10.5L2.25 7.5L16.5 2.25Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span>12 Days Trip</span>
+                        <span>Half Day Trip</span>
                     </div>
                 </div>
             </a>
 
             <a href="#" class="destination-card">
                 <div class="destination-image">
-                    <img src="jomblang.jpg" alt="Full Europe Tour">
+                    <img src="../img/prambanan.jpg" alt="Prambanan Temple">
                 </div>
                 <div class="destination-info">
                     <div class="destination-header">
-                        <h3>Full Europe</h3>
-                        <span class="price">$15k</span>
+                        <h3>Candi Prambanan</h3>
+                        <span class="price">Rp 650k</span>
                     </div>
                     <div class="trip-duration">
                         <svg class="plane-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <path d="M16.5 2.25L8.25 10.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M16.5 2.25L11.25 16.5L8.25 10.5L2.25 7.5L16.5 2.25Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
-                        <span>28 Days Trip</span>
+                        <span>1 Day Trip</span>
                     </div>
                 </div>
             </a>
@@ -778,10 +786,26 @@ flex-direction: row-reverse;
 <!-- Add this section after the destinations section -->
 <section class="packages">
     <div class="container">
+        <h2 class="section-title">Our Tour Packages</h2>
+        <!-- Previous packages section code remains the same -->
         <div class="packages-grid">
+            <?php
+            // Fetch tour packages from the database
+            $sql = "SELECT * FROM tourist_packets LIMIT 3";
+            $result = $db->query($sql);
+            
+            $images = [
+                '../img/borobudur.jpg',
+                '../img/malioboro.jpg',
+                '../img/ullensentalu.jpg'
+            ];
+            
+            $i = 0; // Counter for images array
+            while ($package = $result->fetch_assoc()):
+            ?>
             <div class="package-card">
                 <div class="package-image">
-                    <img src="/placeholder.svg?height=200&width=400" alt="Dining setup">
+                    <img src="<?php echo $images[$i]; ?>" alt="<?php echo htmlspecialchars($package['name'] ?? 'Tour Package'); ?>">
                     <button class="favorite-btn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -789,85 +813,29 @@ flex-direction: row-reverse;
                     </button>
                 </div>
                 <div class="package-info">
-                    <h3>Paket Hemat</h3>
+                    <h3><?php echo htmlspecialchars($package['name'] ?? 'Package Name'); ?></h3>
                     <div class="rating">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="#FFD700">
                             <path d="M8 0l2.5 5 5.5.8-4 3.9 1 5.3L8 12.5 3 15l1-5.3-4-3.9 5.5-.8z"/>
                         </svg>
-                        <span>4.5 Rating</span>
-                        <span class="location">Bekasi</span>
-                        <span class="dates">Jul 2-7</span>
+                        <span><?php echo number_format($package['rating'] ?? 0, 1); ?> Rating</span>
+                        <span class="location"><?php echo htmlspecialchars($package['meeting_point'] ?? 'Location'); ?></span>
+                        <span class="dates"><?php echo htmlspecialchars($package['duration'] ?? 'Duration'); ?></span>
                     </div>
                     <div class="price">
-                        <h4>Rp. 350.000,-</h4>
+                        <h4>Rp <?php echo number_format($package['discounted_price'] ?? 0, 0, ',', '.'); ?>,-</h4>
                         <p>Including taxes and fees</p>
                     </div>
                     <div class="package-buttons">
-                        <button class="view-btn">View Rooms</button>
-                        <button class="book-btn">Pesan</button>
+                        <a href="detail_paket.php?id=<?php echo $package['packet_id']; ?>" class="view-btn">View Details</a>
+                        <a href="pembayaran.php?type=package&id=<?php echo $package['packet_id']; ?>" class="book-btn">Book Now</a>
                     </div>
                 </div>
             </div>
-
-            <div class="package-card">
-                <div class="package-image">
-                    <img src="/placeholder.svg?height=200&width=400" alt="Dining setup">
-                    <button class="favorite-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="package-info">
-                    <h3>Paket Menuju Indonesia Emas</h3>
-                    <div class="rating">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="#FFD700">
-                            <path d="M8 0l2.5 5 5.5.8-4 3.9 1 5.3L8 12.5 3 15l1-5.3-4-3.9 5.5-.8z"/>
-                        </svg>
-                        <span>5.0 Rating</span>
-                        <span class="location">Jakarta</span>
-                        <span class="dates">Jul 2-7</span>
-                    </div>
-                    <div class="price">
-                        <h4>Rp. 300.000,-</h4>
-                        <p>Including taxes and fees</p>
-                    </div>
-                    <div class="package-buttons">
-                        <button class="view-btn">View Rooms</button>
-                        <button class="book-btn">Pesan</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="package-card">
-                <div class="package-image">
-                    <img src="/placeholder.svg?height=200&width=400" alt="Dining setup">
-                    <button class="favorite-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="package-info">
-                    <h3>Paket Selalu Bahagia</h3>
-                    <div class="rating">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="#FFD700">
-                            <path d="M8 0l2.5 5 5.5.8-4 3.9 1 5.3L8 12.5 3 15l1-5.3-4-3.9 5.5-.8z"/>
-                        </svg>
-                        <span>4.5 Rating</span>
-                        <span class="location">Lembang</span>
-                        <span class="dates">Jul 2-7</span>
-                    </div>
-                    <div class="price">
-                        <h4>Rp. 450.000,-</h4>
-                        <p>Including taxes and fees</p>
-                    </div>
-                    <div class="package-buttons">
-                        <button class="view-btn">View Rooms</button>
-                        <button class="book-btn">Pesan</button>
-                    </div>
-                </div>
-            </div>
+            <?php 
+            $i++; // Increment counter
+            endwhile; 
+            ?>
         </div>
     </div>
 </section>
@@ -1042,7 +1010,7 @@ flex-direction: row-reverse;
 
         label {
             display: block;
-            margin-bottom: 5px;
+margin-bottom: 5px;
             font-weight: bold;
             color: #555555;
         }
@@ -1131,7 +1099,7 @@ flex-direction: row-reverse;
 
         <div class="review-list" id="reviewList">
             Reviews will be appended here
-        <!-- </div>
+        </div>
     </div>
 
     <script>
@@ -1159,7 +1127,7 @@ flex-direction: row-reverse;
                 alert('Please fill out all fields!');
             }
         });
-    </script>   -->
+    </script>   
     <style>
         .comments-container {
             max-width: 800px;
@@ -1295,6 +1263,7 @@ flex-direction: row-reverse;
     </div>
 
 <?php include '../navfot/footer.php'; ?>
+<?php include '../chatbot/chatbot.php'; ?>
 
 <style>
 /* Footer styles */
@@ -1444,3 +1413,4 @@ flex-direction: row-reverse;
     </script>
 </body>
 </html>
+

@@ -369,7 +369,7 @@ $db->close();
                 </ul>
                 <h3 style="margin-top: 20px;">What's Included:</h3>
                 <p><?php echo nl2br(htmlspecialchars($package['includes'])); ?></p>
-                <button class="book-button">Book Now</button>
+                <a href="pembayaran.php?type=package&id=<?php echo $package['packet_id']; ?>" class="book-button">Book Now</a>
                 <p style="margin-top: 16px; font-size: 0.9em; color: #666;">
                     <?php echo htmlspecialchars($package['cancellation_policy']); ?>
                 </p>

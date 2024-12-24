@@ -1,6 +1,18 @@
 <?php
-// Include the database connection file
-include '../filter_wisata/db_connect.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// db_connect.php
+$hostname = "dbserver"; 
+$username = "root";      
+$password = "rootpassword"; 
+$database_name = "erd_rootify";
+
+$db = mysqli_connect($hostname, $username, $password, $database_name);
+
+if ($db->connect_error) {
+    die("Koneksi database rusak: " . $db->connect_error);
+}
 
 // Get the hotel_id from the URL parameter
 $hotel_id = isset($_GET['hotel_id']) ? intval($_GET['hotel_id']) : 0;
@@ -153,6 +165,7 @@ $images_result = $stmt->get_result();
             <div class="room-details">
                 <h2 class="section-title">Kamar Tersedia</h2>
                 <?php while ($room = $rooms_result->fetch_assoc()): ?>
+                <!-- Di dalam room card loop, ganti form booking dengan link langsung -->
                 <div class="room-card" data-room-id="<?php echo $room['room_id']; ?>">
                     <div class="room-image">
                         <img src="<?php echo htmlspecialchars($room['image_url']); ?>" alt="<?php echo htmlspecialchars($room['room_name']); ?>" class="main-room-image">
@@ -179,7 +192,8 @@ $images_result = $stmt->get_result();
                             <div class="price-amount">IDR <?php echo number_format($room['price'], 0); ?></div>
                             <div class="price-info">/kamar/malam</div>
                         </div>
-                        <button class="book-button">Pesan</button>
+                        <!-- Ganti form dengan link langsung -->
+                        <a href="../landing/pembayaran.php?type=hotel&id=<?php echo $room['room_id']; ?>" class="book-button">Pesan Sekarang</a>
                     </div>
                 </div>
                 <?php endwhile; ?>
@@ -352,6 +366,25 @@ $images_result = $stmt->get_result();
                         // Reload the page to show the popup with the selected room details
                         location.reload();
                     }
+                });
+            });
+
+            // Add handling for booking form submission
+            const bookingForms = document.querySelectorAll('.booking-form');
+            bookingForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    // Prevent default only if you want to add additional validation
+                    // e.preventDefault();
+                    
+                    // You can add additional validation here if needed
+                    const roomId = this.querySelector('input[name="id"]').value;
+                    if (!roomId) {
+                        e.preventDefault();
+                        alert('Error: Room ID is missing');
+                        return;
+                    }
+                    
+                    // If everything is valid, the form will submit naturally
                 });
             });
 

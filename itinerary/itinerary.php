@@ -27,7 +27,7 @@ include '../filter_wisata/db_connect.php';
           </div>
         </div>
         <ul class="nav__links" id="nav-links">
-          <li><a href="../landing/dashboard.php">Home</a></li>
+          <li><a href="../landing/template.php">Home</a></li>
           <li><a href="../itinerary/saved_trips.php">My Trip</a></li>
           <li><a href="#service">Services</a></li>
           <li><a href="#explore">Explore</a></li>

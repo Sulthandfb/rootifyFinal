@@ -252,7 +252,7 @@ if (!$attraction) {
             <?php if (isset($attraction['ticket_price'])): ?>
                 <h3>Tickets</h3>
                 <p>Price: <?php echo $attraction['ticket_price'] > 0 ? "Rp " . number_format($attraction['ticket_price'], 0, ',', '.') : "Free"; ?></p>
-                <button class="see-options">Buy Tickets</button>
+                <a href="../landing/pembayaran.php?type=attraction&id=<?php echo $attraction['id']; ?>" class="book-button">Buy Tickets</a>
             <?php endif; ?>
         </div>
 

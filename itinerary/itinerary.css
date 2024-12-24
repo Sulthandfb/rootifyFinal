@@ -94,13 +94,13 @@ body {
 }
 
 .header {
-  background-image: url("../img/jalan.jpg");
+  background-image: url("../img/hotel.jpg");
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-nav {
+/* nav {
   position: fixed;
   isolation: isolate;
   top: 0;
@@ -179,7 +179,7 @@ nav.scrolled .nav__links a {
 
 .nav__btn {
   display: none;
-}
+} */
 
 .header__container {
   padding-block: 10rem 15rem;
@@ -343,146 +343,6 @@ form button.btn {
   border-radius: 5px;
 }
 
-.room__grid {
-  margin-top: 4rem;
-  display: grid;
-  gap: 1rem;
-}
-
-.room__card {
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-}
-
-.room__card__image {
-  position: relative;
-  isolation: isolate;
-}
-
-.room__card__icons {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 1rem;
-  z-index: 1;
-}
-
-.room__card__icons span {
-  display: inline-block;
-  padding: 2px 8px;
-  font-size: 1.5rem;
-  background-color: var(--white);
-  border-radius: 100%;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-
-.room__card__icons span:nth-child(1) {
-  color: #f472b6;
-}
-
-.room__card__icons span:nth-child(2) {
-  color: #c084fc;
-}
-
-.room__card__icons span:nth-child(3) {
-  color: #60a5fa;
-}
-
-.room__card__details {
-  padding: 1rem;
-}
-
-.room__card h4 {
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--text-dark);
-}
-
-.room__card p {
-  margin-bottom: 0.5rem;
-  color: var(--text-light);
-}
-
-.room__card h5 {
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-light);
-}
-
-.room__card h5 span {
-  font-size: 1.1rem;
-  color: var(--text-dark);
-}
-
-.footer {
-  background-color: var(--text-dark);
-}
-
-.footer__container {
-  display: grid;
-  gap: 4rem 2rem;
-}
-
-.footer__col .section__description {
-  margin-block: 2rem;
-}
-
-.footer__col h4 {
-  margin-bottom: 2rem;
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--white);
-}
-
-.footer__links {
-  list-style: none;
-  display: grid;
-  gap: 1rem;
-}
-
-.footer__links a {
-  color: var(--text-light);
-  transition: 0.3s;
-}
-
-.footer__links a:hover {
-  color: var(--white);
-}
-
-.footer__socials {
-  margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.footer__socials img {
-  max-width: 25px;
-  opacity: 0.8;
-  transition: 0.3s;
-}
-
-.footer__socials img:hover {
-  opacity: 1;
-}
-
-.footer__bar {
-  padding: 1rem;
-  font-size: 0.9rem;
-  color: var(--text-light);
-  text-align: center;
-}
-
 @media (max-width: 768px) {
   .booking__form {
     transform: translateY(-20%); /* Atur jarak vertikal yang diinginkan */
@@ -491,7 +351,7 @@ form button.btn {
 
 @media (max-width: 576px) {
   .booking__form {
-    transform: translateY(-10%); /* Atur kembali untuk layar yang lebih kecil */
+    transform: translateY(-40%); /* Atur kembali untuk layar yang lebih kecil */
   }
 }
 
@@ -507,7 +367,7 @@ form button.btn {
 }
 
 @media (width > 768px) {
-  nav {
+  /* nav {
     padding: 1rem 15rem;
     display: flex;
     width: 100%;
@@ -578,7 +438,7 @@ form button.btn {
 
   .nav__links a:hover::after {
     width: 100%;
-  }
+  } */
 
   .about__container {
     grid-template-columns: repeat(2, 1fr);
