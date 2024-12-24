@@ -239,7 +239,7 @@ session_start();
             <span></span>
         </div>
         <a href="#" class="nav-brand">
-            <img src="logo1.png" alt="Logo Tim" class="logo">
+            <img src="../img/logo.png" alt="Logo Tim" class="logo">
             <span class="brand-text">Rootify</span>
         </a>
         <ul class="nav-links" id="nav-links">

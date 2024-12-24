@@ -13,6 +13,473 @@ include '../filter_wisata/db_connect.php';
       rel="stylesheet"
     />
     <link rel="stylesheet" href="itinerary.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+:root {
+  --primary-color: #f85616;
+  --primary-color-dark: #cc3a00;
+  --text-dark: #0c0a09;
+  --text-light: #78716c;
+  --white: #ffffff;
+  --max-width: 1200px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.section__container {
+  max-width: var(--max-width);
+  margin: auto;
+  padding: 5rem 1rem;
+}
+
+.section__subheader {
+  margin-bottom: 0.5rem;
+  position: relative;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--text-dark);
+}
+
+.section__subheader::after {
+  position: absolute;
+  content: "";
+  top: 50%;
+  transform: translate(1rem, -50%);
+  height: 2px;
+  width: 4rem;
+  background-color: var(--primary-color);
+}
+
+.section__header {
+  max-width: 600px;
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 3rem;
+  color: var(--text-dark);
+}
+
+.section__description {
+  max-width: 600px;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--white);
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: var(--primary-color-dark);
+}
+
+img {
+  width: 100%;
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo {
+  max-width: 120px;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+.header {
+  background-image: url("../img/hotel.jpg");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+nav {
+  position: fixed;
+  isolation: isolate;
+  top: 0;
+  width: 100%;
+  margin: auto;
+  z-index: 9;
+  background-color: transparent;
+  transition: none;
+}
+
+@keyframes fadeInWhite {
+  from {
+    background-color: transparent;
+  }
+  to {
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+nav.scrolled {
+  animation: fadeInWhite 0.3s forwards;
+}
+
+.nav__links a {
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+nav.scrolled .nav__links a {
+  color: #000;
+}
+
+
+.nav__bar {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background-color: var(--primary-color);
+}
+
+.nav__menu__btn {
+  font-size: 1.5rem;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.nav__links {
+  list-style: none;
+  position: absolute;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: rgba(228, 92, 14, 0.9);
+  transform: translateY(-100%);
+  transition: 0.5s;
+  z-index: -1;
+}
+
+.nav__links.open {
+  transform: translateY(0);
+}
+
+.nav__links a {
+  position: relative;
+  isolation: isolate;
+  padding-bottom: 8px;
+  color: var(--white);
+  transition: 0.3s;
+}
+
+.nav__btn {
+  display: none;
+}
+
+.header__container {
+  padding-block: 10rem 15rem;
+}
+
+.header__container p {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--white);
+  text-align: center;
+  opacity: 0.6;
+}
+
+.header__container h1 {
+  font-size: 4rem;
+  font-weight: 500;
+  line-height: 4.5rem;
+  color: var(--white);
+  text-align: center;
+}
+
+.header__container h1 span {
+  color: var(--primary-color);
+}
+
+.booking__container {
+  padding-block: 0;
+}
+
+.booking__form {
+  padding: 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  background-color: var(--white);
+  border-radius: 10px;
+  transform: translateY(-50%);
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.input__group {
+  flex: 1 1 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.input__group div {
+  align-items: center;
+  justify-content: center;
+  width:50%;
+  padding: 5px;
+}
+
+.input__group span {
+  font-size: 1.75rem;
+  color: var(--primary-color);
+}
+
+.input__group label {
+  font-weight: 500;
+  color: var(--text-dark);
+  display: block;
+  text-align: left;
+  margin-bottom: 3px;
+}
+
+.input__group #tripType {
+    width: 100%;
+    padding: 5px;
+    padding-left: 0px;
+    padding-right: 5px;
+    border: 0px;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.input__group #budget {
+    width: 100%;
+    padding: 5px;
+    padding-left: 0px;
+    border: 0px;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-divider {
+    width: 100%; /* Panjang hr menyesuaikan dengan form */
+    border: 0;
+    border-top: 1px solid var(--text-light); /* Sesuaikan warna dan ketebalan */
+    opacity: 0.5;
+    margin: 0.5rem 0; /* Margin atas dan bawah */
+}  
+
+.input__group input {
+  display: block;
+  width: 100%;
+  max-width: 150px;
+  padding-block: 5px;
+  color: var(--text-dark);
+  font-size: 0.9rem;
+  outline: none;
+  border: none;
+}
+
+.input__group input::placeholder {
+  color: var(--text-light);
+}
+
+.interests-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.interest-option {
+  position: relative;
+  display: inline-block;
+}
+
+.interest-option input[type="checkbox"] {
+  display: none; /* Sembunyikan kotak checkbox default */
+}
+
+.interest-card {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 1px solid var(--text-light);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.interest-option input[type="checkbox"]:checked + .interest-card {
+  background-color: var(--primary-color); /* Sesuaikan warna */
+  color: #fff; /* Warna teks jika dipilih */
+  border-color: var(--primary-color);
+}
+
+form button.btn {
+  width: 60%;
+  height: 60%;
+}
+  
+
+.about__container {
+  overflow: hidden;
+  display: grid;
+  gap: 2rem;
+}
+
+.about__image img {
+  max-width: 450px;
+  margin: auto;
+  border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .booking__form {
+    transform: translateY(-20%); /* Atur jarak vertikal yang diinginkan */
+  }
+}
+
+@media (max-width: 576px) {
+  .booking__form {
+    transform: translateY(-40%); /* Atur kembali untuk layar yang lebih kecil */
+  }
+}
+
+
+@media (width > 576px) {
+  .room__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer__container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width > 768px) {
+  nav {
+    padding: 1rem 15rem;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-color: transparent;
+    transition: none;
+  }
+  
+  @keyframes fadeInWhite {
+    from {
+      background-color: transparent;
+    }
+    to {
+      background-color: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  nav.scrolled {
+    animation: fadeInWhite 0.3s forwards;
+    width: 100%;
+  }
+  
+  .nav__links a {
+    color: #fff;
+    transition: color 0.3s ease;
+  }
+  
+  nav.scrolled .nav__links a {
+    color: #000;
+  }
+  
+
+  .nav__bar {
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .nav__menu__btn {
+    display: none;
+  }
+
+  .nav__links {
+    padding: 0;
+    width: unset;
+    position: static;
+    transform: none;
+    flex-direction: row;
+    background-color: transparent;
+  }
+
+  .nav__btn {
+    display: block;
+  }
+
+  .nav__links a::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--primary-color);
+    transition: 0.3s;
+    transform-origin: left;
+  }
+
+  .nav__links a:hover::after {
+    width: 100%;
+  }
+
+  .about__container {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+  }
+
+  .room__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .service__content {
+    grid-column: 2/3;
+  }
+
+  .footer__container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (width > 1024px) {
+  .room__grid {
+    gap: 2rem;
+  }
+}
+    </style>
     <title>Web Design Mastery | Rayal Park</title>
   </head>
   <body>

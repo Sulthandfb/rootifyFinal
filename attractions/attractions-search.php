@@ -27,6 +27,15 @@ if (!empty($category)) {
 $result = mysqli_query($db, $sql);
 ?>
 
+<?php include '../navfot/navbar.php'; ?>
+
+<pre>
+
+
+
+
+</pre>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -124,6 +133,8 @@ $result = mysqli_query($db, $sql);
     </script>
 </body>
 </html>
+
+<?php include '../navfot/footer.php'; ?>
 
 <?php
 $db->close(); // Menutup koneksi database

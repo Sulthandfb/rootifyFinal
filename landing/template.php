@@ -225,8 +225,8 @@ ini_set('display_errors', 1);
             <h1 class="hero-title">Travel, <span>enjoy</span> and live a new and full life</h1>
             <p class="hero-description">Built Wicket longer admire do barton vanity itself do in it. Preferred to sportsmen it engrossed listening. Park gate sell they west hard for the.</p>
             <div class="cta-buttons">
-                <a href="#more" class="find-more-btn">Find out more</a>
-                <a href="#demo" class="play-demo-btn">
+                <a href="../attractions/attractions-search.php" class="find-more-btn">Find out more</a>
+                <a href="https://youtu.be/9_FdcMhQwrI" class="play-demo-btn">
                     <div class="play-icon">
                         <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
                             <path d="M1 2L10 7L1 12V2Z" stroke="white" stroke-width="2"/>
@@ -1262,9 +1262,9 @@ margin-bottom: 5px;
         </div>
     </div>
 
-<?php include '../navfot/footer.php'; ?>
-<?php include '../chatbot/chatbot.php'; ?>
 
+<?php include '../chatbot/chatbot.php'; ?>
+<?php include '../navfot/footer.php'; ?>
 <style>
 /* Footer styles */
 .footer {
