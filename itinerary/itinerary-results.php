@@ -131,6 +131,8 @@ function getCategoryIcon($category) {
 
 ?>
 
+<?php include '../navfot/navbar.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -430,6 +432,11 @@ function getCategoryIcon($category) {
     </style>
 </head>
 <body>
+    <pre>
+
+
+    
+    </pre>
     <div class="container">
         <div class="left-content">
             <header class="header">

@@ -31,7 +31,9 @@ switch ($booking_type) {
         break;
         
     case 'package':
-        $sql = "SELECT * FROM tourist_packets WHERE packet_id = ?";
+        $sql = "SELECT p.*, p.price as base_price, p.discounted_price 
+                FROM tourist_packets p 
+                WHERE p.packet_id = ?";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -94,11 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'booking_type' => $booking_type,
                 'reference_id' => $id,
                 'title' => $_POST['title'],
-                'fullname' => $_POST['fullname'],
+                'full_name' => $_POST['fullname'],  // sesuaikan dengan nama kolom di database
                 'email' => $_POST['email'],
                 'phone' => $_POST['phone'],
-                'adults' => $_POST['adults'],
-                'children' => $_POST['children'],
+                'num_adults' => $_POST['adults'],   // sesuaikan dengan nama kolom di database
+                'num_children' => $_POST['children'],// sesuaikan dengan nama kolom di database
                 'payment_method' => $_POST['payment_method']
             ];
 
@@ -126,21 +128,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error_message = $result['message'];
             }
         } else {
-            // Original booking logic for packages and attractions
+            // Perbaiki query dan bind_param
             $sql = "INSERT INTO bookings (booking_type, reference_id, title, full_name, email, phone, 
-                    num_adults, num_children, payment_method, status, created_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())";
+                    num_adults, num_children, payment_method, total_price, status, created_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())";
                     
             $stmt = $db->prepare($sql);
-            $stmt->bind_param("sissssiis", 
+
+            // Calculate total price based on booking type
+            $total_price = 0;
+            switch ($booking_type) {
+                case 'package':
+                    $base_price = $item['price'];
+                    $total_price = ($base_price * $booking_data['num_adults']) + 
+                                ($base_price * 0.7 * $booking_data['num_children']);
+                    break;
+                case 'attraction':
+                    $base_price = $item['entry_price'];
+                    $total_price = ($base_price * $booking_data['adults']) + 
+                                ($base_price * 0.5 * $booking_data['children']);
+                    break;
+            }
+
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("sissssiids",  // sesuaikan tipe data dengan kolom
                 $booking_data['booking_type'],
                 $booking_data['reference_id'],
                 $booking_data['title'],
-                $booking_data['fullname'],
+                $booking_data['full_name'],
                 $booking_data['email'],
                 $booking_data['phone'],
-                $booking_data['adults'],
-                $booking_data['children'],
+                $booking_data['num_adults'],
+                $booking_data['num_children'],
+                $total_price,
                 $booking_data['payment_method']
             );
 
@@ -151,12 +171,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $date_sql = "";
                 switch ($booking_type) {
                     case 'package':
-                        $date_sql = "INSERT INTO booking_details (booking_id, tour_date) VALUES (?, ?)";
+                        $date_sql = "INSERT INTO package_bookings (booking_id, tour_date) VALUES (?, ?)";
                         $stmt = $db->prepare($date_sql);
                         $stmt->bind_param("is", $booking_id, $booking_data['tour_date']);
                         break;
                     case 'attraction':
-                        $date_sql = "INSERT INTO booking_details (booking_id, visit_date) VALUES (?, ?)";
+                        $date_sql = "INSERT INTO attraction_bookings (booking_id, visit_date) VALUES (?, ?)";
                         $stmt = $db->prepare($date_sql);
                         $stmt->bind_param("is", $booking_id, $booking_data['visit_date']);
                         break;
@@ -771,4 +791,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 </body>
 </html>
-

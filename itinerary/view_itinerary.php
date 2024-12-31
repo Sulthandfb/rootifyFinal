@@ -4,7 +4,7 @@ include "../filter_wisata/db_connect.php";
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login/login.php");
+    header("Location: ../authentication/index.php");
     exit();
 }
 

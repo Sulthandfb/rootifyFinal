@@ -48,6 +48,8 @@ $images_result = $stmt->get_result();
 
 // Start outputting the HTML
 ?>
+
+<?php include '../navfot/navbar.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,6 +60,10 @@ $images_result = $stmt->get_result();
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+    <pre>
+
+
+    </pre>
     <div class="min-h-screen bg-background">
         <div class="photo-gallery">
             <?php
@@ -420,6 +426,7 @@ $images_result = $stmt->get_result();
             }
         });
     </script>
+    <?php include '../navfot/footer.php'; ?>
 </body>
 </html>
 <?php

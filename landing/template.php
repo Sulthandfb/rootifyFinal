@@ -223,7 +223,7 @@ ini_set('display_errors', 1);
         <div class="hero-content">
             <p class="category-label">Best Destinations in Yogyakarta</p>
             <h1 class="hero-title">Travel, <span>enjoy</span> and live a new and full life</h1>
-            <p class="hero-description">Built Wicket longer admire do barton vanity itself do in it. Preferred to sportsmen it engrossed listening. Park gate sell they west hard for the.</p>
+            <p class="hero-description">Built your story at Yogyakarta</p>
             <div class="cta-buttons">
                 <a href="../attractions/attractions-search.php" class="find-more-btn">Find out more</a>
                 <a href="https://youtu.be/9_FdcMhQwrI" class="play-demo-btn">

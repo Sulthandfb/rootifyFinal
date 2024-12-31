@@ -2,12 +2,6 @@
 session_start();
 include "../filter_wisata/db_connect.php";
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login/login.php");
-    exit();
-}
-
 // Handle trip name update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_trip_name'])) {
     $trip_id = $_POST['trip_id'];
@@ -74,6 +68,8 @@ mysqli_stmt_bind_param($stmt, "i", $user_id);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 ?>
+
+<?php include '../navfot/navbar.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -324,6 +320,10 @@ $result = mysqli_stmt_get_result($stmt);
     </style>
 </head>
 <body>
+    <pre>
+
+    
+    </pre>
     <div class="container">
         <div class="header">
             <h1>My Trips</h1>
@@ -359,6 +359,10 @@ $result = mysqli_stmt_get_result($stmt);
                                 <div class="dropdown">
                                     <i class="ri-more-2-fill" style="color: #666; cursor: pointer;" onclick="toggleDropdown(<?php echo $trip['id']; ?>)"></i>
                                     <div class="dropdown-content" id="dropdown-<?php echo $trip['id']; ?>">
+                                        <button onclick="shareToCommmunity(<?php echo $trip['id']; ?>)">
+                                            <i class="ri-share-line"></i>
+                                            Share to Community
+                                        </button>
                                         <button onclick="openEditModal(<?php echo $trip['id']; ?>, '<?php echo htmlspecialchars($trip['trip_name']); ?>')">
                                             <i class="ri-edit-line"></i>
                                             Edit Trip Name
@@ -452,6 +456,10 @@ $result = mysqli_stmt_get_result($stmt);
             if (event.target === modal) {
                 closeEditModal();
             }
+        }
+
+        function shareToCommmunity(tripId) {
+            window.location.href = `share_to_community.php?trip_id=${tripId}`;
         }
     </script>
 </body>

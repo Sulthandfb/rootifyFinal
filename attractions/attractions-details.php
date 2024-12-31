@@ -23,6 +23,8 @@ if (!$attraction) {
 }
 ?>
 
+<?php include '../navfot/navbar.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -209,6 +211,10 @@ if (!$attraction) {
     </style>
 </head>
 <body>
+    <pre>
+
+    
+    </pre>
     <a href="javascript:history.back()" class="back-button">← Back to Itinerary</a>
 
     <div class="header">

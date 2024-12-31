@@ -247,6 +247,7 @@ session_start();
             <li><a href="../akomodasi/hotels.php">Akomodasi</a></li>
             <li><a href="../itinerary/saved_trips.php">MyTrips</a></li>
             <li><a href="../itinerary/itinerary.php">Itinerary</a></li>
+            <li><a href="../itinerary/community.php">Community</a></li>
         </ul>
         <div class="nav-buttons">
             <?php if(isset($_SESSION['user_id'])): ?>

@@ -186,7 +186,7 @@ include '../filter_wisata/db_connect.php';
 
     <?php include '../chatbot/chatbot.php'; ?>
     <script src="https://unpkg.com/scrollreveal"></script> 
-    <script src="../js/hotel.js"></script>
+    <script src="hotels.js"></script>
     <?php include '../navfot/footer.php'; ?>
   </body>
 </html>

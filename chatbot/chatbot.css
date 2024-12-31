@@ -118,7 +118,7 @@ body.show-chatbot .chatbot-popup {
 }
 
 .chat-header #close-chatbot:hover {
-  background: #3d39ac;
+  background: #f85616;
 }
 
 .chat-body {
@@ -282,7 +282,7 @@ body.show-chatbot .chatbot-popup {
   width: 35px;
   border: none;
   cursor: pointer;
-  color: #706DB0;
+  color: #f85616;
   border-radius: 50%;
   font-size: 1.15rem;
   background: none;
@@ -291,7 +291,7 @@ body.show-chatbot .chatbot-popup {
 
 .chat-form .chat-controls button:hover,
 body.show-emoji-picker .chat-controls #emoji-picker {
-  color: #3d39ac;
+  color: #f85616;
   background: #f1f1ff;
 }
 
@@ -302,7 +302,7 @@ body.show-emoji-picker .chat-controls #emoji-picker {
 }
 
 .chat-form .chat-controls #send-message:hover {
-  background: #3d39ac;
+  background: #f85616;
 }
 
 .chat-form .message-input:valid~.chat-controls #send-message {
