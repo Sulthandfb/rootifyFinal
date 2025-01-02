@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
             $_SESSION["user_email"] = $user["email"];
             $_SESSION["user_avatar"] = $user["avatar"] ?? 'default-avatar.png';
             $_SESSION["is_admin"] = false;
-            header("Location: landing/template.php");
+            header("Location: template.php");
             exit();
         } else {
             $loginMessage = "Password salah.";
