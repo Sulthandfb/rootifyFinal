@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../filter_wisata/db_connect.php'; // Koneksi ke database
 
 // Mengambil data dari form di hotels.php
@@ -60,6 +61,7 @@ $result = $db->query($sql);
         }
 
         body {
+            padding-top: 50px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--background);
             color: var(--foreground);
@@ -401,6 +403,171 @@ $result = $db->query($sql);
             .properties-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* Responsive Layout Adjustments */
+        @media (max-width: 1600px) {
+            .main-container {
+                margin: 0 40px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-container {
+                flex-direction: column;
+                margin: 0 20px;
+            }
+
+            .map-section {
+                height: 400px;
+                position: static;
+                order: -1; /* Moves map to top on smaller screens */
+            }
+
+            .content-section {
+                max-width: 100%;
+            }
+
+            .properties-container {
+                max-height: none;
+            }
+
+            .properties-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                margin: 0 10px;
+                padding: 10px;
+            }
+
+            .search-filter-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-input, 
+            .price-input {
+                width: 100%;
+            }
+
+            .category-form {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .category-btn {
+                flex: 1 1 calc(33.333% - 10px);
+                min-width: 100px;
+            }
+
+            .date-selection {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .property-card {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .property-details {
+                flex-wrap: wrap;
+            }
+
+            .property-info {
+                padding: 12px;
+            }
+
+            .property-title {
+                font-size: 14px;
+            }
+
+            .property-price {
+                font-size: 14px;
+            }
+
+            .price-period {
+                font-size: 12px;
+            }
+
+            .category-btn {
+                flex: 1 1 100%;
+                margin: 5px 0;
+            }
+        }
+
+        /* Improved Search and Filter Responsiveness */
+        .search-section {
+            width: 100%;
+        }
+
+        .search-filter-container {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .search-input {
+            flex: 2;
+        }
+
+        .price-input {
+            flex: 1;
+        }
+
+        .search-btn {
+            min-width: 100px;
+            white-space: nowrap;
+        }
+
+        /* Map Responsiveness */
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            min-height: 300px;
+        }
+
+        /* Card Hover Effects */
+        .property-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Image Aspect Ratio Maintenance */
+        .property-image {
+            position: relative;
+            width: 100%;
+            padding-top: 66.67%;
+            overflow: hidden;
+        }
+
+        .property-image img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
         }
     </style>
 </head>

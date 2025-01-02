@@ -2,15 +2,31 @@
 session_start();
 include "../filter_wisata/db_connect.php";
 
-// Get itinerary ID from URL
-$itinerary_id = isset($_GET['id']) ? $_GET['id'] : null;
+// Get post ID from URL
+$post_id = isset($_GET['id']) ? $_GET['id'] : null;
 
-if (!$itinerary_id) {
+if (!$post_id) {
     header("Location: community.php");
     exit();
 }
 
-// Fetch itinerary details and attractions
+// First, get the itinerary_id from community_posts
+$post_query = "SELECT cp.*, u.username as post_owner 
+               FROM community_posts cp 
+               JOIN users u ON cp.user_id = u.id 
+               WHERE cp.id = ?";
+$post_stmt = mysqli_prepare($db, $post_query);
+mysqli_stmt_bind_param($post_stmt, "i", $post_id);
+mysqli_stmt_execute($post_stmt);
+$post_result = mysqli_stmt_get_result($post_stmt);
+$post_data = mysqli_fetch_assoc($post_result);
+
+if (!$post_data) {
+    header("Location: community.php");
+    exit();
+}
+
+// Then fetch itinerary details and attractions using the itinerary_id
 $query = "SELECT i.*, 
           ia.day,
           ia.display_order,
@@ -34,7 +50,7 @@ $query = "SELECT i.*,
           ORDER BY ia.day, ia.display_order";
 
 $stmt = mysqli_prepare($db, $query);
-mysqli_stmt_bind_param($stmt, "i", $itinerary_id);
+mysqli_stmt_bind_param($stmt, "i", $post_data['itinerary_id']);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
@@ -95,6 +111,8 @@ function getCategoryIcon($category) {
 }
 ?>
 
+<?php include '../navfot/navbar.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,9 +121,33 @@ function getCategoryIcon($category) {
     <title><?php echo htmlspecialchars($trip_details['trip_name']); ?> - Rootify</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="itinerary-planning.css">
+    <link rel="stylesheet" href="#">
     <style>
-        /* Add your CSS styles here (same as in view_itinerary.php) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            padding-top: 80px;
+            background-color:rgb(255, 255, 255);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .left-content {
+            flex: 1;
+            min-width: 0;
+        }
+
         .back-btn {
             display: inline-flex;
             align-items: center;
@@ -125,30 +167,268 @@ function getCategoryIcon($category) {
         .back-btn i {
             margin-right: 5px;
         }
+
+        .post-info {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .post-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-user-info {
+            flex-grow: 1;
+        }
+
+        .post-username {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .post-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .post-caption {
+            color: #333;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .header-details {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .day-section {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .day-header {
+            padding: 1rem 1.5rem;
+            background: #f8f8f8;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-header h2 {
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .dropdown-arrow {
+            transition: transform 0.3s;
+        }
+
+        .dropdown-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .day-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .day-content.open {
+            max-height: 2000px;
+        }
+
+        .attractions-container {
+            padding: 1.5rem;
+        }
+
+        .card {
+            display: flex;
+            background: #f8f8f8;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .card-image {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1rem;
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .rating-stars {
+            color: #ffd700;
+        }
+
+        .card-category {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+
+        .category-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .map-container {
+            position: sticky;
+            top: 2rem;
+            width: 400px;
+            height: calc(100vh - 4rem);
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .map-container {
+                width: 100%;
+                height: 400px;
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .card {
+                flex-direction: column;
+            }
+
+            .card-image {
+                width: 100%;
+                height: 200px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="community.php" class="back-btn">
-            <i class="ri-arrow-left-line"></i> Back to Community
-        </a>
-        
+<div class="container">
         <div class="left-content">
-            <header class="header">
-                <div class="header-content">
-                    <h1 class="header-title"><?php echo htmlspecialchars($trip_details['trip_name']); ?></h1>
-                    <div class="header-details">
-                        <span><?php echo date('M d', strtotime($trip_details['start_date'])) . ' - ' . date('M d, Y', strtotime($trip_details['end_date'])); ?></span>
-                        <span>•</span>
-                        <span><?php echo ucfirst($trip_details['trip_type']); ?> Trip</span>
-                        <span>•</span>
-                        <span><?php echo ucfirst($trip_details['budget']); ?> Budget</span>
+            <a href="community.php" class="back-btn">
+                <i class="ri-arrow-left-line"></i> Back to Community
+            </a>
+
+            <div class="post-info">
+                <div class="post-header">
+                    <div class="post-avatar">
+                        <img src="../img/default-avatar.jpg" alt="Profile picture">
                     </div>
-                    <div class="trip-creator">
-                        Created by: <?php echo htmlspecialchars($trip_details['username']); ?>
+                    <div class="post-user-info">
+                        <div class="post-username"><?php echo htmlspecialchars($post_data['post_owner']); ?></div>
+                        <div class="post-date"><?php echo date('F j, Y', strtotime($post_data['created_at'])); ?></div>
                     </div>
                 </div>
-            </header>
+                <?php if ($post_data['caption']): ?>
+                    <div class="post-caption"><?php echo htmlspecialchars($post_data['caption']); ?></div>
+                <?php endif; ?>
+            </div>
+            
+            <div class="header">
+                <h1 class="header-title"><?php echo htmlspecialchars($trip_details['trip_name']); ?></h1>
+                <div class="header-details">
+                    <span><?php echo date('M d', strtotime($trip_details['start_date'])) . ' - ' . date('M d, Y', strtotime($trip_details['end_date'])); ?></span>
+                    <span>•</span>
+                    <span><?php echo ucfirst($trip_details['trip_type']); ?> Trip</span>
+                    <span>•</span>
+                    <span><?php echo ucfirst($trip_details['budget']); ?> Budget</span>
+                </div>
+            </div>
 
             <div class="content">
                 <?php for ($day = 1; $day <= $total_days; $day++): ?>
@@ -164,10 +444,10 @@ function getCategoryIcon($category) {
                                     foreach ($daily_attractions[$day] as $attraction): 
                                 ?>
                                 <a href="../attractions/attractions-details.php?id=<?php echo $attraction['id']; ?>" class="card-link">
-                                    <div class="card" data-attraction-id="<?php echo $attraction['id']; ?>">
+                                    <div class="card">
                                         <img src="<?php echo htmlspecialchars($attraction['image_url']); ?>" 
-                                            alt="<?php echo htmlspecialchars($attraction['name']); ?>" 
-                                            class="card-image">
+                                             alt="<?php echo htmlspecialchars($attraction['name']); ?>" 
+                                             class="card-image">
                                         <div class="card-content">
                                             <h3 class="card-title"><?php echo htmlspecialchars($attraction['name']); ?></h3>
                                             <div class="card-rating">
@@ -235,6 +515,7 @@ function getCategoryIcon($category) {
             arrow.classList.toggle('open');
         }
     </script>
+    <?php include '../navfot/footer.php'; ?>
 </body>
 </html>
 

@@ -6,7 +6,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 ?>
-<pre></pre>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +23,7 @@ ini_set('display_errors', 1);
 
         body {
             overflow-x: hidden;
+            padding-top: 80px; /* Spacing untuk navbar */
         }
 
         /* Hero section styles */
@@ -167,13 +167,13 @@ ini_set('display_errors', 1);
         }
 
         @media (max-width: 768px) {
-            nav {
+            /* nav {
                 padding: 1rem 5%;
             }
 
             .nav-links {
                 display: none;
-            }
+            } */
 
             .hero {
                 flex-direction: column-reverse;
@@ -248,24 +248,24 @@ ini_set('display_errors', 1);
         <div class="services-grid">
             <div class="service-card">
                 <div class="service-icon">
-                    <img src="jalan.jpg" alt="Weather Icon" width="80" height="80">
+                    <img src="../img/destination.svg" alt="Weather Icon" width="80" height="80">
                 </div>
-                <h3>Hotel</h3>
-                <ng>Sebuah tempat tinggal dengan suasana yang nyaman, segar, dan mewah</p>
+                <h3>Trip Planner</h3>
+                <ng>Build and share engaging and fun journeys with rootify  </p>
             </div>
             <div class="service-card">
                 <div class="service-icon">
-                    <img src="../img/paket.jpg" alt="Flight Icon" width="80" height="80">
+                    <img src="../img/traveler.svg" alt="Flight Icon" width="80" height="80">
                 </div>
-                <h3>Paket Wisata</h3>
-                <p>Menyediakan berwisata ke beberapa tempat wisata dengan kuliner beserta pemandu yang ramah</p>
+                <h3>Package Tour</h3>
+                <p>Offer attractive and satisfying tour packages to users </p>
             </div>
             <div class="service-card">
                 <div class="service-icon">
-                    <img src="../img/indrayanti.jpg" alt="Events Icon" width="80" height="80">
+                    <img src="../img/flight.svg" alt="Events Icon" width="80" height="80">
                 </div>
-                <h3>Kuliner</h3>
-                <p>Makan dan minum dengan rasa yang lezat dan memuaskan</p>
+                <h3>Accommodation</h3>
+                <p>Provide comfortable, clean and best accommodation.</p>
             </div>
         </div>
     </div>
@@ -276,11 +276,13 @@ ini_set('display_errors', 1);
 .services {
     padding: 6rem 7%;
     text-align: center;
+    background-color:rgb(255, 255, 255);
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 15px;
 }
 
 .category {
@@ -288,6 +290,7 @@ ini_set('display_errors', 1);
     font-size: 1.125rem;
     margin-bottom: 1rem;
     text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 .section-title {
@@ -295,50 +298,33 @@ ini_set('display_errors', 1);
     font-size: 3.125rem;
     margin-bottom: 4rem;
     font-weight: bold;
+    line-height: 1.2;
 }
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
     padding: 1rem;
 }
 
 .service-card {
     background: #FFFFFF;
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     border-radius: 36px;
     transition: all 0.3s ease;
     position: relative;
-    cursor: pointer;
-}
-
-.service-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 36px;
-    background: #FFFFFF;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: -1;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 }
 
 .service-card:hover {
     transform: translateY(-10px);
-}
-
-.service-card:hover::before {
-    opacity: 1;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
 .service-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     margin: 0 auto 2rem;
     display: flex;
     align-items: center;
@@ -346,19 +332,28 @@ ini_set('display_errors', 1);
     background: #FFF1DA;
     border-radius: 20px;
     transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.service-icon img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    transition: all 0.3s ease;
 }
 
 .service-card:hover .service-icon {
     background: #DF6951;
 }
 
+/* Menghapus filter brightness dan invert pada hover */
 .service-card:hover .service-icon img {
-    filter: brightness(0) invert(1);
+    transform: scale(1.1);
 }
 
 .service-card h3 {
     color: #1E1D4C;
-    font-size: 1.25rem;
+    font-size: 1.375rem;
     margin-bottom: 1rem;
     font-weight: 600;
 }
@@ -367,9 +362,9 @@ ini_set('display_errors', 1);
     color: #5E6282;
     font-size: 1rem;
     line-height: 1.6;
+    margin: 0;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .services {
         padding: 4rem 5%;
@@ -377,11 +372,22 @@ ini_set('display_errors', 1);
 
     .section-title {
         font-size: 2.5rem;
+        margin-bottom: 3rem;
     }
 
     .services-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+    
+    .service-icon {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .service-icon img {
+        width: 70px;
+        height: 70px;
     }
 }
 
@@ -392,10 +398,22 @@ ini_set('display_errors', 1);
 
     .section-title {
         font-size: 2rem;
+        margin-bottom: 2.5rem;
     }
 
     .service-card {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
+    }
+    
+    .service-icon {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1.5rem;
+    }
+    
+    .service-icon img {
+        width: 60px;
+        height: 60px;
     }
 }
 </style>
@@ -404,7 +422,7 @@ ini_set('display_errors', 1);
     <div class="overlay">
         <div class="content">
             <h2>Grow Your Story</h2>
-            <p>Kembangkan Ceritamu Dengan Berwisata Di Yogyakarta </p>
+            <p>Make your travel plans while in Yogyakarta and share your travel stories with Rootify</p>
         </div>
     </div>
 </section>
@@ -530,7 +548,7 @@ ini_set('display_errors', 1);
                 </div>
                 <div class="destination-info">
                     <div class="destination-header">
-                        <h3>Jalan Malioboro</h3>
+                        <h3>Malioboro Road</h3>
                         <span class="price">Rp 500k</span>
                     </div>
                     <div class="trip-duration">
@@ -549,7 +567,7 @@ ini_set('display_errors', 1);
                 </div>
                 <div class="destination-info">
                     <div class="destination-header">
-                        <h3>Candi Prambanan</h3>
+                        <h3>Candi Prambananan</h3>
                         <span class="price">Rp 650k</span>
                     </div>
                     <div class="trip-duration">
@@ -696,23 +714,23 @@ ini_set('display_errors', 1);
     <div class="feature-row">
         <div class="feature-item">
             <div class="feature-icon">
-                <img src="logo1.png" alt="Harga Murah">
+                <img src="../img/kiosk.svg" alt="Affordable Pricing">
             </div>
             <div class="feature-content">
-                <h3>Harga Terjangkau</h3>
-                <p>Nikmati perjalanan wisata dengan harga yang kompetitif dan terjangkau. Kami menawarkan berbagai pilihan paket yang sesuai dengan budget Anda.</p>
+                <h3>Affordable Pricing</h3>
+                <p>Experience incredible travel at competitive rates. We offer a wide range of customizable packages designed to fit your budget while ensuring exceptional value for your journey.</p>
             </div>
         </div>
     </div>
 
-    <div class="feature-row reverse">
-        <div class="feature-item">
+    <div class="feature-row">
+        <div class="feature-item reverse">
             <div class="feature-content">
-                <h3>Terpercaya</h3>
-                <p>Sebagai platform wisata terpercaya, kami telah melayani ribuan wisatawan dengan tingkat kepuasan yang tinggi dan review positif.</p>
+                <h3>Trusted Experience</h3>
+                <p>As a leading travel platform, we've proudly served thousands of travelers worldwide, maintaining high satisfaction rates and consistently receiving positive reviews from our valued customers.</p>
             </div>
             <div class="feature-icon">
-                <img src="logo1.png" alt="Terpercaya">
+                <img src="../img/family-trip.svg" alt="Trusted Service">
             </div>
         </div>
     </div>
@@ -720,65 +738,167 @@ ini_set('display_errors', 1);
     <div class="feature-row">
         <div class="feature-item">
             <div class="feature-icon">
-                <img src="logo1.png" alt="Pelayanan Terbaik">
+                <img src="../img/business.svg" alt="Premium Service">
             </div>
             <div class="feature-content">
-                <h3>Pelayanan Terbaik</h3>
-                <p>Tim kami siap memberikan pelayanan terbaik 24/7 untuk memastikan perjalanan Anda menyenangkan dan tak terlupakan.</p>
+                <h3>Premium Service</h3>
+                <p>Our dedicated team provides round-the-clock support to ensure your travel experience is seamless and memorable. We're committed to exceeding your expectations at every step.</p>
             </div>
         </div>
     </div>
 </div>
 <style>
 .features-container {
-max-width: 1200px;
-margin: 4rem auto;
-padding: 0 2rem;
+    max-width: 1200px;
+    margin: 6rem auto;
+    padding: 0 2rem;
+    background-color: #ffffff;
+}
+
+.feature-row {
+    margin-bottom: 4rem;
+}
+
+.feature-row:last-child {
+    margin-bottom: 0;
 }
 
 .feature-item {
-display: flex;
-align-items: center;
-gap: 3rem;
-width: 100%;
-max-width: 900px;
-padding: 2rem;
-margin: 0 auto 2rem auto;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    width: 100%;
+    max-width: 1000px;
+    padding: 3rem;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.feature-item.reverse {
+    flex-direction: row-reverse;
 }
 
 .feature-icon {
-flex-shrink: 0;
-width: 120px;
-height: 120px;
-display: flex;
-align-items: center;
-justify-content: center;
+    flex-shrink: 0;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+    background: #f0f2f5;
+    transform: scale(1.05);
 }
 
 .feature-icon img {
-width: 100%;
-height: 100%;
-object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: all 0.3s ease;
 }
 
 .feature-content {
-flex: 1;
+    flex: 1;
 }
 
 .feature-content h3 {
-color: #333;
-font-size: 1.5rem;
-margin-bottom: 1rem;
+    color: #2d3436;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.feature-content h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: #DF6951;
+    border-radius: 2px;
 }
 
 .feature-content p {
-color: #666;
-line-height: 1.6;
-font-size: 1rem;
+    color: #636e72;
+    line-height: 1.8;
+    font-size: 1.1rem;
 }
 
-.feature-item.right-image {
-flex-direction: row-reverse;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .features-container {
+        margin: 4rem auto;
+        padding: 0 1.5rem;
+    }
+
+    .feature-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .feature-item.reverse {
+        flex-direction: column;
+    }
+
+    .feature-icon {
+        width: 120px;
+        height: 120px;
+        padding: 1.5rem;
+    }
+
+    .feature-content h3 {
+        font-size: 1.75rem;
+    }
+
+    .feature-content h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .feature-content p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .features-container {
+        margin: 3rem auto;
+        padding: 0 1rem;
+    }
+
+    .feature-item {
+        padding: 1.5rem;
+    }
+
+    .feature-icon {
+        width: 100px;
+        height: 100px;
+        padding: 1rem;
+    }
+
+    .feature-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
 }
 </style>
 
@@ -844,7 +964,7 @@ flex-direction: row-reverse;
 /* Add these styles to your existing CSS */
 .packages {
     padding: 6rem 7%;
-    background-color: #F9F9F9;
+    background-color:rgb(255, 255, 255);
 }
 
 .packages-grid {

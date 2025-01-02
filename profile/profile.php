@@ -224,16 +224,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="sidebar">
             <span class="logo">Rootify</span>
             <ul class="sidebar-menu">
-                <li><a href="../landing/landingpage.php"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="../landing/template.php"><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="profile.php"><i class="fas fa-user"></i> Profile</a></li>
                 <li><a href="bookings.php"><i class="fas fa-calendar-check"></i> My Bookings</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
                 <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
         <div class="main-content">
             <div class="profile-header">
-                <img src="uploads/<?php echo htmlspecialchars($avatar); ?>" alt="Profile Picture" class="profile-avatar">
+                <?php
+                // Check if avatar exists and is not empty
+                $avatar_path = 'uploads/' . $avatar;
+                if (!empty($avatar) && file_exists($avatar_path)) {
+                    $display_avatar = $avatar_path;
+                } else {
+                    $display_avatar = '../img/default-avatar.jpg'; // Replace with your default avatar path
+                }
+                ?>
+                <img src="<?php echo htmlspecialchars($display_avatar); ?>" alt="Profile Picture" class="profile-avatar">
                 <div class="profile-info">
                     <h1><?php echo htmlspecialchars($username); ?></h1>
                     <p><?php echo htmlspecialchars($email); ?></p>

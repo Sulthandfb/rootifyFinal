@@ -1,7 +1,22 @@
 <?php
+session_start();
 include "../filter_wisata/db_connect.php";
 
-// Simplified query to debug the issue
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: authentication/index.php");
+    exit();
+}
+
+// Fetch user profile data
+$user_query = "SELECT username, email, created_at FROM users WHERE id = ?";
+$user_stmt = mysqli_prepare($db, $user_query);
+mysqli_stmt_bind_param($user_stmt, "i", $_SESSION['user_id']);
+mysqli_stmt_execute($user_stmt);
+$user_result = mysqli_stmt_get_result($user_stmt);
+$user_data = mysqli_fetch_assoc($user_result);
+
+// Your existing community posts query
 $query = "SELECT 
     cp.*,
     i.trip_name,
@@ -19,10 +34,6 @@ $query = "SELECT
     JOIN itineraries i ON cp.itinerary_id = i.id
     JOIN users u ON cp.user_id = u.id
     ORDER BY cp.created_at DESC";
-
-// Add error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 try {
     $stmt = mysqli_prepare($db, $query);
@@ -46,8 +57,6 @@ try {
 }
 ?>
 
-<?php include '../navfot/navbar.php'; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,13 +73,112 @@ try {
         }
 
         body {
-            background-color:rgb(255, 255, 255);
+            padding-top: 80px; /* Spacing untuk navbar */
         }
-
-        .container {
-            max-width: 800px;
+        
+        .page-layout {
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+        }
+
+        .profile-section {
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            width: 100%;
+        }
+
+        .profile-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-email {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .profile-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .profile-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.875rem;
+        }
+
+        .profile-contact {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 50%;
+            color: #1a1a1a;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .profile-contact:hover {
+            background: #ebebeb;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            max-width: 800px;
+        }
+
+        /* Your existing styles */
+        .container {
+            max-width: none;
+            padding: 0;
         }
 
         .header {
@@ -97,6 +205,7 @@ try {
             background-color: #555;
         }
 
+        /* Keep all your existing styles for post-card, etc. */
         .post-card {
             background: white;
             border-radius: 15px;
@@ -253,85 +362,130 @@ try {
         .view-trip-btn i {
             margin-right: 5px;
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .page-layout {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-layout {
+                flex-direction: column;
+            }
+            
+            .profile-section {
+                width: 100%;
+            }
+            
+            .profile-card {
+                position: static;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-<pre>
-    
-
-    </pre>
-        <div class="header">
-            <h1>Community</h1>
-            <a href="saved_trips.php" class="share-btn">
-                <i class="ri-add-line"></i>
-                Share Your Trip
-            </a>
-        </div>
-
-        <div class="posts-container">
-            <?php while ($post = mysqli_fetch_assoc($result)): ?>
-                <div class="post-card">
-                    <div class="post-header">
-                        <img src="../img/default-avatar.jpg" alt="Profile picture">
-                        <div class="user-info">
-                            <div class="username"><?php echo htmlspecialchars($post['username']); ?></div>
-                            <div class="post-date"><?php echo date('F j, Y', strtotime($post['created_at'])); ?></div>
-                        </div>
-                    </div>
-                    
-                    <img src="../img/borobudur.jpg" alt="Trip thumbnail" class="post-image">
-                    
-                    <div class="post-content">
-                        <?php if ($post['caption']): ?>
-                            <p><?php echo htmlspecialchars($post['caption']); ?></p>
-                        <?php endif; ?>
-                        
-                        <div class="trip-details">
-                            <h3><?php echo htmlspecialchars($post['trip_name']); ?></h3>
-                            <p><?php echo date('M d', strtotime($post['start_date'])) . ' - ' . date('M d, Y', strtotime($post['end_date'])); ?></p>
-                            <p><?php echo ucfirst($post['trip_type']); ?> Trip • <?php echo ucfirst($post['budget']); ?> Budget</p>
-                            
-                            <div class="trip-stats">
-                                <div class="trip-stat">
-                                    <i class="ri-calendar-line"></i>
-                                    <span><?php echo $post['total_days']; ?> Days</span>
-                                </div>
-                                <div class="trip-stat">
-                                    <i class="ri-map-pin-line"></i>
-                                    <span><?php echo $post['total_attractions']; ?> Places</span>
-                                </div>
-                            </div>
-                            <a href="view_community_trips.php?id=<?php echo $post['id']; ?>" class="view-trip-btn">
-                                <i class="ri-eye-line"></i> See Trip 
-                            </a>
-                            <!-- revisi nanti brok -->
-                        </div>
-                    </div>
-
-                    <div class="post-actions">
-                        <button class="action-btn <?php echo $post['user_liked'] ? 'liked' : ''; ?>" 
-                                onclick="toggleLike(<?php echo $post['id']; ?>, this)">
-                            <i class="ri-heart-<?php echo $post['user_liked'] ? 'fill' : 'line'; ?>"></i>
-                            <span class="like-count"><?php echo $post['like_count']; ?></span>
-                        </button>
-                        <button class="action-btn" onclick="toggleComments(<?php echo $post['id']; ?>)">
-                            <i class="ri-chat-1-line"></i>
-                            <span><?php echo $post['comment_count']; ?></span>
-                        </button>
-                    </div>
-
-                    <div class="comments-section" id="comments-<?php echo $post['id']; ?>" style="display: none;">
-                        <div class="comments-list" id="comments-list-<?php echo $post['id']; ?>">
-                            <!-- Comments will be loaded here -->
-                        </div>
-                        <form class="comment-form" onsubmit="submitComment(event, <?php echo $post['id']; ?>)">
-                            <input type="text" class="comment-input" placeholder="Add a comment...">
-                            <button type="submit" class="comment-submit">Post</button>
-                        </form>
-                    </div>
+<?php include '../navfot/navbar.php'; ?>
+<div class="page-layout">
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="../img/default-avatar.jpg" alt="Profile picture">
                 </div>
-            <?php endwhile; ?>
+                <div class="profile-info">
+                    <h2 class="profile-name"><?php echo htmlspecialchars($user_data['username']); ?></h2>
+                    <p class="profile-email"><?php echo htmlspecialchars($user_data['email']); ?></p>
+                </div>
+            </div>
+            <div class="profile-details">
+                <div class="profile-stat">
+                    <i class="ri-calendar-line"></i>
+                    <span>Joined <?php echo date('M Y', strtotime($user_data['created_at'])); ?></span>
+                </div>
+                <a href="tel:<?php echo htmlspecialchars($user_data['email']); ?>" class="profile-contact">
+                    <i class="ri-phone-line"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <div class="header">
+                <h1>Community</h1>
+                <a href="saved_trips.php" class="share-btn">
+                    <i class="ri-add-line"></i>
+                    Share Your Trip
+                </a>
+            </div>
+
+            <div class="posts-container">
+                <?php while ($post = mysqli_fetch_assoc($result)): ?>
+                    <div class="post-card">
+                        <div class="post-header">
+                            <img src="../img/default-avatar.jpg" alt="Profile picture">
+                            <div class="user-info">
+                                <div class="username"><?php echo htmlspecialchars($post['username']); ?></div>
+                                <div class="post-date"><?php echo date('F j, Y', strtotime($post['created_at'])); ?></div>
+                            </div>
+                        </div>
+                        
+                        <img src="../img/borobudur.jpg" alt="Trip thumbnail" class="post-image">
+                        
+                        <div class="post-content">
+                            <?php if ($post['caption']): ?>
+                                <p><?php echo htmlspecialchars($post['caption']); ?></p>
+                            <?php endif; ?>
+                            
+                            <div class="trip-details">
+                                <h3><?php echo htmlspecialchars($post['trip_name']); ?></h3>
+                                <p><?php echo date('M d', strtotime($post['start_date'])) . ' - ' . date('M d, Y', strtotime($post['end_date'])); ?></p>
+                                <p><?php echo ucfirst($post['trip_type']); ?> Trip • <?php echo ucfirst($post['budget']); ?> Budget</p>
+                                
+                                <div class="trip-stats">
+                                    <div class="trip-stat">
+                                        <i class="ri-calendar-line"></i>
+                                        <span><?php echo $post['total_days']; ?> Days</span>
+                                    </div>
+                                    <div class="trip-stat">
+                                        <i class="ri-map-pin-line"></i>
+                                        <span><?php echo $post['total_attractions']; ?> Places</span>
+                                    </div>
+                                </div>
+                                <a href="view_community_trip.php?id=<?php echo $post['id']; ?>" class="view-trip-btn">
+                                    <i class="ri-eye-line"></i> See Trip 
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="post-actions">
+                            <button class="action-btn <?php echo $post['user_liked'] ? 'liked' : ''; ?>" 
+                                    onclick="toggleLike(<?php echo $post['id']; ?>, this)">
+                                <i class="ri-heart-<?php echo $post['user_liked'] ? 'fill' : 'line'; ?>"></i>
+                                <span class="like-count"><?php echo $post['like_count']; ?></span>
+                            </button>
+                            <button class="action-btn" onclick="toggleComments(<?php echo $post['id']; ?>)">
+                                <i class="ri-chat-1-line"></i>
+                                <span><?php echo $post['comment_count']; ?></span>
+                            </button>
+                        </div>
+
+                        <div class="comments-section" id="comments-<?php echo $post['id']; ?>" style="display: none;">
+                            <div class="comments-list" id="comments-list-<?php echo $post['id']; ?>">
+                                <!-- Comments will be loaded here -->
+                            </div>
+                            <form class="comment-form" onsubmit="submitComment(event, <?php echo $post['id']; ?>)">
+                                <input type="text" class="comment-input" placeholder="Add a comment...">
+                                <button type="submit" class="comment-submit">Post</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php endwhile; ?>
+            </div>
         </div>
     </div>
 

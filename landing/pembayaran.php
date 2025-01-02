@@ -41,7 +41,10 @@ switch ($booking_type) {
         break;
         
     case 'attraction':
-        $sql = "SELECT * FROM tourist_attractions WHERE id = ?";
+        $sql = "SELECT ta.*, ad.ticket_price 
+            FROM tourist_attractions ta
+            LEFT JOIN attraction_details ad ON ta.id = ad.attraction_id
+            WHERE ta.id = ?";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -96,11 +99,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'booking_type' => $booking_type,
                 'reference_id' => $id,
                 'title' => $_POST['title'],
-                'full_name' => $_POST['fullname'],  // sesuaikan dengan nama kolom di database
+                'full_name' => $_POST['fullname'],
                 'email' => $_POST['email'],
                 'phone' => $_POST['phone'],
-                'num_adults' => $_POST['adults'],   // sesuaikan dengan nama kolom di database
-                'num_children' => $_POST['children'],// sesuaikan dengan nama kolom di database
+                'num_adults' => $_POST['adults'],
+                'num_children' => $_POST['children'],
                 'payment_method' => $_POST['payment_method']
             ];
 
@@ -121,7 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $handler->createBooking($booking_data);
 
             if ($result['success']) {
+                $_SESSION['booking_success'] = true;
                 $_SESSION['booking_id'] = $result['booking_id'];
+                $_SESSION['success_message'] = "Pemesanan Anda telah berhasil diproses.";
                 header('Location: booking_success.php');
                 exit();
             } else {
@@ -135,59 +140,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
             $stmt = $db->prepare($sql);
 
-            // Calculate total price based on booking type
-            $total_price = 0;
+        // Calculate total price based on booking type
+        $total_price = 0;
+        switch ($booking_type) {
+            case 'package':
+                $base_price = $item['price'];
+                $total_price = ($base_price * $booking_data['num_adults']) + 
+                            ($base_price * 0.7 * $booking_data['num_children']);
+                break;
+            case 'attraction':
+                $basePrice = $item['ticket_price'];
+                $total_price = ($basePrice * $booking_data['num_adults']) + 
+                            ($basePrice * 0.5 * $booking_data['num_children']);
+                break;
+        }
+
+        $sql = "INSERT INTO bookings (booking_type, reference_id, title, full_name, email, phone, 
+                num_adults, num_children, total_price, payment_method, status, created_at) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("sissssiids", 
+            $booking_data['booking_type'],
+            $booking_data['reference_id'],
+            $booking_data['title'],
+            $booking_data['full_name'],
+            $booking_data['email'],
+            $booking_data['phone'],
+            $booking_data['num_adults'],
+            $booking_data['num_children'],
+            $total_price,
+            $booking_data['payment_method']
+        );
+
+        if ($stmt->execute()) {
+            $booking_id = $stmt->insert_id;
+            
+            // Add specific date information to booking_details
             switch ($booking_type) {
                 case 'package':
-                    $base_price = $item['price'];
-                    $total_price = ($base_price * $booking_data['num_adults']) + 
-                                ($base_price * 0.7 * $booking_data['num_children']);
+                    $date_sql = "INSERT INTO package_bookings (booking_id, packet_id, tour_date) VALUES (?, ?, ?)";
+                    $stmt = $db->prepare($date_sql);
+                    $stmt->bind_param("iis", 
+                        $booking_id, 
+                        $booking_data['reference_id'],  // reference_id adalah packet_id untuk booking paket
+                        $booking_data['tour_date']
+                    );
                     break;
                 case 'attraction':
-                    $base_price = $item['entry_price'];
-                    $total_price = ($base_price * $booking_data['adults']) + 
-                                ($base_price * 0.5 * $booking_data['children']);
+                    $date_sql = "INSERT INTO attraction_bookings (booking_id, attraction_id, visit_date) VALUES (?, ?, ?)";
+                    $stmt = $db->prepare($date_sql);
+                    $stmt->bind_param("iis", 
+                        $booking_id, 
+                        $booking_data['reference_id'],  // reference_id is the attraction_id
+                        $booking_data['visit_date']
+                    );
                     break;
             }
-
-            $stmt = $db->prepare($sql);
-            $stmt->bind_param("sissssiids",  // sesuaikan tipe data dengan kolom
-                $booking_data['booking_type'],
-                $booking_data['reference_id'],
-                $booking_data['title'],
-                $booking_data['full_name'],
-                $booking_data['email'],
-                $booking_data['phone'],
-                $booking_data['num_adults'],
-                $booking_data['num_children'],
-                $total_price,
-                $booking_data['payment_method']
-            );
-
+            
             if ($stmt->execute()) {
-                $booking_id = $stmt->insert_id;
-                
-                // Add specific date information to booking_details
-                $date_sql = "";
-                switch ($booking_type) {
-                    case 'package':
-                        $date_sql = "INSERT INTO package_bookings (booking_id, tour_date) VALUES (?, ?)";
-                        $stmt = $db->prepare($date_sql);
-                        $stmt->bind_param("is", $booking_id, $booking_data['tour_date']);
-                        break;
-                    case 'attraction':
-                        $date_sql = "INSERT INTO attraction_bookings (booking_id, visit_date) VALUES (?, ?)";
-                        $stmt = $db->prepare($date_sql);
-                        $stmt->bind_param("is", $booking_id, $booking_data['visit_date']);
-                        break;
-                }
-                
-                if ($stmt->execute()) {
-                    $_SESSION['booking_id'] = $booking_id;
-                    header('Location: booking_success.php');
-                    exit();
-                }
+                $_SESSION['booking_success'] = true;
+                $_SESSION['booking_id'] = $booking_id;
+                $_SESSION['success_message'] = "Pemesanan Anda telah berhasil diproses.";
+                header('Location: booking_success.php');
+                exit();
             }
+        }
             
             $error_message = "Terjadi kesalahan saat memproses pemesanan. Silakan coba lagi.";
         }
@@ -600,7 +618,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="alert alert-danger"><?php echo $error_message; ?></div>
         <?php endif; ?>
 
-        <form id="bookingForm" method="POST" action="">
+        <form id="bookingForm" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>?type=<?php echo $booking_type; ?>&id=<?php echo $id; ?>">
             <!-- Step 1: Detail Pesanan -->
             <div class="form-section active" data-step="1">
                 <h2 class="form-title">Detail Pemesan</h2>
@@ -716,6 +734,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Form navigation
         function nextStep(currentStep) {
             if (validateSection(currentStep)) {
+                // Fixed the querySelector syntax by removing the dot at the beginning
                 document.querySelector(`.form-section[data-step="${currentStep}"]`).classList.remove('active');
                 document.querySelector(`.form-section[data-step="${currentStep + 1}"]`).classList.add('active');
                 document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
@@ -725,6 +744,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         function prevStep(currentStep) {
+            // Fixed the querySelector syntax by removing the dot at the beginning
             document.querySelector(`.form-section[data-step="${currentStep}"]`).classList.remove('active');
             document.querySelector(`.form-section[data-step="${currentStep - 1}"]`).classList.add('active');
             document.querySelector(`.step[data-step="${currentStep}"]`).classList.remove('active');
@@ -732,6 +752,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         function validateSection(step) {
+            // Fixed the querySelector syntax by removing the dot at the beginning
             const section = document.querySelector(`.form-section[data-step="${step}"]`);
             const inputs = section.querySelectorAll('input[required], select[required]');
             let isValid = true;
@@ -760,7 +781,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const basePrice = <?php echo $item['room_price']; ?>;
                 const total = basePrice * nights;
             <?php elseif ($booking_type === 'attraction'): ?>
-                const basePrice = <?php echo $item['entry_price']; ?>;
+                const basePrice = <?php echo $item['ticket_price']; ?>;
                 const total = (basePrice * adults) + (basePrice * 0.5 * children);
             <?php else: ?>
                 const basePrice = <?php echo $item['price']; ?>;

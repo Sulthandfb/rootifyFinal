@@ -9,9 +9,9 @@ session_start();
     left: 0;
     width: 100%;
     padding: 1rem 0;
-    background-color: rgba(255, 255, 255, 0.1);
-    transition: background-color 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.9);
     z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .nav-container {
@@ -130,36 +130,14 @@ session_start();
     background: #f5f5f5;
 }
 
-/* Scroll effect */
-.navbar.scrolled {
-    background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.navbar.scrolled .nav-links a,
-.navbar.scrolled .brand-text,
-.navbar.scrolled .user-name {
-    color: #000;
-}
-
-.navbar.scrolled .btn {
-    border-color: #000;
-    color: #000;
-}
-
-.navbar.scrolled .btn:hover {
-    background: #000;
-    color: #fff;
-}
-
-/* Hamburger menu */
+/* Hamburger menu - Simplified */
 .hamburger {
     display: none;
-    flex-direction: column;
+    background: none;
+    border: none;
     cursor: pointer;
-    z-index: 1001;
+    padding: 0;
+    margin-right: 1rem;
 }
 
 .hamburger span {
@@ -167,77 +145,54 @@ session_start();
     width: 25px;
     height: 3px;
     background-color: #000;
-    margin-bottom: 5px;
-    transition: all 0.3s ease;
+    margin: 5px 0;
+    transition: transform 0.3s ease;
 }
 
 /* Responsive styles */
 @media (max-width: 800px) {
-    .nav-container {
-        justify-content: space-between;
-    }
-
     .hamburger {
-        display: flex;
-        order: 1;
-    }
-
-    .nav-brand {
-        order: 2;
-    }
-
-    .nav-buttons {
-        order: 3;
+        display: block;
     }
 
     .nav-links {
-        position: fixed;
-        top: -100%;
+        display: none;
+        position: absolute;
+        top: 100%;
         left: 0;
-        right: 0;
-        flex-direction: column;
-        background-color: #fff;
         width: 100%;
-        text-align: center;
-        transition: 0.3s;
-        box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-        padding: 80px 0 30px;
-        z-index: 1000;
+        background: white;
+        padding: 1rem 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
     .nav-links.active {
-        top: 0;
+        display: block;
     }
 
-    .nav-item {
-        margin: 1.5rem 0;
+    .nav-links li {
+        display: block;
+        margin: 1rem 2rem;
     }
 
-    .btn {
+    .nav-links a {
+        display: block;
+        padding: 0.5rem 0;
+    }
+
+    /* .btn {
         display: none;
-    }
-
-    .hamburger.active span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-
-    .hamburger.active span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .hamburger.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(7px, -6px);
-    }
+    } */
 }
 </style>
 
-<nav class="navbar" id="navbar">
+<nav class="navbar">
     <div class="nav-container">
-        <div class="hamburger" id="hamburger-menu">
+        <button class="hamburger" id="hamburger-menu">
             <span></span>
             <span></span>
             <span></span>
-        </div>
+        </button>
         <a href="#" class="nav-brand">
             <img src="../img/logo.png" alt="Logo Tim" class="logo">
             <span class="brand-text">Rootify</span>
@@ -252,8 +207,16 @@ session_start();
         <div class="nav-buttons">
             <?php if(isset($_SESSION['user_id'])): ?>
                 <div class="user-profile">
-                    <img src="uploads/<?php echo $_SESSION['user_avatar']; ?>" alt="User Avatar" class="user-avatar">
-                    <span class="user-name"><?php echo $_SESSION['username']; ?></span>
+                    <?php
+                    $avatar_path = 'uploads/' . $_SESSION['user_avatar'];
+                    if (!empty($_SESSION['user_avatar']) && file_exists($avatar_path)) {
+                        $display_avatar = $avatar_path;
+                    } else {
+                        $display_avatar = '../img/default-avatar.jpg';
+                    }
+                    ?>
+                    <img src="<?php echo htmlspecialchars($display_avatar); ?>" alt="User Avatar" class="user-avatar">
+                    <span class="user-name"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     <div class="user-dropdown">
                         <a href="../profile/profile.php">My Profile</a>
                         <a href="../profile/bookings.php">My Bookings</a>
@@ -269,37 +232,26 @@ session_start();
 </nav>
 
 <script>
-window.addEventListener('scroll', function() {
-    const navbar = document.getElementById('navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.getElementById('hamburger-menu');
+    const navLinks = document.getElementById('nav-links');
 
-const hamburger = document.getElementById('hamburger-menu');
-const navLinks = document.getElementById('nav-links');
-
-hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    hamburger.classList.toggle('active');
-});
-
-// Close mobile menu when a link is clicked
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        hamburger.classList.remove('active');
+    hamburger.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
     });
-});
 
-// Close mobile menu when clicking outside
-document.addEventListener('click', (event) => {
-    const isClickInsideNavbar = navbar.contains(event.target);
-    if (!isClickInsideNavbar && navLinks.classList.contains('active')) {
-        navLinks.classList.remove('active');
-        hamburger.classList.remove('active');
-    }
+    // Close menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!navLinks.contains(e.target) && !hamburger.contains(e.target) && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+        }
+    });
+
+    // Close menu when window is resized above mobile breakpoint
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 800 && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+        }
+    });
 });
 </script>

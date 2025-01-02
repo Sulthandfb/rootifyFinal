@@ -59,6 +59,8 @@ $hotel = $result->fetch_assoc();
 $db->close();
 ?>
 
+<?php include '../navfot/navbar.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,6 +78,7 @@ $db->close();
         }
 
         body {
+            padding-top: 100px;
             background-color:rgb(255, 255, 255);
             color: #333;
             line-height: 1.6;
@@ -129,6 +132,7 @@ $db->close();
             grid-row: span 2;
             border-radius: 10px;
             overflow: hidden;
+            height: 100%;
         }
 
         .gallery-item {
@@ -136,6 +140,7 @@ $db->close();
             overflow: hidden;
             border-radius: 10px;
             transition: transform 0.3s ease;
+            height: 100%;
         }
 
         .gallery-item:hover {
@@ -208,6 +213,7 @@ $db->close();
             position: sticky;
             top: 24px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
         }
 
         .price-display {
@@ -227,11 +233,17 @@ $db->close();
             font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin: 20px 0;
         }
 
         .book-button:hover {
             background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
         }
 
         #map {
@@ -263,16 +275,57 @@ $db->close();
         }
 
         @media (max-width: 768px) {
-            .gallery-grid, .content-grid {
+            .gallery-grid {
                 grid-template-columns: 1fr;
+                height: auto;
+                max-height: 400px;
             }
 
-            .gallery-grid {
-                height: auto;
+            .gallery-main {
+                grid-row: 1;
+                height: 400px;
+            }
+
+            .gallery-item:not(.gallery-main) {
+                display: none;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
 
             .booking-card {
                 position: static;
+                margin: 20px 0;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+
+            .book-button {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: 0;
+                border-radius: 0;
+                z-index: 1000;
+            }
+
+            .container {
+                padding-bottom: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-main {
+                height: 300px;
+            }
+
+            .booking-card {
+                margin: 10px 0;
+                padding: 15px;
             }
         }
     </style>
@@ -413,6 +466,7 @@ $db->close();
             }
         });
     </script>
+    <?php include '../navfot/footer.php'; ?>
     
 </body>
 </html>

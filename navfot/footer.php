@@ -4,7 +4,7 @@
         <div class="footer-content">
             <div class="footer-column">
                 <h3>About <span>Rootify</span></h3>
-                <p>Rootify: Tanamkan mimpi petualanganmu, saksikan kisahmu tumbuh bersama setiap langkah. Setiap perjalanan adalah bab baru dalam buku hidupmu yang unik</p>
+                <p>Rootify: Nurture your dreams of adventure, watching your story grow with every step. Every journey is a new chapter in your unique book of life.</p>
                 <div class="social-links">
                     <a href="#" class="social-link">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
